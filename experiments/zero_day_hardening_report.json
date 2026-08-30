@@ -1,0 +1,944 @@
+{
+  "experiment_name": "FraudForge AI Phase 6 Zero-Day Adaptive Hardening",
+  "timestamp": "2026-08-30 18:26:52 UTC",
+  "random_seeds": {
+    "baseline_seed": 42,
+    "adversarial_train_seed": 101,
+    "unseen_test_seed": 1337,
+    "novel_discovery_seed": 777,
+    "novel_test_seed": 2026
+  },
+  "dataset_sizes": {
+    "dataset_a_train": 8000,
+    "dataset_a_test": 2000,
+    "dataset_b_adversarial_train": 3500,
+    "dataset_c_unseen_known_test": 2000,
+    "dataset_d_unseen_novel_test": 2000
+  },
+  "discovery_statistics": {
+    "total_generated": 80,
+    "rejected_incompatible": 5,
+    "rejected_near_duplicate_known": 32,
+    "rejected_near_duplicate_candidate": 0,
+    "compatible_candidates": 75,
+    "retained_candidates": 15
+  },
+  "training_candidates": [
+    {
+      "candidate_id": "NSA-001",
+      "candidate_name": "Trusted-Device Omnichannel Social Engineering Trap",
+      "genome": {
+        "target": "customer",
+        "entry_vector": "social_engineering",
+        "behavior": "cross_channel",
+        "evasion_strategy": "trusted_device_masking",
+        "payment_channel": "e-commerce",
+        "amount_strategy": "normal_looking",
+        "temporal_strategy": "daytime_peak",
+        "identity_strategy": "authorized_victim",
+        "merchant_strategy": "mcc_rotation",
+        "geographic_strategy": "domestic_matching",
+        "attack_id": "NSA-001",
+        "attack_name": "Trusted-Device Omnichannel Social Engineering Trap",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.4109,
+      "realism_score": 0.8,
+      "evasion_potential": 0.81,
+      "priority_score": 0.729,
+      "nearest_known_attack": "ATK-002 (Conversational Phishing Agent (AI Romance / Trust Scam))",
+      "nearest_known_similarity": 0.5891,
+      "lineage": {
+        "mutation_type": "crossover",
+        "parent_1": "ATK-016",
+        "parent_2": "ATK-002",
+        "gene_sources": [
+          "target from ATK-002",
+          "entry_vector from ATK-002",
+          "behavior from ATK-016",
+          "evasion_strategy from ATK-002",
+          "payment_channel from ATK-016",
+          "amount_strategy from ATK-016",
+          "temporal_strategy from ATK-002",
+          "identity_strategy from ATK-002",
+          "merchant_strategy from ATK-016",
+          "geographic_strategy from ATK-016"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "e-commerce",
+        "merchant_category": "retail",
+        "auth_method_override": "biometric",
+        "amount_multiplier": [
+          1.1,
+          1.85
+        ],
+        "hour_distribution": "daytime",
+        "device_change": 0,
+        "ip_risk_shift": 0.18,
+        "geographic_deviation": 0,
+        "failed_auth_count": 0
+      },
+      "number_tested": 200,
+      "number_detected": 21,
+      "number_missed": 179,
+      "detection_rate": 10.5,
+      "blind_spot_level": "CRITICAL BLIND SPOT"
+    },
+    {
+      "candidate_id": "NSA-003",
+      "candidate_name": "Trusted-Device Low-and-Slow Merchant Return Arbitrage",
+      "genome": {
+        "target": "merchant",
+        "entry_vector": "credential_abuse",
+        "behavior": "low_and_slow",
+        "evasion_strategy": "trusted_device_masking",
+        "payment_channel": "e-commerce",
+        "amount_strategy": "micro_transactions",
+        "temporal_strategy": "distributed",
+        "identity_strategy": "authorized_victim",
+        "merchant_strategy": "single_target",
+        "geographic_strategy": "cross_border_arbitrage",
+        "attack_id": "NSA-003",
+        "attack_name": "Trusted-Device Low-and-Slow Merchant Return Arbitrage",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.3566,
+      "realism_score": 0.8,
+      "evasion_potential": 0.79,
+      "priority_score": 0.7192,
+      "nearest_known_attack": "ATK-013 (Low-and-Slow AI Micro-Carding Swarm)",
+      "nearest_known_similarity": 0.6434,
+      "lineage": {
+        "mutation_type": "crossover",
+        "parent_1": "ATK-003",
+        "parent_2": "ATK-013",
+        "gene_sources": [
+          "target from ATK-013",
+          "entry_vector from ATK-013",
+          "behavior from ATK-013",
+          "evasion_strategy from ATK-003",
+          "payment_channel from ATK-013",
+          "amount_strategy from ATK-013",
+          "temporal_strategy from ATK-003",
+          "identity_strategy from ATK-003",
+          "merchant_strategy from ATK-003",
+          "geographic_strategy from ATK-003"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "e-commerce",
+        "merchant_category": "retail",
+        "auth_method_override": "biometric",
+        "fixed_amount_range": [
+          1.0,
+          12.0
+        ],
+        "hour_distribution": "any",
+        "device_change": 0,
+        "ip_risk_shift": 0.18,
+        "geographic_deviation": 1,
+        "failed_auth_count": 0
+      },
+      "number_tested": 200,
+      "number_detected": 14,
+      "number_missed": 186,
+      "detection_rate": 7.0,
+      "blind_spot_level": "CRITICAL BLIND SPOT"
+    },
+    {
+      "candidate_id": "NSA-008",
+      "candidate_name": "Biometric-Injected Behavioral Mimicry Push Payment Fraud",
+      "genome": {
+        "target": "payment_authorization",
+        "entry_vector": "deepfake_synthesis",
+        "behavior": "behavioral_mimicry",
+        "evasion_strategy": "biometric_spoofing",
+        "payment_channel": "mobile_app",
+        "amount_strategy": "high_ticket_escalation",
+        "temporal_strategy": "off_hours",
+        "identity_strategy": "authorized_victim",
+        "merchant_strategy": "single_target",
+        "geographic_strategy": "domestic_matching",
+        "attack_id": "NSA-008",
+        "attack_name": "Biometric-Injected Behavioral Mimicry Push Payment Fraud",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.3178,
+      "realism_score": 0.76,
+      "evasion_potential": 0.67,
+      "priority_score": 0.6582,
+      "nearest_known_attack": "ATK-012 (Stealth Biometric Hash Injection / Virtual Sensor Replay)",
+      "nearest_known_similarity": 0.6822,
+      "lineage": {
+        "mutation_type": "crossover",
+        "parent_1": "ATK-001",
+        "parent_2": "ATK-012",
+        "gene_sources": [
+          "target from ATK-012",
+          "entry_vector from ATK-001",
+          "behavior from ATK-012",
+          "evasion_strategy from ATK-012",
+          "payment_channel from ATK-012",
+          "amount_strategy from ATK-012",
+          "temporal_strategy from ATK-001",
+          "identity_strategy from ATK-001",
+          "merchant_strategy from ATK-001",
+          "geographic_strategy from ATK-012"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "mobile_app",
+        "merchant_category": "retail",
+        "auth_method_override": "biometric",
+        "amount_multiplier": [
+          2.4,
+          5.5
+        ],
+        "hour_distribution": "off_hours",
+        "behavioral_dev_shift": 0.12,
+        "geographic_deviation": 0,
+        "failed_auth_count": 0
+      },
+      "number_tested": 200,
+      "number_detected": 23,
+      "number_missed": 177,
+      "detection_rate": 11.5,
+      "blind_spot_level": "CRITICAL BLIND SPOT"
+    },
+    {
+      "candidate_id": "NSA-012",
+      "candidate_name": "Camouflaged Cart Manipulation Social Engineering Trap",
+      "genome": {
+        "target": "customer",
+        "entry_vector": "deepfake_synthesis",
+        "behavior": "cart_manipulation",
+        "evasion_strategy": "amount_camouflage",
+        "payment_channel": "mobile_app",
+        "amount_strategy": "stealth_discounted",
+        "temporal_strategy": "distributed",
+        "identity_strategy": "existing_account",
+        "merchant_strategy": "single_target",
+        "geographic_strategy": "domestic_matching",
+        "attack_id": "NSA-012",
+        "attack_name": "Camouflaged Cart Manipulation Social Engineering Trap",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.3488,
+      "realism_score": 0.76,
+      "evasion_potential": 0.58,
+      "priority_score": 0.6034,
+      "nearest_known_attack": "ATK-020 (Automated Cart-State Desynchronization & Discount Exploit)",
+      "nearest_known_similarity": 0.6512,
+      "lineage": {
+        "mutation_type": "crossover",
+        "parent_1": "ATK-003",
+        "parent_2": "ATK-020",
+        "gene_sources": [
+          "target from ATK-003",
+          "entry_vector from ATK-003",
+          "behavior from ATK-020",
+          "evasion_strategy from ATK-020",
+          "payment_channel from ATK-003",
+          "amount_strategy from ATK-020",
+          "temporal_strategy from ATK-003",
+          "identity_strategy from ATK-020",
+          "merchant_strategy from ATK-020",
+          "geographic_strategy from ATK-020"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "mobile_app",
+        "merchant_category": "retail",
+        "amount_multiplier": [
+          0.15,
+          0.45
+        ],
+        "hour_distribution": "any",
+        "identity_risk_shift": 0.1,
+        "behavioral_dev_shift": 0.4,
+        "geographic_deviation": 0,
+        "failed_auth_count": 0
+      },
+      "number_tested": 200,
+      "number_detected": 55,
+      "number_missed": 145,
+      "detection_rate": 27.5,
+      "blind_spot_level": "CRITICAL BLIND SPOT"
+    },
+    {
+      "candidate_id": "NSA-004",
+      "candidate_name": "Signal-Suppressed Low-and-Slow Checkout Abuse",
+      "genome": {
+        "target": "checkout",
+        "entry_vector": "api_exploit",
+        "behavior": "low_and_slow",
+        "evasion_strategy": "risk_signal_suppression",
+        "payment_channel": "api_gateway",
+        "amount_strategy": "normal_looking",
+        "temporal_strategy": "distributed",
+        "identity_strategy": "delegated_agent",
+        "merchant_strategy": "digital_marketplace",
+        "geographic_strategy": "domestic_matching",
+        "attack_id": "NSA-004",
+        "attack_name": "Signal-Suppressed Low-and-Slow Checkout Abuse",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.2171,
+      "realism_score": 0.76,
+      "evasion_potential": 0.94,
+      "priority_score": 0.5943,
+      "nearest_known_attack": "ATK-019 (Agentic Webhook Signature Evasion & Race Exploit)",
+      "nearest_known_similarity": 0.7829,
+      "lineage": {
+        "mutation_type": "crossover",
+        "parent_1": "ATK-018",
+        "parent_2": "ATK-019",
+        "gene_sources": [
+          "target from ATK-019",
+          "entry_vector from ATK-019",
+          "behavior from ATK-018",
+          "evasion_strategy from ATK-019",
+          "payment_channel from ATK-018",
+          "amount_strategy from ATK-018",
+          "temporal_strategy from ATK-018",
+          "identity_strategy from ATK-019",
+          "merchant_strategy from ATK-018",
+          "geographic_strategy from ATK-019"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "api_gateway",
+        "merchant_category": "digital_goods",
+        "auth_method_override": "none",
+        "amount_multiplier": [
+          1.1,
+          1.85
+        ],
+        "hour_distribution": "any",
+        "identity_risk_shift": 0.2,
+        "ip_risk_shift": 0.15,
+        "behavioral_dev_shift": 0.1,
+        "merchant_risk_shift": 0.2,
+        "geographic_deviation": 0,
+        "failed_auth_count": 0
+      },
+      "number_tested": 200,
+      "number_detected": 108,
+      "number_missed": 92,
+      "detection_rate": 54.0,
+      "blind_spot_level": "HIGH BLIND SPOT"
+    }
+  ],
+  "gen2_test_candidates": [
+    {
+      "candidate_id": "NSA-001-V2",
+      "candidate_name": "Trusted-Device Omnichannel Social Engineering Trap (Gen-2 Evolved)",
+      "genome": {
+        "target": "customer",
+        "entry_vector": "malicious_tool",
+        "behavior": "cross_channel",
+        "evasion_strategy": "trusted_device_masking",
+        "payment_channel": "e-commerce",
+        "amount_strategy": "normal_looking",
+        "temporal_strategy": "daytime_peak",
+        "identity_strategy": "authorized_victim",
+        "merchant_strategy": "mcc_rotation",
+        "geographic_strategy": "domestic_matching",
+        "attack_id": "NSA-001-V2",
+        "attack_name": "Trusted-Device Omnichannel Social Engineering Trap (Gen-2 Evolved)",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.4109,
+      "realism_score": 0.8,
+      "evasion_potential": 0.81,
+      "priority_score": 0.729,
+      "nearest_known_attack": "NSA-001",
+      "nearest_known_similarity": 0.9,
+      "lineage": {
+        "mutation_type": "generation_2_evolution",
+        "parent_candidate": "NSA-001",
+        "evolution_mutations": [
+          "entry_vector: social_engineering -> malicious_tool"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "e-commerce",
+        "merchant_category": "retail",
+        "auth_method_override": "biometric",
+        "amount_multiplier": [
+          1.1,
+          1.85
+        ],
+        "hour_distribution": "daytime",
+        "device_change": 0,
+        "ip_risk_shift": 0.18,
+        "geographic_deviation": 0,
+        "failed_auth_count": 0
+      },
+      "number_tested": 0,
+      "number_detected": 0,
+      "number_missed": 0,
+      "detection_rate": 0.0,
+      "blind_spot_level": "UNTESTED"
+    },
+    {
+      "candidate_id": "NSA-003-V2",
+      "candidate_name": "Trusted-Device Low-and-Slow Merchant Return Arbitrage (Gen-2 Evolved)",
+      "genome": {
+        "target": "payment_agent",
+        "entry_vector": "credential_abuse",
+        "behavior": "low_and_slow",
+        "evasion_strategy": "trusted_device_masking",
+        "payment_channel": "e-commerce",
+        "amount_strategy": "micro_transactions",
+        "temporal_strategy": "distributed",
+        "identity_strategy": "authorized_victim",
+        "merchant_strategy": "single_target",
+        "geographic_strategy": "cross_border_arbitrage",
+        "attack_id": "NSA-003-V2",
+        "attack_name": "Trusted-Device Low-and-Slow Merchant Return Arbitrage (Gen-2 Evolved)",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.3566,
+      "realism_score": 0.8,
+      "evasion_potential": 0.79,
+      "priority_score": 0.7192,
+      "nearest_known_attack": "NSA-003",
+      "nearest_known_similarity": 0.9,
+      "lineage": {
+        "mutation_type": "generation_2_evolution",
+        "parent_candidate": "NSA-003",
+        "evolution_mutations": [
+          "target: merchant -> payment_agent"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "e-commerce",
+        "merchant_category": "retail",
+        "auth_method_override": "biometric",
+        "fixed_amount_range": [
+          1.0,
+          12.0
+        ],
+        "hour_distribution": "any",
+        "device_change": 0,
+        "ip_risk_shift": 0.18,
+        "geographic_deviation": 1,
+        "failed_auth_count": 0
+      },
+      "number_tested": 0,
+      "number_detected": 0,
+      "number_missed": 0,
+      "detection_rate": 0.0,
+      "blind_spot_level": "UNTESTED"
+    },
+    {
+      "candidate_id": "NSA-008-V2",
+      "candidate_name": "Biometric-Injected Behavioral Mimicry Push Payment Fraud (Gen-2 Evolved)",
+      "genome": {
+        "target": "payment_authorization",
+        "entry_vector": "deepfake_synthesis",
+        "behavior": "behavioral_mimicry",
+        "evasion_strategy": "biometric_spoofing",
+        "payment_channel": "mobile_app",
+        "amount_strategy": "high_ticket_escalation",
+        "temporal_strategy": "off_hours",
+        "identity_strategy": "authorized_victim",
+        "merchant_strategy": "single_target",
+        "geographic_strategy": "residential_proxy_spoofed",
+        "attack_id": "NSA-008-V2",
+        "attack_name": "Biometric-Injected Behavioral Mimicry Push Payment Fraud (Gen-2 Evolved)",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.3178,
+      "realism_score": 0.76,
+      "evasion_potential": 0.67,
+      "priority_score": 0.6582,
+      "nearest_known_attack": "NSA-008",
+      "nearest_known_similarity": 0.9,
+      "lineage": {
+        "mutation_type": "generation_2_evolution",
+        "parent_candidate": "NSA-008",
+        "evolution_mutations": [
+          "geographic_strategy: domestic_matching -> residential_proxy_spoofed"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "mobile_app",
+        "merchant_category": "retail",
+        "auth_method_override": "biometric",
+        "amount_multiplier": [
+          2.4,
+          5.5
+        ],
+        "hour_distribution": "off_hours",
+        "geographic_deviation": 0,
+        "ip_risk_shift": 0.25,
+        "behavioral_dev_shift": 0.12,
+        "failed_auth_count": 0
+      },
+      "number_tested": 0,
+      "number_detected": 0,
+      "number_missed": 0,
+      "detection_rate": 0.0,
+      "blind_spot_level": "UNTESTED"
+    },
+    {
+      "candidate_id": "NSA-012-V2",
+      "candidate_name": "Camouflaged Cart Manipulation Social Engineering Trap (Gen-2 Evolved)",
+      "genome": {
+        "target": "customer",
+        "entry_vector": "deepfake_synthesis",
+        "behavior": "cart_manipulation",
+        "evasion_strategy": "amount_camouflage",
+        "payment_channel": "mobile_app",
+        "amount_strategy": "micro_transactions",
+        "temporal_strategy": "distributed",
+        "identity_strategy": "existing_account",
+        "merchant_strategy": "single_target",
+        "geographic_strategy": "domestic_matching",
+        "attack_id": "NSA-012-V2",
+        "attack_name": "Camouflaged Cart Manipulation Social Engineering Trap (Gen-2 Evolved)",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.3488,
+      "realism_score": 0.76,
+      "evasion_potential": 0.58,
+      "priority_score": 0.6034,
+      "nearest_known_attack": "NSA-012",
+      "nearest_known_similarity": 0.9,
+      "lineage": {
+        "mutation_type": "generation_2_evolution",
+        "parent_candidate": "NSA-012",
+        "evolution_mutations": [
+          "amount_strategy: stealth_discounted -> micro_transactions"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "mobile_app",
+        "merchant_category": "retail",
+        "fixed_amount_range": [
+          1.0,
+          12.0
+        ],
+        "hour_distribution": "any",
+        "identity_risk_shift": 0.1,
+        "behavioral_dev_shift": 0.4,
+        "geographic_deviation": 0,
+        "failed_auth_count": 0
+      },
+      "number_tested": 0,
+      "number_detected": 0,
+      "number_missed": 0,
+      "detection_rate": 0.0,
+      "blind_spot_level": "UNTESTED"
+    },
+    {
+      "candidate_id": "NSA-004-V2",
+      "candidate_name": "Signal-Suppressed Low-and-Slow Checkout Abuse (Gen-2 Evolved)",
+      "genome": {
+        "target": "checkout",
+        "entry_vector": "prompt_manipulation",
+        "behavior": "low_and_slow",
+        "evasion_strategy": "risk_signal_suppression",
+        "payment_channel": "api_gateway",
+        "amount_strategy": "normal_looking",
+        "temporal_strategy": "distributed",
+        "identity_strategy": "delegated_agent",
+        "merchant_strategy": "digital_marketplace",
+        "geographic_strategy": "domestic_matching",
+        "attack_id": "NSA-004-V2",
+        "attack_name": "Signal-Suppressed Low-and-Slow Checkout Abuse (Gen-2 Evolved)",
+        "category": "Novel Synthetic Attack Candidate"
+      },
+      "novelty_score": 0.2171,
+      "realism_score": 0.76,
+      "evasion_potential": 0.94,
+      "priority_score": 0.5943,
+      "nearest_known_attack": "NSA-004",
+      "nearest_known_similarity": 0.9,
+      "lineage": {
+        "mutation_type": "generation_2_evolution",
+        "parent_candidate": "NSA-004",
+        "evolution_mutations": [
+          "entry_vector: api_exploit -> prompt_manipulation"
+        ]
+      },
+      "simulation_parameters": {
+        "payment_channel": "api_gateway",
+        "merchant_category": "digital_goods",
+        "auth_method_override": "none",
+        "amount_multiplier": [
+          1.1,
+          1.85
+        ],
+        "hour_distribution": "any",
+        "identity_risk_shift": 0.2,
+        "ip_risk_shift": 0.15,
+        "behavioral_dev_shift": 0.1,
+        "merchant_risk_shift": 0.2,
+        "geographic_deviation": 0,
+        "failed_auth_count": 0
+      },
+      "number_tested": 0,
+      "number_detected": 0,
+      "number_missed": 0,
+      "detection_rate": 0.0,
+      "blind_spot_level": "UNTESTED"
+    }
+  ],
+  "normal_test_regression_metrics": {
+    "baseline_detector": {
+      "accuracy": 0.9865,
+      "precision": 0.9475409836065574,
+      "recall": 0.9633333333333334,
+      "f1_score": 0.9553719008264463,
+      "roc_auc": 0.9974901960784314,
+      "false_positive_rate": 0.009411764705882352,
+      "true_negatives": 1684,
+      "false_positives": 16,
+      "false_negatives": 11,
+      "true_positives": 289,
+      "total_evaluated": 2000
+    },
+    "hardened_detector": {
+      "accuracy": 0.973,
+      "precision": 0.8575581395348837,
+      "recall": 0.9833333333333333,
+      "f1_score": 0.9161490683229814,
+      "roc_auc": 0.9976235294117647,
+      "false_positive_rate": 0.028823529411764706,
+      "true_negatives": 1651,
+      "false_positives": 49,
+      "false_negatives": 5,
+      "true_positives": 295,
+      "total_evaluated": 2000
+    },
+    "fpr_cost": 1.94
+  },
+  "known_adversarial_dataset_c_metrics": {
+    "baseline_detector": {
+      "accuracy": 0.944,
+      "precision": 0.9272727272727272,
+      "recall": 0.68,
+      "f1_score": 0.7846153846153846,
+      "roc_auc": 0.9790019607843137,
+      "false_positive_rate": 0.009411764705882352,
+      "true_negatives": 1684,
+      "false_positives": 16,
+      "false_negatives": 96,
+      "true_positives": 204,
+      "total_evaluated": 2000
+    },
+    "hardened_detector": {
+      "accuracy": 0.9625,
+      "precision": 0.8440366972477065,
+      "recall": 0.92,
+      "f1_score": 0.8803827751196173,
+      "roc_auc": 0.9849980392156863,
+      "false_positive_rate": 0.03,
+      "true_negatives": 1649,
+      "false_positives": 51,
+      "false_negatives": 24,
+      "true_positives": 276,
+      "total_evaluated": 2000
+    }
+  },
+  "novel_training_attacks_results": [
+    {
+      "candidate_id": "NSA-001",
+      "candidate_name": "Trusted-Device Omnichannel Social Engineering Trap",
+      "candidate_generation": "Gen-1 (Training)",
+      "is_training_attack": true,
+      "is_test_attack": false,
+      "total_samples": 200,
+      "baseline_caught": 21,
+      "baseline_missed": 179,
+      "baseline_detection_rate": 10.5,
+      "hardened_caught": 195,
+      "hardened_missed": 5,
+      "hardened_detection_rate": 97.5,
+      "detection_rate_delta": 87.0,
+      "miss_reduction": 174,
+      "miss_reduction_percentage": 97.21,
+      "novelty_score": 0.4109,
+      "realism_score": 0.8,
+      "evasion_score": 0.81,
+      "priority_score": 0.729,
+      "blind_spot_level": "CRITICAL BLIND SPOT"
+    },
+    {
+      "candidate_id": "NSA-003",
+      "candidate_name": "Trusted-Device Low-and-Slow Merchant Return Arbitrage",
+      "candidate_generation": "Gen-1 (Training)",
+      "is_training_attack": true,
+      "is_test_attack": false,
+      "total_samples": 200,
+      "baseline_caught": 14,
+      "baseline_missed": 186,
+      "baseline_detection_rate": 7.0,
+      "hardened_caught": 200,
+      "hardened_missed": 0,
+      "hardened_detection_rate": 100.0,
+      "detection_rate_delta": 93.0,
+      "miss_reduction": 186,
+      "miss_reduction_percentage": 100.0,
+      "novelty_score": 0.3566,
+      "realism_score": 0.8,
+      "evasion_score": 0.79,
+      "priority_score": 0.7192,
+      "blind_spot_level": "CRITICAL BLIND SPOT"
+    },
+    {
+      "candidate_id": "NSA-008",
+      "candidate_name": "Biometric-Injected Behavioral Mimicry Push Payment Fraud",
+      "candidate_generation": "Gen-1 (Training)",
+      "is_training_attack": true,
+      "is_test_attack": false,
+      "total_samples": 200,
+      "baseline_caught": 23,
+      "baseline_missed": 177,
+      "baseline_detection_rate": 11.5,
+      "hardened_caught": 196,
+      "hardened_missed": 4,
+      "hardened_detection_rate": 98.0,
+      "detection_rate_delta": 86.5,
+      "miss_reduction": 173,
+      "miss_reduction_percentage": 97.74,
+      "novelty_score": 0.3178,
+      "realism_score": 0.76,
+      "evasion_score": 0.67,
+      "priority_score": 0.6582,
+      "blind_spot_level": "CRITICAL BLIND SPOT"
+    },
+    {
+      "candidate_id": "NSA-012",
+      "candidate_name": "Camouflaged Cart Manipulation Social Engineering Trap",
+      "candidate_generation": "Gen-1 (Training)",
+      "is_training_attack": true,
+      "is_test_attack": false,
+      "total_samples": 200,
+      "baseline_caught": 55,
+      "baseline_missed": 145,
+      "baseline_detection_rate": 27.5,
+      "hardened_caught": 200,
+      "hardened_missed": 0,
+      "hardened_detection_rate": 100.0,
+      "detection_rate_delta": 72.5,
+      "miss_reduction": 145,
+      "miss_reduction_percentage": 100.0,
+      "novelty_score": 0.3488,
+      "realism_score": 0.76,
+      "evasion_score": 0.58,
+      "priority_score": 0.6034,
+      "blind_spot_level": "CRITICAL BLIND SPOT"
+    },
+    {
+      "candidate_id": "NSA-004",
+      "candidate_name": "Signal-Suppressed Low-and-Slow Checkout Abuse",
+      "candidate_generation": "Gen-1 (Training)",
+      "is_training_attack": true,
+      "is_test_attack": false,
+      "total_samples": 200,
+      "baseline_caught": 108,
+      "baseline_missed": 92,
+      "baseline_detection_rate": 54.0,
+      "hardened_caught": 200,
+      "hardened_missed": 0,
+      "hardened_detection_rate": 100.0,
+      "detection_rate_delta": 46.0,
+      "miss_reduction": 92,
+      "miss_reduction_percentage": 100.0,
+      "novelty_score": 0.2171,
+      "realism_score": 0.76,
+      "evasion_score": 0.94,
+      "priority_score": 0.5943,
+      "blind_spot_level": "HIGH BLIND SPOT"
+    }
+  ],
+  "generalization_test_results": {
+    "overall_baseline_detection_rate": 23.1,
+    "overall_hardened_detection_rate": 93.8,
+    "generalization_gain_percentage_points": 70.7,
+    "total_tested": 1000,
+    "baseline_misses": 769,
+    "hardened_misses": 62,
+    "miss_reduction": 707,
+    "miss_reduction_percentage": 91.94,
+    "per_variant_breakdown": [
+      {
+        "candidate_id": "NSA-001-V2",
+        "candidate_name": "Trusted-Device Omnichannel Social Engineering Trap (Gen-2 Evolved)",
+        "candidate_generation": "Gen-2 (Unseen Variant)",
+        "is_training_attack": false,
+        "is_test_attack": true,
+        "total_samples": 200,
+        "baseline_caught": 29,
+        "baseline_missed": 171,
+        "baseline_detection_rate": 14.5,
+        "hardened_caught": 158,
+        "hardened_missed": 42,
+        "hardened_detection_rate": 79.0,
+        "detection_rate_delta": 64.5,
+        "miss_reduction": 129,
+        "miss_reduction_percentage": 75.44,
+        "novelty_score": 0.4109,
+        "realism_score": 0.8,
+        "evasion_score": 0.81,
+        "priority_score": 0.729,
+        "blind_spot_level": "UNSEEN GENERALIZATION TEST"
+      },
+      {
+        "candidate_id": "NSA-003-V2",
+        "candidate_name": "Trusted-Device Low-and-Slow Merchant Return Arbitrage (Gen-2 Evolved)",
+        "candidate_generation": "Gen-2 (Unseen Variant)",
+        "is_training_attack": false,
+        "is_test_attack": true,
+        "total_samples": 200,
+        "baseline_caught": 14,
+        "baseline_missed": 186,
+        "baseline_detection_rate": 7.0,
+        "hardened_caught": 200,
+        "hardened_missed": 0,
+        "hardened_detection_rate": 100.0,
+        "detection_rate_delta": 93.0,
+        "miss_reduction": 186,
+        "miss_reduction_percentage": 100.0,
+        "novelty_score": 0.3566,
+        "realism_score": 0.8,
+        "evasion_score": 0.79,
+        "priority_score": 0.7192,
+        "blind_spot_level": "UNSEEN GENERALIZATION TEST"
+      },
+      {
+        "candidate_id": "NSA-008-V2",
+        "candidate_name": "Biometric-Injected Behavioral Mimicry Push Payment Fraud (Gen-2 Evolved)",
+        "candidate_generation": "Gen-2 (Unseen Variant)",
+        "is_training_attack": false,
+        "is_test_attack": true,
+        "total_samples": 200,
+        "baseline_caught": 74,
+        "baseline_missed": 126,
+        "baseline_detection_rate": 37.0,
+        "hardened_caught": 198,
+        "hardened_missed": 2,
+        "hardened_detection_rate": 99.0,
+        "detection_rate_delta": 62.0,
+        "miss_reduction": 124,
+        "miss_reduction_percentage": 98.41,
+        "novelty_score": 0.3178,
+        "realism_score": 0.76,
+        "evasion_score": 0.67,
+        "priority_score": 0.6582,
+        "blind_spot_level": "UNSEEN GENERALIZATION TEST"
+      },
+      {
+        "candidate_id": "NSA-012-V2",
+        "candidate_name": "Camouflaged Cart Manipulation Social Engineering Trap (Gen-2 Evolved)",
+        "candidate_generation": "Gen-2 (Unseen Variant)",
+        "is_training_attack": false,
+        "is_test_attack": true,
+        "total_samples": 200,
+        "baseline_caught": 3,
+        "baseline_missed": 197,
+        "baseline_detection_rate": 1.5,
+        "hardened_caught": 182,
+        "hardened_missed": 18,
+        "hardened_detection_rate": 91.0,
+        "detection_rate_delta": 89.5,
+        "miss_reduction": 179,
+        "miss_reduction_percentage": 90.86,
+        "novelty_score": 0.3488,
+        "realism_score": 0.76,
+        "evasion_score": 0.58,
+        "priority_score": 0.6034,
+        "blind_spot_level": "UNSEEN GENERALIZATION TEST"
+      },
+      {
+        "candidate_id": "NSA-004-V2",
+        "candidate_name": "Signal-Suppressed Low-and-Slow Checkout Abuse (Gen-2 Evolved)",
+        "candidate_generation": "Gen-2 (Unseen Variant)",
+        "is_training_attack": false,
+        "is_test_attack": true,
+        "total_samples": 200,
+        "baseline_caught": 111,
+        "baseline_missed": 89,
+        "baseline_detection_rate": 55.5,
+        "hardened_caught": 200,
+        "hardened_missed": 0,
+        "hardened_detection_rate": 100.0,
+        "detection_rate_delta": 44.5,
+        "miss_reduction": 89,
+        "miss_reduction_percentage": 100.0,
+        "novelty_score": 0.2171,
+        "realism_score": 0.76,
+        "evasion_score": 0.94,
+        "priority_score": 0.5943,
+        "blind_spot_level": "UNSEEN GENERALIZATION TEST"
+      }
+    ]
+  },
+  "top_feature_importance_shifts": [
+    {
+      "feature": "geographic_deviation",
+      "baseline_importance": 0.0679,
+      "hardened_importance": 0.1361,
+      "importance_delta": 0.0682
+    },
+    {
+      "feature": "merchant_risk_score",
+      "baseline_importance": 0.1243,
+      "hardened_importance": 0.0651,
+      "importance_delta": -0.0592
+    },
+    {
+      "feature": "merchant_category_retail",
+      "baseline_importance": 0.0,
+      "hardened_importance": 0.0533,
+      "importance_delta": 0.0533
+    },
+    {
+      "feature": "transaction_velocity_1h",
+      "baseline_importance": 0.0742,
+      "hardened_importance": 0.0288,
+      "importance_delta": -0.0454
+    },
+    {
+      "feature": "identity_risk_score",
+      "baseline_importance": 0.0447,
+      "hardened_importance": 0.0,
+      "importance_delta": -0.0447
+    },
+    {
+      "feature": "transaction_velocity_24h",
+      "baseline_importance": 0.0666,
+      "hardened_importance": 0.0309,
+      "importance_delta": -0.0358
+    },
+    {
+      "feature": "payment_channel_mobile_app",
+      "baseline_importance": 0.0,
+      "hardened_importance": 0.0311,
+      "importance_delta": 0.0311
+    },
+    {
+      "feature": "transaction_hour",
+      "baseline_importance": 0.0,
+      "hardened_importance": 0.028,
+      "importance_delta": 0.028
+    },
+    {
+      "feature": "payment_channel_api_gateway",
+      "baseline_importance": 0.0319,
+      "hardened_importance": 0.0593,
+      "importance_delta": 0.0274
+    },
+    {
+      "feature": "behavioral_deviation",
+      "baseline_importance": 0.0528,
+      "hardened_importance": 0.0268,
+      "importance_delta": -0.0259
+    }
+  ]
+}

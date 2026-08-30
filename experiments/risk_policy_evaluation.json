@@ -1,0 +1,541 @@
+{
+  "timestamp": "2026-08-30 18:26:53 UTC",
+  "cost_framework_assumptions": {
+    "false_negative_cost": 10.0,
+    "false_positive_cost": 1.0,
+    "step_up_cost": 0.25,
+    "note": "Simulated relative research costs; not real Mastercard financial values."
+  },
+  "threshold_sweep_validation": [
+    {
+      "threshold": 0.2,
+      "precision": 0.7398,
+      "recall": 0.9932,
+      "f1_score": 0.848,
+      "fpr": 0.0597,
+      "true_positives": 145,
+      "false_positives": 51,
+      "false_negatives": 1,
+      "true_negatives": 803,
+      "fraud_caught_pct": 99.32,
+      "legitimate_blocked_pct": 5.97,
+      "simulated_relative_cost": 61.0
+    },
+    {
+      "threshold": 0.3,
+      "precision": 0.7901,
+      "recall": 0.9795,
+      "f1_score": 0.8746,
+      "fpr": 0.0445,
+      "true_positives": 143,
+      "false_positives": 38,
+      "false_negatives": 3,
+      "true_negatives": 816,
+      "fraud_caught_pct": 97.95,
+      "legitimate_blocked_pct": 4.45,
+      "simulated_relative_cost": 68.0
+    },
+    {
+      "threshold": 0.4,
+      "precision": 0.8402,
+      "recall": 0.9726,
+      "f1_score": 0.9016,
+      "fpr": 0.0316,
+      "true_positives": 142,
+      "false_positives": 27,
+      "false_negatives": 4,
+      "true_negatives": 827,
+      "fraud_caught_pct": 97.26,
+      "legitimate_blocked_pct": 3.16,
+      "simulated_relative_cost": 67.0
+    },
+    {
+      "threshold": 0.5,
+      "precision": 0.8712,
+      "recall": 0.9726,
+      "f1_score": 0.9191,
+      "fpr": 0.0246,
+      "true_positives": 142,
+      "false_positives": 21,
+      "false_negatives": 4,
+      "true_negatives": 833,
+      "fraud_caught_pct": 97.26,
+      "legitimate_blocked_pct": 2.46,
+      "simulated_relative_cost": 61.0
+    },
+    {
+      "threshold": 0.6,
+      "precision": 0.8924,
+      "recall": 0.9658,
+      "f1_score": 0.9276,
+      "fpr": 0.0199,
+      "true_positives": 141,
+      "false_positives": 17,
+      "false_negatives": 5,
+      "true_negatives": 837,
+      "fraud_caught_pct": 96.58,
+      "legitimate_blocked_pct": 1.99,
+      "simulated_relative_cost": 67.0
+    },
+    {
+      "threshold": 0.7,
+      "precision": 0.9216,
+      "recall": 0.9658,
+      "f1_score": 0.9431,
+      "fpr": 0.0141,
+      "true_positives": 141,
+      "false_positives": 12,
+      "false_negatives": 5,
+      "true_negatives": 842,
+      "fraud_caught_pct": 96.58,
+      "legitimate_blocked_pct": 1.41,
+      "simulated_relative_cost": 62.0
+    },
+    {
+      "threshold": 0.8,
+      "precision": 0.9589,
+      "recall": 0.9589,
+      "f1_score": 0.9589,
+      "fpr": 0.007,
+      "true_positives": 140,
+      "false_positives": 6,
+      "false_negatives": 6,
+      "true_negatives": 848,
+      "fraud_caught_pct": 95.89,
+      "legitimate_blocked_pct": 0.7,
+      "simulated_relative_cost": 66.0
+    },
+    {
+      "threshold": 0.85,
+      "precision": 0.9787,
+      "recall": 0.9452,
+      "f1_score": 0.9617,
+      "fpr": 0.0035,
+      "true_positives": 138,
+      "false_positives": 3,
+      "false_negatives": 8,
+      "true_negatives": 851,
+      "fraud_caught_pct": 94.52,
+      "legitimate_blocked_pct": 0.35,
+      "simulated_relative_cost": 83.0
+    },
+    {
+      "threshold": 0.9,
+      "precision": 0.9928,
+      "recall": 0.9384,
+      "f1_score": 0.9648,
+      "fpr": 0.0012,
+      "true_positives": 137,
+      "false_positives": 1,
+      "false_negatives": 9,
+      "true_negatives": 853,
+      "fraud_caught_pct": 93.84,
+      "legitimate_blocked_pct": 0.12,
+      "simulated_relative_cost": 91.0
+    }
+  ],
+  "best_validation_threshold": {
+    "threshold": 0.2,
+    "precision": 0.7398,
+    "recall": 0.9932,
+    "f1_score": 0.848,
+    "fpr": 0.0597,
+    "true_positives": 145,
+    "false_positives": 51,
+    "false_negatives": 1,
+    "true_negatives": 803,
+    "fraud_caught_pct": 99.32,
+    "legitimate_blocked_pct": 5.97,
+    "simulated_relative_cost": 61.0
+  },
+  "probability_calibration_audit": {
+    "brier_score_loss": 0.018086259573876384,
+    "expected_calibration_error": 0.0309,
+    "reliability_bins": [
+      {
+        "bin_range": "(0.00, 0.10]",
+        "sample_count": 773,
+        "empirical_fraud_rate": 0.0013,
+        "mean_predicted_prob": 0.0084,
+        "calibration_gap": 0.0071
+      },
+      {
+        "bin_range": "(0.10, 0.20]",
+        "sample_count": 31,
+        "empirical_fraud_rate": 0.0,
+        "mean_predicted_prob": 0.1448,
+        "calibration_gap": 0.1448
+      },
+      {
+        "bin_range": "(0.20, 0.30]",
+        "sample_count": 15,
+        "empirical_fraud_rate": 0.1333,
+        "mean_predicted_prob": 0.245,
+        "calibration_gap": 0.1116
+      },
+      {
+        "bin_range": "(0.30, 0.40]",
+        "sample_count": 12,
+        "empirical_fraud_rate": 0.0833,
+        "mean_predicted_prob": 0.3426,
+        "calibration_gap": 0.2593
+      },
+      {
+        "bin_range": "(0.40, 0.50]",
+        "sample_count": 6,
+        "empirical_fraud_rate": 0.0,
+        "mean_predicted_prob": 0.431,
+        "calibration_gap": 0.431
+      },
+      {
+        "bin_range": "(0.50, 0.60]",
+        "sample_count": 5,
+        "empirical_fraud_rate": 0.2,
+        "mean_predicted_prob": 0.5758,
+        "calibration_gap": 0.3758
+      },
+      {
+        "bin_range": "(0.60, 0.70]",
+        "sample_count": 5,
+        "empirical_fraud_rate": 0.0,
+        "mean_predicted_prob": 0.6359,
+        "calibration_gap": 0.6359
+      },
+      {
+        "bin_range": "(0.70, 0.80]",
+        "sample_count": 7,
+        "empirical_fraud_rate": 0.1429,
+        "mean_predicted_prob": 0.7534,
+        "calibration_gap": 0.6105
+      },
+      {
+        "bin_range": "(0.80, 0.90]",
+        "sample_count": 8,
+        "empirical_fraud_rate": 0.375,
+        "mean_predicted_prob": 0.8409,
+        "calibration_gap": 0.4659
+      },
+      {
+        "bin_range": "(0.90, 1.00]",
+        "sample_count": 138,
+        "empirical_fraud_rate": 0.9928,
+        "mean_predicted_prob": 0.9892,
+        "calibration_gap": 0.0035
+      }
+    ]
+  },
+  "policy_evaluations": [
+    {
+      "dataset_name": "Dataset A (Normal Held-Out Test)",
+      "policy_mode": "BINARY_BASELINE (0.50)",
+      "total_samples": 1000,
+      "fraud_samples": 154,
+      "legitimate_samples": 846,
+      "metrics": {
+        "intercept_recall": 99.35,
+        "direct_block_recall": 99.35,
+        "precision": 84.53,
+        "f1_score": 0.9134,
+        "false_positive_rate": 3.31
+      },
+      "action_distribution": {
+        "ALLOW": 819,
+        "MONITOR": 0,
+        "STEP_UP_AUTH": 0,
+        "BLOCK": 181
+      },
+      "cost_analysis": {
+        "false_negatives": 1,
+        "false_positives": 28,
+        "step_up_challenges": 0,
+        "simulated_relative_cost": 38.0
+      }
+    },
+    {
+      "dataset_name": "Dataset A (Normal Held-Out Test)",
+      "policy_mode": "BALANCED",
+      "total_samples": 1000,
+      "fraud_samples": 154,
+      "legitimate_samples": 846,
+      "metrics": {
+        "intercept_recall": 99.35,
+        "direct_block_recall": 95.45,
+        "precision": 87.43,
+        "f1_score": 0.9301,
+        "false_positive_rate": 1.06
+      },
+      "action_distribution": {
+        "ALLOW": 798,
+        "MONITOR": 27,
+        "STEP_UP_AUTH": 19,
+        "BLOCK": 156
+      },
+      "fraud_breakdown": {
+        "fraud_blocked": 147,
+        "fraud_stepped_up": 6,
+        "fraud_monitored": 0,
+        "fraud_allowed_missed": 1,
+        "total_intercepted": 153
+      },
+      "legitimate_breakdown": {
+        "legit_allowed_seamless": 797,
+        "legit_monitored": 27,
+        "legit_challenged_step_up": 13,
+        "legit_blocked_fp": 9
+      },
+      "cost_analysis": {
+        "false_negatives": 1,
+        "false_positives": 9,
+        "step_up_challenges": 19,
+        "simulated_relative_cost": 23.75
+      }
+    },
+    {
+      "dataset_name": "Dataset A (Normal Held-Out Test)",
+      "policy_mode": "STRICT_SECURITY",
+      "total_samples": 1000,
+      "fraud_samples": 154,
+      "legitimate_samples": 846,
+      "metrics": {
+        "intercept_recall": 99.35,
+        "direct_block_recall": 98.7,
+        "precision": 81.82,
+        "f1_score": 0.8974,
+        "false_positive_rate": 1.54
+      },
+      "action_distribution": {
+        "ALLOW": 787,
+        "MONITOR": 26,
+        "STEP_UP_AUTH": 22,
+        "BLOCK": 165
+      },
+      "fraud_breakdown": {
+        "fraud_blocked": 152,
+        "fraud_stepped_up": 1,
+        "fraud_monitored": 1,
+        "fraud_allowed_missed": 0,
+        "total_intercepted": 153
+      },
+      "legitimate_breakdown": {
+        "legit_allowed_seamless": 787,
+        "legit_monitored": 25,
+        "legit_challenged_step_up": 21,
+        "legit_blocked_fp": 13
+      },
+      "cost_analysis": {
+        "false_negatives": 1,
+        "false_positives": 13,
+        "step_up_challenges": 22,
+        "simulated_relative_cost": 28.5
+      }
+    },
+    {
+      "dataset_name": "Dataset C (Known Unseen Adversarial)",
+      "policy_mode": "BINARY_BASELINE (0.50)",
+      "total_samples": 2000,
+      "fraud_samples": 300,
+      "legitimate_samples": 1700,
+      "metrics": {
+        "intercept_recall": 93.67,
+        "direct_block_recall": 93.67,
+        "precision": 84.64,
+        "f1_score": 0.8892,
+        "false_positive_rate": 3.0
+      },
+      "action_distribution": {
+        "ALLOW": 1668,
+        "MONITOR": 0,
+        "STEP_UP_AUTH": 0,
+        "BLOCK": 332
+      },
+      "cost_analysis": {
+        "false_negatives": 19,
+        "false_positives": 51,
+        "step_up_challenges": 0,
+        "simulated_relative_cost": 241.0
+      }
+    },
+    {
+      "dataset_name": "Dataset C (Known Unseen Adversarial)",
+      "policy_mode": "BALANCED",
+      "total_samples": 2000,
+      "fraud_samples": 300,
+      "legitimate_samples": 1700,
+      "metrics": {
+        "intercept_recall": 92.0,
+        "direct_block_recall": 83.33,
+        "precision": 88.75,
+        "f1_score": 0.9034,
+        "false_positive_rate": 0.71
+      },
+      "action_distribution": {
+        "ALLOW": 1628,
+        "MONITOR": 61,
+        "STEP_UP_AUTH": 49,
+        "BLOCK": 262
+      },
+      "fraud_breakdown": {
+        "fraud_blocked": 250,
+        "fraud_stepped_up": 26,
+        "fraud_monitored": 15,
+        "fraud_allowed_missed": 9,
+        "total_intercepted": 276
+      },
+      "legitimate_breakdown": {
+        "legit_allowed_seamless": 1619,
+        "legit_monitored": 46,
+        "legit_challenged_step_up": 23,
+        "legit_blocked_fp": 12
+      },
+      "cost_analysis": {
+        "false_negatives": 24,
+        "false_positives": 12,
+        "step_up_challenges": 49,
+        "simulated_relative_cost": 264.25
+      }
+    },
+    {
+      "dataset_name": "Dataset C (Known Unseen Adversarial)",
+      "policy_mode": "STRICT_SECURITY",
+      "total_samples": 2000,
+      "fraud_samples": 300,
+      "legitimate_samples": 1700,
+      "metrics": {
+        "intercept_recall": 94.0,
+        "direct_block_recall": 89.33,
+        "precision": 83.43,
+        "f1_score": 0.884,
+        "false_positive_rate": 1.59
+      },
+      "action_distribution": {
+        "ALLOW": 1592,
+        "MONITOR": 70,
+        "STEP_UP_AUTH": 43,
+        "BLOCK": 295
+      },
+      "fraud_breakdown": {
+        "fraud_blocked": 268,
+        "fraud_stepped_up": 14,
+        "fraud_monitored": 12,
+        "fraud_allowed_missed": 6,
+        "total_intercepted": 282
+      },
+      "legitimate_breakdown": {
+        "legit_allowed_seamless": 1586,
+        "legit_monitored": 58,
+        "legit_challenged_step_up": 29,
+        "legit_blocked_fp": 27
+      },
+      "cost_analysis": {
+        "false_negatives": 18,
+        "false_positives": 27,
+        "step_up_challenges": 43,
+        "simulated_relative_cost": 217.75
+      }
+    },
+    {
+      "dataset_name": "Dataset D (Fresh Novel Gen-2 Unseen)",
+      "policy_mode": "BINARY_BASELINE (0.50)",
+      "total_samples": 2000,
+      "fraud_samples": 1000,
+      "legitimate_samples": 1000,
+      "metrics": {
+        "intercept_recall": 93.8,
+        "direct_block_recall": 93.8,
+        "precision": 97.61,
+        "f1_score": 0.9567,
+        "false_positive_rate": 2.3
+      },
+      "action_distribution": {
+        "ALLOW": 1039,
+        "MONITOR": 0,
+        "STEP_UP_AUTH": 0,
+        "BLOCK": 961
+      },
+      "cost_analysis": {
+        "false_negatives": 62,
+        "false_positives": 23,
+        "step_up_challenges": 0,
+        "simulated_relative_cost": 643.0
+      }
+    },
+    {
+      "dataset_name": "Dataset D (Fresh Novel Gen-2 Unseen)",
+      "policy_mode": "BALANCED",
+      "total_samples": 2000,
+      "fraud_samples": 1000,
+      "legitimate_samples": 1000,
+      "metrics": {
+        "intercept_recall": 91.2,
+        "direct_block_recall": 81.7,
+        "precision": 98.49,
+        "f1_score": 0.947,
+        "false_positive_rate": 0.4
+      },
+      "action_distribution": {
+        "ALLOW": 993,
+        "MONITOR": 81,
+        "STEP_UP_AUTH": 105,
+        "BLOCK": 821
+      },
+      "fraud_breakdown": {
+        "fraud_blocked": 817,
+        "fraud_stepped_up": 95,
+        "fraud_monitored": 59,
+        "fraud_allowed_missed": 29,
+        "total_intercepted": 912
+      },
+      "legitimate_breakdown": {
+        "legit_allowed_seamless": 964,
+        "legit_monitored": 22,
+        "legit_challenged_step_up": 10,
+        "legit_blocked_fp": 4
+      },
+      "cost_analysis": {
+        "false_negatives": 88,
+        "false_positives": 4,
+        "step_up_challenges": 105,
+        "simulated_relative_cost": 910.25
+      }
+    },
+    {
+      "dataset_name": "Dataset D (Fresh Novel Gen-2 Unseen)",
+      "policy_mode": "STRICT_SECURITY",
+      "total_samples": 2000,
+      "fraud_samples": 1000,
+      "legitimate_samples": 1000,
+      "metrics": {
+        "intercept_recall": 94.2,
+        "direct_block_recall": 89.1,
+        "precision": 97.41,
+        "f1_score": 0.9578,
+        "false_positive_rate": 1.0
+      },
+      "action_distribution": {
+        "ALLOW": 951,
+        "MONITOR": 82,
+        "STEP_UP_AUTH": 66,
+        "BLOCK": 901
+      },
+      "fraud_breakdown": {
+        "fraud_blocked": 891,
+        "fraud_stepped_up": 51,
+        "fraud_monitored": 49,
+        "fraud_allowed_missed": 9,
+        "total_intercepted": 942
+      },
+      "legitimate_breakdown": {
+        "legit_allowed_seamless": 942,
+        "legit_monitored": 33,
+        "legit_challenged_step_up": 15,
+        "legit_blocked_fp": 10
+      },
+      "cost_analysis": {
+        "false_negatives": 58,
+        "false_positives": 10,
+        "step_up_challenges": 66,
+        "simulated_relative_cost": 606.5
+      }
+    }
+  ]
+}

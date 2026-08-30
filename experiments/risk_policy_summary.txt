@@ -1,0 +1,68 @@
+===========================================================================
+FRAUDFORGE AI -- RISK-AWARE DECISION ENGINE & POLICY EVALUATION SUMMARY
+===========================================================================
+Timestamp: 2026-08-30 18:26:53 UTC
+
+1. COST FRAMEWORK & POLICY THRESHOLDS
+  - Relative Costs (Simulated): FN Cost = 10.0, FP Cost = 1.0, Step-Up Cost = 0.25
+  - Balanced Policy Thresholds        : LOW < 0.30 | MEDIUM < 0.60 | HIGH < 0.85 | CRITICAL >= 0.85
+  - Strict Security Policy Thresholds : LOW < 0.20 | MEDIUM < 0.45 | HIGH < 0.70 | CRITICAL >= 0.70
+
+2. VALIDATION THRESHOLD SWEEP & PROBABILITY CALIBRATION
+  - Best Validation Threshold (by Min Cost) : 0.2 (Simulated Cost: 61.0)
+  - Brier Score Loss                        : 0.0181
+  - Expected Calibration Error (ECE)        : 0.0309
+
+3. MULTI-TIER POLICY COMPARISON BY DATASET
+  [Dataset A (Normal Held-Out Test) - BINARY_BASELINE (0.50)]
+    • Intercept Recall :  99.3% | Direct Block Recall:  99.3% | FPR:  3.31%
+    • Action Breakdown : ALLOW=819, MONITOR=0, STEP_UP=0, BLOCK=181
+    • Business Impact  : FN=1, FP=28 | Relative Decision Cost = 38.0
+
+  [Dataset A (Normal Held-Out Test) - BALANCED]
+    • Intercept Recall :  99.3% | Direct Block Recall:  95.5% | FPR:  1.06%
+    • Action Breakdown : ALLOW=798, MONITOR=27, STEP_UP=19, BLOCK=156
+    • Business Impact  : FN=1, FP=9 | Relative Decision Cost = 23.75
+
+  [Dataset A (Normal Held-Out Test) - STRICT_SECURITY]
+    • Intercept Recall :  99.3% | Direct Block Recall:  98.7% | FPR:  1.54%
+    • Action Breakdown : ALLOW=787, MONITOR=26, STEP_UP=22, BLOCK=165
+    • Business Impact  : FN=1, FP=13 | Relative Decision Cost = 28.5
+
+  [Dataset C (Known Unseen Adversarial) - BINARY_BASELINE (0.50)]
+    • Intercept Recall :  93.7% | Direct Block Recall:  93.7% | FPR:  3.00%
+    • Action Breakdown : ALLOW=1668, MONITOR=0, STEP_UP=0, BLOCK=332
+    • Business Impact  : FN=19, FP=51 | Relative Decision Cost = 241.0
+
+  [Dataset C (Known Unseen Adversarial) - BALANCED]
+    • Intercept Recall :  92.0% | Direct Block Recall:  83.3% | FPR:  0.71%
+    • Action Breakdown : ALLOW=1628, MONITOR=61, STEP_UP=49, BLOCK=262
+    • Business Impact  : FN=24, FP=12 | Relative Decision Cost = 264.25
+
+  [Dataset C (Known Unseen Adversarial) - STRICT_SECURITY]
+    • Intercept Recall :  94.0% | Direct Block Recall:  89.3% | FPR:  1.59%
+    • Action Breakdown : ALLOW=1592, MONITOR=70, STEP_UP=43, BLOCK=295
+    • Business Impact  : FN=18, FP=27 | Relative Decision Cost = 217.75
+
+  [Dataset D (Fresh Novel Gen-2 Unseen) - BINARY_BASELINE (0.50)]
+    • Intercept Recall :  93.8% | Direct Block Recall:  93.8% | FPR:  2.30%
+    • Action Breakdown : ALLOW=1039, MONITOR=0, STEP_UP=0, BLOCK=961
+    • Business Impact  : FN=62, FP=23 | Relative Decision Cost = 643.0
+
+  [Dataset D (Fresh Novel Gen-2 Unseen) - BALANCED]
+    • Intercept Recall :  91.2% | Direct Block Recall:  81.7% | FPR:  0.40%
+    • Action Breakdown : ALLOW=993, MONITOR=81, STEP_UP=105, BLOCK=821
+    • Business Impact  : FN=88, FP=4 | Relative Decision Cost = 910.25
+
+  [Dataset D (Fresh Novel Gen-2 Unseen) - STRICT_SECURITY]
+    • Intercept Recall :  94.2% | Direct Block Recall:  89.1% | FPR:  1.00%
+    • Action Breakdown : ALLOW=951, MONITOR=82, STEP_UP=66, BLOCK=901
+    • Business Impact  : FN=58, FP=10 | Relative Decision Cost = 606.5
+
+===========================================================================
+INSIGHT:
+"The ML detector estimates fraud risk. The risk engine converts that score
+into practical multi-tier payment actions: allow, monitor, step-up challenge, or block.
+Multi-action risk policies substantially lower business loss by resolving ambiguous
+medium-to-high risk transactions via authentication challenge rather than direct rejection."
+===========================================================================

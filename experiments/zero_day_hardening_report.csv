@@ -1,0 +1,11 @@
+candidate_id,candidate_name,candidate_generation,is_training_attack,is_test_attack,total_samples,baseline_caught,baseline_missed,baseline_detection_rate,hardened_caught,hardened_missed,hardened_detection_rate,detection_rate_delta,miss_reduction,miss_reduction_percentage,novelty_score,realism_score,evasion_score,priority_score,blind_spot_level
+NSA-001,Trusted-Device Omnichannel Social Engineering Trap,Gen-1 (Training),True,False,200,21,179,10.5,195,5,97.5,87.0,174,97.21,0.4109,0.8,0.81,0.729,CRITICAL BLIND SPOT
+NSA-003,Trusted-Device Low-and-Slow Merchant Return Arbitrage,Gen-1 (Training),True,False,200,14,186,7.0,200,0,100.0,93.0,186,100.0,0.3566,0.8,0.79,0.7192,CRITICAL BLIND SPOT
+NSA-008,Biometric-Injected Behavioral Mimicry Push Payment Fraud,Gen-1 (Training),True,False,200,23,177,11.5,196,4,98.0,86.5,173,97.74,0.3178,0.76,0.67,0.6582,CRITICAL BLIND SPOT
+NSA-012,Camouflaged Cart Manipulation Social Engineering Trap,Gen-1 (Training),True,False,200,55,145,27.5,200,0,100.0,72.5,145,100.0,0.3488,0.76,0.58,0.6034,CRITICAL BLIND SPOT
+NSA-004,Signal-Suppressed Low-and-Slow Checkout Abuse,Gen-1 (Training),True,False,200,108,92,54.0,200,0,100.0,46.0,92,100.0,0.2171,0.76,0.94,0.5943,HIGH BLIND SPOT
+NSA-001-V2,Trusted-Device Omnichannel Social Engineering Trap (Gen-2 Evolved),Gen-2 (Unseen Variant),False,True,200,29,171,14.5,158,42,79.0,64.5,129,75.44,0.4109,0.8,0.81,0.729,UNSEEN GENERALIZATION TEST
+NSA-003-V2,Trusted-Device Low-and-Slow Merchant Return Arbitrage (Gen-2 Evolved),Gen-2 (Unseen Variant),False,True,200,14,186,7.0,200,0,100.0,93.0,186,100.0,0.3566,0.8,0.79,0.7192,UNSEEN GENERALIZATION TEST
+NSA-008-V2,Biometric-Injected Behavioral Mimicry Push Payment Fraud (Gen-2 Evolved),Gen-2 (Unseen Variant),False,True,200,74,126,37.0,198,2,99.0,62.0,124,98.41,0.3178,0.76,0.67,0.6582,UNSEEN GENERALIZATION TEST
+NSA-012-V2,Camouflaged Cart Manipulation Social Engineering Trap (Gen-2 Evolved),Gen-2 (Unseen Variant),False,True,200,3,197,1.5,182,18,91.0,89.5,179,90.86,0.3488,0.76,0.58,0.6034,UNSEEN GENERALIZATION TEST
+NSA-004-V2,Signal-Suppressed Low-and-Slow Checkout Abuse (Gen-2 Evolved),Gen-2 (Unseen Variant),False,True,200,111,89,55.5,200,0,100.0,44.5,89,100.0,0.2171,0.76,0.94,0.5943,UNSEEN GENERALIZATION TEST

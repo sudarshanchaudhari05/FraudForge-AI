@@ -1,0 +1,909 @@
+[
+  {
+    "candidate_id": "NSA-001",
+    "candidate_name": "Trusted-Device MCP Tool Micro-Payment Abuse",
+    "genome": {
+      "target": "payment_agent",
+      "entry_vector": "malicious_tool",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "trusted_device_masking",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "delegated_agent",
+      "merchant_strategy": "digital_marketplace",
+      "geographic_strategy": "residential_proxy_spoofed",
+      "attack_id": "NSA-001",
+      "attack_name": "Trusted-Device MCP Tool Micro-Payment Abuse",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.2171,
+    "realism_score": 0.82,
+    "evasion_potential": 0.97,
+    "priority_score": 0.6238,
+    "nearest_known_attack": "ATK-018 (Malicious MCP / Plugin Tool Unauthorized Transaction)",
+    "nearest_known_similarity": 0.7829,
+    "lineage": {
+      "mutation_type": "mutation",
+      "parent_1": "ATK-018",
+      "parent_2": null,
+      "mutations": [
+        "geographic_strategy: domestic_matching -> residential_proxy_spoofed",
+        "evasion_strategy: risk_signal_suppression -> trusted_device_masking"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "api_gateway",
+      "merchant_category": "digital_goods",
+      "auth_method_override": "none",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "any",
+      "identity_risk_shift": 0.2,
+      "device_change": 0,
+      "ip_risk_shift": 0.18,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 32,
+    "number_missed": 168,
+    "detection_rate": 16.0,
+    "blind_spot_level": "CRITICAL BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-002",
+    "candidate_name": "Trusted-Device Burst Account Takeover",
+    "genome": {
+      "target": "account",
+      "entry_vector": "carrier_compromise",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "trusted_device_masking",
+      "payment_channel": "mobile_app",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "residential_proxy_spoofed",
+      "attack_id": "NSA-002",
+      "attack_name": "Trusted-Device Burst Account Takeover",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.2791,
+    "realism_score": 0.86,
+    "evasion_potential": 0.76,
+    "priority_score": 0.5976,
+    "nearest_known_attack": "ATK-028 (AI SIM-Swap + Automated OTP Exfiltration)",
+    "nearest_known_similarity": 0.7209,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-028",
+      "parent_2": "ATK-010",
+      "gene_sources": [
+        "target from ATK-028",
+        "entry_vector from ATK-028",
+        "behavior from ATK-010",
+        "evasion_strategy from ATK-028",
+        "payment_channel from ATK-028",
+        "amount_strategy from ATK-010",
+        "temporal_strategy from ATK-010",
+        "identity_strategy from ATK-010",
+        "merchant_strategy from ATK-028",
+        "geographic_strategy from ATK-010"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "mobile_app",
+      "merchant_category": "retail",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "any",
+      "identity_risk_shift": 0.1,
+      "device_change": 0,
+      "ip_risk_shift": 0.18,
+      "velocity_1h_boost": 3,
+      "velocity_24h_boost": 6,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 48,
+    "number_missed": 152,
+    "detection_rate": 24.0,
+    "blind_spot_level": "CRITICAL BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-003",
+    "candidate_name": "Session-Replay Synthetic Identity Checkout Abuse",
+    "genome": {
+      "target": "checkout",
+      "entry_vector": "deepfake_synthesis",
+      "behavior": "identity_fabrication",
+      "evasion_strategy": "trusted_session_behavior",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "synthetic_sleeper",
+      "merchant_strategy": "high_risk_crypto",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-003",
+      "attack_name": "Session-Replay Synthetic Identity Checkout Abuse",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.4651,
+    "realism_score": 0.7,
+    "evasion_potential": 0.67,
+    "priority_score": 0.597,
+    "nearest_known_attack": "ATK-005 (Deepfake Video KYC Onboarding Bypass)",
+    "nearest_known_similarity": 0.5349,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-005",
+      "parent_2": "ATK-011",
+      "gene_sources": [
+        "target from ATK-011",
+        "entry_vector from ATK-005",
+        "behavior from ATK-005",
+        "evasion_strategy from ATK-011",
+        "payment_channel from ATK-011",
+        "amount_strategy from ATK-011",
+        "temporal_strategy from ATK-005",
+        "identity_strategy from ATK-005",
+        "merchant_strategy from ATK-005",
+        "geographic_strategy from ATK-005"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "api_gateway",
+      "merchant_category": "crypto_exchange",
+      "auth_method_override": "none",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "any",
+      "identity_risk_shift": 0.5,
+      "account_age_max": 30,
+      "device_change": 1,
+      "device_age_max": 10,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 166,
+    "number_missed": 34,
+    "detection_rate": 83.0,
+    "blind_spot_level": "MODERATE BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-004",
+    "candidate_name": "AI SIM-Swap Automated OTP Exfiltration Variant",
+    "genome": {
+      "target": "account",
+      "entry_vector": "carrier_compromise",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "risk_signal_suppression",
+      "payment_channel": "mobile_app",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "daytime_peak",
+      "identity_strategy": "swapped_sim",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-004",
+      "attack_name": "AI SIM-Swap Automated OTP Exfiltration Variant",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.2946,
+    "realism_score": 0.81,
+    "evasion_potential": 0.73,
+    "priority_score": 0.5798,
+    "nearest_known_attack": "ATK-028 (AI SIM-Swap + Automated OTP Exfiltration)",
+    "nearest_known_similarity": 0.7054,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-004",
+      "parent_2": "ATK-028",
+      "gene_sources": [
+        "target from ATK-028",
+        "entry_vector from ATK-028",
+        "behavior from ATK-028",
+        "evasion_strategy from ATK-004",
+        "payment_channel from ATK-028",
+        "amount_strategy from ATK-004",
+        "temporal_strategy from ATK-004",
+        "identity_strategy from ATK-028",
+        "merchant_strategy from ATK-028",
+        "geographic_strategy from ATK-028"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "mobile_app",
+      "merchant_category": "retail",
+      "auth_method_override": "sms_otp",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "daytime",
+      "device_change": 1,
+      "device_age_max": 2,
+      "identity_risk_shift": 0.35,
+      "ip_risk_shift": 0.15,
+      "behavioral_dev_shift": 0.1,
+      "merchant_risk_shift": 0.2,
+      "velocity_1h_boost": 3,
+      "velocity_24h_boost": 6,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 200,
+    "number_missed": 0,
+    "detection_rate": 100.0,
+    "blind_spot_level": "LOW PRIORITY"
+  },
+  {
+    "candidate_id": "NSA-005",
+    "candidate_name": "Signal-Suppressed Cart Manipulation Account Takeover",
+    "genome": {
+      "target": "account",
+      "entry_vector": "credential_abuse",
+      "behavior": "cart_manipulation",
+      "evasion_strategy": "risk_signal_suppression",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "even_interval",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-005",
+      "attack_name": "Signal-Suppressed Cart Manipulation Account Takeover",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.3101,
+    "realism_score": 0.75,
+    "evasion_potential": 0.76,
+    "priority_score": 0.577,
+    "nearest_known_attack": "ATK-015 (Velocity-Throttled Automated Account Draining)",
+    "nearest_known_similarity": 0.6899,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-015",
+      "parent_2": "ATK-026",
+      "gene_sources": [
+        "target from ATK-015",
+        "entry_vector from ATK-015",
+        "behavior from ATK-026",
+        "evasion_strategy from ATK-026",
+        "payment_channel from ATK-015",
+        "amount_strategy from ATK-026",
+        "temporal_strategy from ATK-015",
+        "identity_strategy from ATK-026",
+        "merchant_strategy from ATK-015",
+        "geographic_strategy from ATK-026"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "e-commerce",
+      "merchant_category": "retail",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "business_hours",
+      "identity_risk_shift": 0.1,
+      "ip_risk_shift": 0.15,
+      "behavioral_dev_shift": 0.4,
+      "merchant_risk_shift": 0.2,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 160,
+    "number_missed": 40,
+    "detection_rate": 80.0,
+    "blind_spot_level": "MODERATE BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-006",
+    "candidate_name": "Trusted-Device Low-and-Slow Push Payment Fraud",
+    "genome": {
+      "target": "payment_authorization",
+      "entry_vector": "api_exploit",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "trusted_device_masking",
+      "payment_channel": "p2p_transfer",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "daytime_peak",
+      "identity_strategy": "authorized_victim",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-006",
+      "attack_name": "Trusted-Device Low-and-Slow Push Payment Fraud",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.2326,
+    "realism_score": 0.75,
+    "evasion_potential": 0.86,
+    "priority_score": 0.576,
+    "nearest_known_attack": "ATK-002 (Conversational Phishing Agent (AI Romance / Trust Scam))",
+    "nearest_known_similarity": 0.7674,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-002",
+      "parent_2": "ATK-021",
+      "gene_sources": [
+        "target from ATK-021",
+        "entry_vector from ATK-021",
+        "behavior from ATK-002",
+        "evasion_strategy from ATK-002",
+        "payment_channel from ATK-002",
+        "amount_strategy from ATK-002",
+        "temporal_strategy from ATK-002",
+        "identity_strategy from ATK-002",
+        "merchant_strategy from ATK-002",
+        "geographic_strategy from ATK-021"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "p2p_transfer",
+      "merchant_category": "retail",
+      "auth_method_override": "biometric",
+      "amount_multiplier": [
+        2.4,
+        5.5
+      ],
+      "hour_distribution": "daytime",
+      "device_change": 0,
+      "ip_risk_shift": 0.18,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 13,
+    "number_missed": 187,
+    "detection_rate": 6.5,
+    "blind_spot_level": "CRITICAL BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-007",
+    "candidate_name": "Geo-Spoofed Burst Agent Exploit",
+    "genome": {
+      "target": "payment_agent",
+      "entry_vector": "api_exploit",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "geolocation_spoofing",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "even_interval",
+      "identity_strategy": "delegated_agent",
+      "merchant_strategy": "digital_marketplace",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-007",
+      "attack_name": "Geo-Spoofed Burst Agent Exploit",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.3333,
+    "realism_score": 0.76,
+    "evasion_potential": 0.71,
+    "priority_score": 0.5743,
+    "nearest_known_attack": "ATK-019 (Agentic Webhook Signature Evasion & Race Exploit)",
+    "nearest_known_similarity": 0.6667,
+    "lineage": {
+      "mutation_type": "mutation",
+      "parent_1": "ATK-019",
+      "parent_2": null,
+      "mutations": [
+        "target: checkout -> payment_agent",
+        "temporal_strategy: rapid_burst -> even_interval",
+        "evasion_strategy: risk_signal_suppression -> geolocation_spoofing"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "api_gateway",
+      "merchant_category": "digital_goods",
+      "auth_method_override": "none",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "business_hours",
+      "identity_risk_shift": 0.2,
+      "geographic_deviation": 0,
+      "ip_risk_shift": 0.25,
+      "velocity_1h_boost": 3,
+      "velocity_24h_boost": 6,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 110,
+    "number_missed": 90,
+    "detection_rate": 55.0,
+    "blind_spot_level": "HIGH BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-008",
+    "candidate_name": "Geo-Spoofed Low-and-Slow Merchant Return Arbitrage",
+    "genome": {
+      "target": "merchant",
+      "entry_vector": "api_exploit",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "geolocation_spoofing",
+      "payment_channel": "mobile_app",
+      "amount_strategy": "micro_transactions",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "fabricated_identity",
+      "merchant_strategy": "mcc_rotation",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-008",
+      "attack_name": "Geo-Spoofed Low-and-Slow Merchant Return Arbitrage",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.3876,
+    "realism_score": 0.7,
+    "evasion_potential": 0.68,
+    "priority_score": 0.569,
+    "nearest_known_attack": "ATK-013 (Low-and-Slow AI Micro-Carding Swarm)",
+    "nearest_known_similarity": 0.6124,
+    "lineage": {
+      "mutation_type": "mutation",
+      "parent_1": "ATK-013",
+      "parent_2": null,
+      "mutations": [
+        "entry_vector: credential_abuse -> api_exploit",
+        "evasion_strategy: amount_camouflage -> geolocation_spoofing",
+        "payment_channel: e-commerce -> mobile_app"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "mobile_app",
+      "merchant_category": "retail",
+      "fixed_amount_range": [
+        1.0,
+        12.0
+      ],
+      "hour_distribution": "any",
+      "identity_risk_shift": 0.5,
+      "account_age_max": 30,
+      "device_change": 1,
+      "device_age_max": 10,
+      "geographic_deviation": 0,
+      "ip_risk_shift": 0.25,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 80,
+    "number_missed": 120,
+    "detection_rate": 40.0,
+    "blind_spot_level": "HIGH BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-009",
+    "candidate_name": "Camouflaged Low-and-Slow Push Payment Fraud",
+    "genome": {
+      "target": "payment_authorization",
+      "entry_vector": "social_engineering",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "amount_camouflage",
+      "payment_channel": "p2p_transfer",
+      "amount_strategy": "sub_threshold_structuring",
+      "temporal_strategy": "daytime_peak",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-009",
+      "attack_name": "Camouflaged Low-and-Slow Push Payment Fraud",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.3333,
+    "realism_score": 0.75,
+    "evasion_potential": 0.7,
+    "priority_score": 0.5683,
+    "nearest_known_attack": "ATK-014 (AI Smurfing & Micro-Structuring Network)",
+    "nearest_known_similarity": 0.6667,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-014",
+      "parent_2": "ATK-002",
+      "gene_sources": [
+        "target from ATK-014",
+        "entry_vector from ATK-002",
+        "behavior from ATK-002",
+        "evasion_strategy from ATK-014",
+        "payment_channel from ATK-014",
+        "amount_strategy from ATK-014",
+        "temporal_strategy from ATK-002",
+        "identity_strategy from ATK-014",
+        "merchant_strategy from ATK-002",
+        "geographic_strategy from ATK-002"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "p2p_transfer",
+      "merchant_category": "retail",
+      "fixed_amount_range": [
+        850.0,
+        995.0
+      ],
+      "hour_distribution": "daytime",
+      "identity_risk_shift": 0.1,
+      "velocity_1h_boost": 0,
+      "velocity_24h_boost": 1,
+      "behavioral_dev_shift": 0.15,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 61,
+    "number_missed": 139,
+    "detection_rate": 30.5,
+    "blind_spot_level": "CRITICAL BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-010",
+    "candidate_name": "Camouflaged Behavioral Mimicry Push Payment Fraud",
+    "genome": {
+      "target": "payment_authorization",
+      "entry_vector": "credential_abuse",
+      "behavior": "behavioral_mimicry",
+      "evasion_strategy": "amount_camouflage",
+      "payment_channel": "p2p_transfer",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-010",
+      "attack_name": "Camouflaged Behavioral Mimicry Push Payment Fraud",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.2946,
+    "realism_score": 0.75,
+    "evasion_potential": 0.73,
+    "priority_score": 0.5618,
+    "nearest_known_attack": "ATK-014 (AI Smurfing & Micro-Structuring Network)",
+    "nearest_known_similarity": 0.7054,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-021",
+      "parent_2": "ATK-014",
+      "gene_sources": [
+        "target from ATK-021",
+        "entry_vector from ATK-014",
+        "behavior from ATK-021",
+        "evasion_strategy from ATK-014",
+        "payment_channel from ATK-014",
+        "amount_strategy from ATK-021",
+        "temporal_strategy from ATK-021",
+        "identity_strategy from ATK-014",
+        "merchant_strategy from ATK-014",
+        "geographic_strategy from ATK-014"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "p2p_transfer",
+      "merchant_category": "retail",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "any",
+      "identity_risk_shift": 0.1,
+      "behavioral_dev_shift": 0.12,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 31,
+    "number_missed": 169,
+    "detection_rate": 15.5,
+    "blind_spot_level": "CRITICAL BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-011",
+    "candidate_name": "Camouflaged MCP Tool Micro-Payment Abuse",
+    "genome": {
+      "target": "payment_agent",
+      "entry_vector": "malicious_tool",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "amount_camouflage",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "delegated_agent",
+      "merchant_strategy": "digital_marketplace",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-011",
+      "attack_name": "Camouflaged MCP Tool Micro-Payment Abuse",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.155,
+    "realism_score": 0.87,
+    "evasion_potential": 0.79,
+    "priority_score": 0.56,
+    "nearest_known_attack": "ATK-018 (Malicious MCP / Plugin Tool Unauthorized Transaction)",
+    "nearest_known_similarity": 0.845,
+    "lineage": {
+      "mutation_type": "mutation",
+      "parent_1": "ATK-018",
+      "parent_2": null,
+      "mutations": [
+        "evasion_strategy: risk_signal_suppression -> amount_camouflage"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "api_gateway",
+      "merchant_category": "digital_goods",
+      "auth_method_override": "none",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "any",
+      "identity_risk_shift": 0.2,
+      "velocity_1h_boost": 0,
+      "velocity_24h_boost": 1,
+      "behavioral_dev_shift": 0.15,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 87,
+    "number_missed": 113,
+    "detection_rate": 43.5,
+    "blind_spot_level": "HIGH BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-012",
+    "candidate_name": "Trusted-Device Low-and-Slow Social Engineering Trap",
+    "genome": {
+      "target": "customer",
+      "entry_vector": "prompt_manipulation",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "trusted_device_masking",
+      "payment_channel": "p2p_transfer",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "daytime_peak",
+      "identity_strategy": "delegated_agent",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-012",
+      "attack_name": "Trusted-Device Low-and-Slow Social Engineering Trap",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.1938,
+    "realism_score": 0.7,
+    "evasion_potential": 0.86,
+    "priority_score": 0.5455,
+    "nearest_known_attack": "ATK-002 (Conversational Phishing Agent (AI Romance / Trust Scam))",
+    "nearest_known_similarity": 0.8062,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-002",
+      "parent_2": "ATK-017",
+      "gene_sources": [
+        "target from ATK-002",
+        "entry_vector from ATK-017",
+        "behavior from ATK-002",
+        "evasion_strategy from ATK-002",
+        "payment_channel from ATK-002",
+        "amount_strategy from ATK-002",
+        "temporal_strategy from ATK-002",
+        "identity_strategy from ATK-017",
+        "merchant_strategy from ATK-002",
+        "geographic_strategy from ATK-017"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "p2p_transfer",
+      "merchant_category": "retail",
+      "amount_multiplier": [
+        2.4,
+        5.5
+      ],
+      "hour_distribution": "daytime",
+      "identity_risk_shift": 0.2,
+      "device_change": 0,
+      "ip_risk_shift": 0.18,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 11,
+    "number_missed": 189,
+    "detection_rate": 5.5,
+    "blind_spot_level": "CRITICAL BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-013",
+    "candidate_name": "Velocity-Smoothed Agent Prompt-Injection Checkout Attack",
+    "genome": {
+      "target": "payment_agent",
+      "entry_vector": "prompt_manipulation",
+      "behavior": "cart_manipulation",
+      "evasion_strategy": "velocity_smoothing",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "even_interval",
+      "identity_strategy": "delegated_agent",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-013",
+      "attack_name": "Velocity-Smoothed Agent Prompt-Injection Checkout Attack",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.2791,
+    "realism_score": 0.81,
+    "evasion_potential": 0.63,
+    "priority_score": 0.5436,
+    "nearest_known_attack": "ATK-017 (Autonomous Shopping Agent Prompt Hijack)",
+    "nearest_known_similarity": 0.7209,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-015",
+      "parent_2": "ATK-017",
+      "gene_sources": [
+        "target from ATK-017",
+        "entry_vector from ATK-017",
+        "behavior from ATK-017",
+        "evasion_strategy from ATK-015",
+        "payment_channel from ATK-017",
+        "amount_strategy from ATK-017",
+        "temporal_strategy from ATK-015",
+        "identity_strategy from ATK-017",
+        "merchant_strategy from ATK-015",
+        "geographic_strategy from ATK-015"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "api_gateway",
+      "merchant_category": "retail",
+      "auth_method_override": "none",
+      "amount_multiplier": [
+        2.4,
+        5.5
+      ],
+      "hour_distribution": "business_hours",
+      "identity_risk_shift": 0.2,
+      "velocity_1h_boost": 0,
+      "velocity_24h_boost": 1,
+      "behavioral_dev_shift": 0.4,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 95,
+    "number_missed": 105,
+    "detection_rate": 47.5,
+    "blind_spot_level": "HIGH BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-014",
+    "candidate_name": "Biometric-Injected Omnichannel Onboarding Bypass",
+    "genome": {
+      "target": "identity",
+      "entry_vector": "credential_abuse",
+      "behavior": "cross_channel",
+      "evasion_strategy": "biometric_spoofing",
+      "payment_channel": "mobile_app",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "synthetic_sleeper",
+      "merchant_strategy": "high_risk_crypto",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-014",
+      "attack_name": "Biometric-Injected Omnichannel Onboarding Bypass",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.3488,
+    "realism_score": 0.76,
+    "evasion_potential": 0.58,
+    "priority_score": 0.5415,
+    "nearest_known_attack": "ATK-005 (Deepfake Video KYC Onboarding Bypass)",
+    "nearest_known_similarity": 0.6512,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-005",
+      "parent_2": "ATK-024",
+      "gene_sources": [
+        "target from ATK-005",
+        "entry_vector from ATK-024",
+        "behavior from ATK-024",
+        "evasion_strategy from ATK-005",
+        "payment_channel from ATK-005",
+        "amount_strategy from ATK-024",
+        "temporal_strategy from ATK-005",
+        "identity_strategy from ATK-005",
+        "merchant_strategy from ATK-005",
+        "geographic_strategy from ATK-024"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "mobile_app",
+      "merchant_category": "crypto_exchange",
+      "auth_method_override": "biometric",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "any",
+      "identity_risk_shift": 0.5,
+      "account_age_max": 30,
+      "device_change": 1,
+      "device_age_max": 10,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 170,
+    "number_missed": 30,
+    "detection_rate": 85.0,
+    "blind_spot_level": "MODERATE BLIND SPOT"
+  },
+  {
+    "candidate_id": "NSA-015",
+    "candidate_name": "Camouflaged Burst Checkout Abuse",
+    "genome": {
+      "target": "checkout",
+      "entry_vector": "api_exploit",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "amount_camouflage",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching",
+      "attack_id": "NSA-015",
+      "attack_name": "Camouflaged Burst Checkout Abuse",
+      "category": "Novel Synthetic Attack Candidate"
+    },
+    "novelty_score": 0.3488,
+    "realism_score": 0.81,
+    "evasion_potential": 0.53,
+    "priority_score": 0.5415,
+    "nearest_known_attack": "ATK-020 (Automated Cart-State Desynchronization & Discount Exploit)",
+    "nearest_known_similarity": 0.6512,
+    "lineage": {
+      "mutation_type": "crossover",
+      "parent_1": "ATK-020",
+      "parent_2": "ATK-019",
+      "gene_sources": [
+        "target from ATK-019",
+        "entry_vector from ATK-019",
+        "behavior from ATK-019",
+        "evasion_strategy from ATK-020",
+        "payment_channel from ATK-019",
+        "amount_strategy from ATK-019",
+        "temporal_strategy from ATK-020",
+        "identity_strategy from ATK-020",
+        "merchant_strategy from ATK-020",
+        "geographic_strategy from ATK-019"
+      ]
+    },
+    "simulation_parameters": {
+      "payment_channel": "api_gateway",
+      "merchant_category": "retail",
+      "auth_method_override": "none",
+      "amount_multiplier": [
+        1.1,
+        1.85
+      ],
+      "hour_distribution": "any",
+      "identity_risk_shift": 0.1,
+      "velocity_1h_boost": 3,
+      "velocity_24h_boost": 6,
+      "geographic_deviation": 0,
+      "failed_auth_count": 0
+    },
+    "number_tested": 200,
+    "number_detected": 94,
+    "number_missed": 106,
+    "detection_rate": 47.0,
+    "blind_spot_level": "HIGH BLIND SPOT"
+  }
+]

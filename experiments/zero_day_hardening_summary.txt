@@ -1,0 +1,47 @@
+======================================================================
+FRAUDFORGE AI
+ZERO-DAY ADAPTIVE HARDENING EXPERIMENT
+======================================================================
+Timestamp: 2026-08-30 18:26:52 UTC
+
+DISCOVERY
+Known attacks: 28
+Novel candidates generated: 80
+Novel candidates retained:  15
+Novel candidates selected for training: 5
+
+RED TEAM RESULT
+Most difficult discovered attack:
+  NSA-003: Trusted-Device Low-and-Slow Merchant Return Arbitrage
+  Baseline detection: 7.0% (186 missed)
+
+BLUE TEAM HARDENING
+Novel attacks used for training: NSA-001, NSA-003, NSA-008, NSA-012, NSA-004
+
+HARDENED MODEL RESULT (GEN-1 TRAINING ATTACKS)
+  NSA-001  [Trusted-Device Omnichannel Socia]: Before:  10.5% -> After:  97.5% (Delta: +87.0%, Misses: 179 -> 5)
+  NSA-003  [Trusted-Device Low-and-Slow Merc]: Before:   7.0% -> After: 100.0% (Delta: +93.0%, Misses: 186 -> 0)
+  NSA-008  [Biometric-Injected Behavioral Mi]: Before:  11.5% -> After:  98.0% (Delta: +86.5%, Misses: 177 -> 4)
+  NSA-012  [Camouflaged Cart Manipulation So]: Before:  27.5% -> After: 100.0% (Delta: +72.5%, Misses: 145 -> 0)
+  NSA-004  [Signal-Suppressed Low-and-Slow C]: Before:  54.0% -> After: 100.0% (Delta: +46.0%, Misses: 92 -> 0)
+
+GENERALIZATION (FRESH UNSEEN GEN-2 ATTACK VARIANTS)
+Fresh unseen attack variants tested: 1000 transactions across 5 evolved attacks
+  Baseline Detection Rate : 23.10% (769 missed)
+  Hardened Detection Rate : 93.80% (62 missed)
+  Generalization Gain     : +70.70 percentage points
+  False Negative Reduction: -707 misses (91.9% reduction)
+
+NORMAL PAYMENT IMPACT (DEFENDER REGRESSION CHECK)
+  Normal Accuracy : Baseline 98.65% -> Hardened 97.30%
+  Normal Precision: Baseline 94.75% -> Hardened 85.76%
+  Normal Recall   : Baseline 96.33% -> Hardened 98.33%
+  Normal FPR Cost : Baseline 0.94% -> Hardened 2.88% (Delta: +1.94%)
+
+======================================================================
+RESULT
+======================================================================
+"FraudForge discovered previously unseen synthetic attack patterns, used the detector's
+blind spots as adversarial training data, and evaluated whether the hardened detector
+generalized to fresh attack variants."
+======================================================================

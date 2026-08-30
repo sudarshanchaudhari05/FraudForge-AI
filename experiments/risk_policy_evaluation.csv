@@ -1,0 +1,10 @@
+dataset_name,policy_mode,total_samples,intercept_recall_pct,direct_block_recall_pct,precision_pct,f1_score,fpr_pct,allow_count,monitor_count,step_up_count,block_count,false_negatives,false_positives,simulated_relative_cost
+Dataset A (Normal Held-Out Test),BINARY_BASELINE (0.50),1000,99.35,99.35,84.53,0.9134,3.31,819,0,0,181,1,28,38.0
+Dataset A (Normal Held-Out Test),BALANCED,1000,99.35,95.45,87.43,0.9301,1.06,798,27,19,156,1,9,23.75
+Dataset A (Normal Held-Out Test),STRICT_SECURITY,1000,99.35,98.7,81.82,0.8974,1.54,787,26,22,165,1,13,28.5
+Dataset C (Known Unseen Adversarial),BINARY_BASELINE (0.50),2000,93.67,93.67,84.64,0.8892,3.0,1668,0,0,332,19,51,241.0
+Dataset C (Known Unseen Adversarial),BALANCED,2000,92.0,83.33,88.75,0.9034,0.71,1628,61,49,262,24,12,264.25
+Dataset C (Known Unseen Adversarial),STRICT_SECURITY,2000,94.0,89.33,83.43,0.884,1.59,1592,70,43,295,18,27,217.75
+Dataset D (Fresh Novel Gen-2 Unseen),BINARY_BASELINE (0.50),2000,93.8,93.8,97.61,0.9567,2.3,1039,0,0,961,62,23,643.0
+Dataset D (Fresh Novel Gen-2 Unseen),BALANCED,2000,91.2,81.7,98.49,0.947,0.4,993,81,105,821,88,4,910.25
+Dataset D (Fresh Novel Gen-2 Unseen),STRICT_SECURITY,2000,94.2,89.1,97.41,0.9578,1.0,951,82,66,901,58,10,606.5
