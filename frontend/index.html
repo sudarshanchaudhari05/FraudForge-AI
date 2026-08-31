@@ -48,6 +48,7 @@
             'glow-red': '0 0 15px -2px rgba(220, 38, 38, 0.3)',
             'glow-emerald': '0 0 15px -2px rgba(16, 185, 129, 0.3)',
             'glow-amber': '0 0 15px -2px rgba(245, 158, 11, 0.3)',
+            'glow-indigo': '0 0 15px -2px rgba(99, 102, 241, 0.3)',
           }
         }
       }
@@ -70,31 +71,36 @@
     /* Custom Animation Keyframes */
     @keyframes pulseGlow {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.03); }
-    }
-    @keyframes pipelineActive {
-      0% { transform: translateY(0); border-color: #cbd5e1; }
-      50% { transform: translateY(-2px); border-color: #eb001b; box-shadow: 0 4px 12px rgba(235,0,27,0.15); }
-      100% { transform: translateY(0); }
+      50% { opacity: 0.7; transform: scale(1.02); }
     }
     @keyframes geneGlow {
       0% { transform: scale(1); background-color: #fff; }
-      50% { transform: scale(1.04); background-color: #fef2f2; border-color: #ef4444; }
+      50% { transform: scale(1.03); background-color: #fef2f2; border-color: #ef4444; }
       100% { transform: scale(1); }
     }
     @keyframes slideInUp {
-      from { transform: translateY(12px); opacity: 0; }
+      from { transform: translateY(10px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
     @keyframes flowChevron {
       0%, 100% { opacity: 0.3; transform: translateX(0); }
       50% { opacity: 1; transform: translateX(4px); color: #eb001b; }
     }
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes flashRed {
+      0% { background-color: #fee2e2; }
+      100% { background-color: transparent; }
+    }
 
     .animate-pulse-glow { animation: pulseGlow 2s infinite ease-in-out; }
     .animate-slide-in { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .animate-gene-mutation { animation: geneGlow 0.8s ease-in-out; }
     .animate-chevron { animation: flowChevron 1.5s infinite ease-in-out; }
+    .animate-spin-slow { animation: spinSlow 12s linear infinite; }
+    .row-flash-critical { animation: flashRed 1.6s ease-out; }
 
     .pipeline-stage { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
     .gene-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -109,15 +115,6 @@
     }
     .nav-btn {
       border-left: 3px solid transparent;
-    }
-
-    /* Live Feed Flash */
-    .row-flash-critical {
-      animation: flashRed 1.6s ease-out;
-    }
-    @keyframes flashRed {
-      0% { background-color: #fee2e2; }
-      100% { background-color: transparent; }
     }
   </style>
 </head>
@@ -188,7 +185,7 @@
           <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
           <span id="judgeStepLabel">DEMO STEP 01 / 07</span>
         </div>
-        <span id="judgeStepDesc" class="font-medium text-slate-200">Simulating legitimate consumer checkout in Mumbai...</span>
+        <span id="judgeStepDesc" class="font-medium text-slate-200">Simulating legitimate consumer checkout in Mumbai (Frictionless ALLOW)...</span>
       </div>
       <div class="flex items-center gap-4 w-full md:w-auto">
         <div class="w-48 bg-slate-800 h-2 rounded-full overflow-hidden">
@@ -210,30 +207,13 @@
     <aside class="w-64 bg-white border-r border-slate-200 flex-shrink-0 flex flex-col justify-between py-6 px-3 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
       <div class="space-y-6">
         
-        <!-- Navigation Section: Core Operations -->
+        <!-- Navigation Section: OPERATIONS -->
         <div>
-          <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Operations Lab</div>
+          <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Operations</div>
           <nav class="space-y-1">
             <button onclick="switchTab('command-center')" id="nav-command-center" class="nav-btn active w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
               <i data-lucide="layout-dashboard" class="w-4 h-4 text-slate-500"></i>
               <span>Command Center</span>
-            </button>
-            <button onclick="switchTab('battle-arena')" id="nav-battle-arena" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
-              <i data-lucide="swords" class="w-4 h-4 text-rose-500"></i>
-              <span>Adaptive Battle Loop</span>
-              <span class="ml-auto bg-rose-50 text-rose-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-rose-200">Loop</span>
-            </button>
-          </nav>
-        </div>
-
-        <!-- Navigation Section: AI & Model (NEW) -->
-        <div>
-          <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">AI &amp; Model</div>
-          <nav class="space-y-1">
-            <button onclick="switchTab('model-methodology')" id="nav-model-methodology" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
-              <i data-lucide="cpu" class="w-4 h-4 text-indigo-600"></i>
-              <span class="font-semibold text-slate-900">Model &amp; Methodology</span>
-              <span class="ml-auto bg-indigo-50 text-indigo-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-indigo-200">ML</span>
             </button>
             <button onclick="switchTab('ai-defense')" id="nav-ai-defense" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
@@ -243,10 +223,28 @@
           </nav>
         </div>
 
-        <!-- Navigation Section: Red Team & Genome -->
+        <!-- Navigation Section: AI & MODEL -->
+        <div>
+          <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">AI &amp; Model</div>
+          <nav class="space-y-1">
+            <button onclick="switchTab('model-methodology')" id="nav-model-methodology" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="cpu" class="w-4 h-4 text-indigo-600"></i>
+              <span class="font-semibold text-slate-900">Model &amp; Methodology</span>
+              <span class="ml-auto bg-indigo-50 text-indigo-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-indigo-200">ML</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Navigation Section: RED TEAM INTELLIGENCE -->
         <div>
           <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Red Team Intelligence</div>
           <nav class="space-y-1">
+            <!-- NEW: ATTACK LAB -->
+            <button onclick="switchTab('attack-lab')" id="nav-attack-lab" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="flask-conical" class="w-4 h-4 text-rose-600"></i>
+              <span class="font-semibold text-slate-900">Attack Lab</span>
+              <span class="ml-auto bg-rose-50 text-rose-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-rose-200">Interactive</span>
+            </button>
             <button onclick="switchTab('genome-explorer')" id="nav-genome-explorer" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
               <i data-lucide="dna" class="w-4 h-4 text-indigo-500"></i>
               <span>Attack Genome Matrix</span>
@@ -259,11 +257,31 @@
             <button onclick="switchTab('attack-catalog')" id="nav-attack-catalog" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
               <i data-lucide="book-open" class="w-4 h-4 text-slate-500"></i>
               <span>Attack Catalog (28)</span>
+              <span class="ml-auto bg-slate-100 text-slate-700 text-[10px] font-bold px-1.5 py-0.2 rounded">28</span>
             </button>
           </nav>
         </div>
 
-        <!-- Navigation Section: Analytics & Audit -->
+        <!-- Navigation Section: BLUE TEAM DEFENSE -->
+        <div>
+          <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Blue Team Defense</div>
+          <nav class="space-y-1">
+            <!-- NEW: DEFENSE LAB -->
+            <button onclick="switchTab('defense-lab')" id="nav-defense-lab" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-600"></i>
+              <span class="font-semibold text-slate-900">Defense Lab</span>
+              <span class="ml-auto bg-emerald-50 text-emerald-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-emerald-200">Hardening</span>
+            </button>
+            <!-- REDESIGNED: ADAPTIVE BATTLE LOOP -->
+            <button onclick="switchTab('battle-arena')" id="nav-battle-arena" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="repeat" class="w-4 h-4 text-rose-500"></i>
+              <span>Adaptive Battle Loop</span>
+              <span class="ml-auto bg-rose-50 text-rose-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-rose-200">Loop</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Navigation Section: ANALYTICS & AUDIT -->
         <div>
           <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Analytics &amp; Audit</div>
           <nav class="space-y-1">
@@ -296,7 +314,7 @@
     <main class="flex-1 p-6 lg:p-8 overflow-y-auto bg-slate-50 space-y-8">
       
       <!-- ================================================================= -->
-      <!-- VIEW 1: REFINED COMMAND CENTER (STREAMLINED & HIGHLY VISUAL) -->
+      <!-- VIEW 1: COMMAND CENTER (STREAMLINED EXECUTIVE OVERVIEW) -->
       <!-- ================================================================= -->
       <section id="view-command-center" class="space-y-6">
         
@@ -344,8 +362,10 @@
               </div>
               <p class="text-xs text-slate-500 mt-0.5">Real-time trace: How incoming transactions are ingested, feature-transformed, evaluated by hardened XGBoost, and autonomously actioned</p>
             </div>
-            <div class="text-[11px] font-mono text-slate-500 hidden sm:block">
-              Latency: <span class="font-bold text-slate-800">&lt; 15 ms</span> &bull; Status: <span class="font-bold text-emerald-600">INSPECTING</span>
+            <div class="flex items-center gap-3">
+              <button onclick="switchTab('attack-lab')" class="text-xs font-semibold px-3 py-1.5 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-lg border border-rose-200 transition flex items-center gap-1.5">
+                <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i> Test in Attack Lab &rarr;
+              </button>
             </div>
           </div>
 
@@ -561,7 +581,503 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- VIEW 2: NEW PAGE — MODEL & METHODOLOGY (DETAILED ML EXPLANATION) -->
+      <!-- VIEW 2: NEW PAGE — ATTACK LAB (INTERACTIVE EXPERIMENTAL WORKSPACE) -->
+      <!-- ================================================================= -->
+      <section id="view-attack-lab" class="hidden space-y-6">
+        
+        <!-- Header Banner -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-2">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="bg-rose-50 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded border border-rose-200 font-mono">RED TEAM EXPERIMENTATION</span>
+              <h1 class="text-xl font-bold text-slate-950">Attack Lab</h1>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 text-amber-900 px-3 py-1 rounded-full text-xs font-mono">
+              SYNTHETIC DEFENSIVE SCENARIO &bull; SIMULATED EVALUATION
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Construct a synthetic attack scenario using the 10-dimensional Attack Genome, test detector visibility, and inspect why it was caught or exposed as a blind spot.
+          </p>
+        </div>
+
+        <!-- Attack Configuration Workspace Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Left: 10-Dimension Configuration Form (7 cols) -->
+          <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="sliders" class="w-4 h-4 text-rose-600"></i>
+                  <span>10-Dimensional Genome Builder</span>
+                </h2>
+                <p class="text-[11px] text-slate-500">Configure parameters or select an archetype preset</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="randomizeAttackLabGenome()" class="text-xs font-semibold px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition flex items-center gap-1">
+                  <i data-lucide="shuffle" class="w-3 h-3"></i> Randomize
+                </button>
+                <button onclick="resetAttackLabGenome()" class="text-xs font-semibold px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition">
+                  Reset
+                </button>
+              </div>
+            </div>
+
+            <!-- Archetype Quick Select -->
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Load Archetype Preset</label>
+              <select id="attackLabPresetSelect" onchange="loadArchetypeToAttackLab(this.value)" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-rose-500">
+                <!-- Injected via JS -->
+              </select>
+            </div>
+
+            <!-- 10 Selectors Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs" id="attackLabSelectorsGrid">
+              <!-- Dynamically populated 10 selectors -->
+            </div>
+
+            <!-- Mutation Intensity Slider -->
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-700">Mutation Intensity</span>
+                <span id="attackLabIntensityVal" class="font-mono font-bold text-rose-600">0.55</span>
+              </div>
+              <input type="range" id="attackLabIntensitySlider" min="10" max="90" value="55" oninput="document.getElementById('attackLabIntensityVal').textContent = (this.value/100).toFixed(2)" class="w-full accent-rose-600" />
+              <div class="text-[10px] text-slate-400">Controls genetic distance from known baseline templates</div>
+            </div>
+
+            <button onclick="generateAttackInLab()" class="w-full text-xs font-bold py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-card transition flex items-center justify-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span>Generate Synthetic Attack Scenario</span>
+            </button>
+          </div>
+
+          <!-- Right: Generated Attack Card & Threat Fitness Scores (5 cols) -->
+          <div class="lg:col-span-5 space-y-6">
+            
+            <!-- Generated Attack Summary Card -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <span id="attackLabGenId" class="text-xs font-bold font-mono text-rose-600">SYN-ATK-8192</span>
+                <span id="attackLabGenSeverity" class="text-[10px] font-bold px-2 py-0.5 rounded border bg-rose-50 text-rose-700 border-rose-200">CRITICAL</span>
+              </div>
+
+              <div>
+                <h3 id="attackLabGenName" class="text-sm font-bold text-slate-900 leading-snug">Voice Clone Executive Impersonation (CEO Fraud)</h3>
+                <p id="attackLabGenCategory" class="text-[11px] text-slate-500 font-mono mt-0.5">Category: AI Social Engineering &amp; Impersonation</p>
+              </div>
+
+              <!-- Animated Fitness Scores -->
+              <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div class="text-[10px] text-slate-500 uppercase">Novelty Score</div>
+                  <div id="attackLabNovelty" class="text-lg font-extrabold text-indigo-600 font-mono mt-0.5">0.32</div>
+                  <div class="w-full bg-slate-200 h-1 rounded-full mt-1 overflow-hidden">
+                    <div id="attackLabNoveltyBar" class="bg-indigo-600 h-full w-[32%] transition-all duration-500"></div>
+                  </div>
+                </div>
+
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div class="text-[10px] text-slate-500 uppercase">Domain Realism</div>
+                  <div id="attackLabRealism" class="text-lg font-extrabold text-emerald-600 font-mono mt-0.5">0.86</div>
+                  <div class="w-full bg-slate-200 h-1 rounded-full mt-1 overflow-hidden">
+                    <div id="attackLabRealismBar" class="bg-emerald-600 h-full w-[86%] transition-all duration-500"></div>
+                  </div>
+                </div>
+
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div class="text-[10px] text-slate-500 uppercase">Evasion Potential</div>
+                  <div id="attackLabEvasion" class="text-lg font-extrabold text-amber-600 font-mono mt-0.5">0.78</div>
+                  <div class="w-full bg-slate-200 h-1 rounded-full mt-1 overflow-hidden">
+                    <div id="attackLabEvasionBar" class="bg-amber-500 h-full w-[78%] transition-all duration-500"></div>
+                  </div>
+                </div>
+
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div class="text-[10px] text-slate-500 uppercase">Priority Score</div>
+                  <div id="attackLabPriority" class="text-lg font-extrabold text-rose-600 font-mono mt-0.5">0.62</div>
+                  <div class="w-full bg-slate-200 h-1 rounded-full mt-1 overflow-hidden">
+                    <div id="attackLabPriorityBar" class="bg-rose-600 h-full w-[62%] transition-all duration-500"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lineage & Nearest Template -->
+              <div class="text-[11px] font-mono text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
+                <div>Nearest Known Archetype: <strong id="attackLabNearest" class="text-slate-900">ATK-001 (88.4% match)</strong></div>
+                <div>Mutation Vector: <span id="attackLabLineageText" class="text-slate-700">target: payment_authorization &bull; evasion: trusted_session</span></div>
+              </div>
+
+              <!-- CTA: Test against detector -->
+              <button onclick="testAttackLabScenario()" class="w-full text-xs font-bold py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl shadow-card transition flex items-center justify-center gap-2">
+                <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+                <span>⚡ TEST ATTACK AGAINST DETECTOR</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Interactive Test Results Section (Revealed when tested) -->
+        <div id="attackLabResultsContainer" class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-6">
+          
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+              <span class="text-[10px] font-mono font-bold text-slate-400">EVALUATION OUTCOME</span>
+              <h2 class="text-base font-bold text-slate-950">Detector Evaluation &amp; Explainability</h2>
+            </div>
+            <div id="attackLabVerdictBadge" class="px-4 py-1.5 rounded-full text-xs font-bold font-mono bg-rose-100 text-rose-800 border border-rose-300">
+              ✓ DETECTED (ACTION: BLOCK)
+            </div>
+          </div>
+
+          <!-- Processing sequence animation indicator -->
+          <div id="attackLabProcessingBar" class="hidden p-4 bg-slate-900 text-white rounded-xl font-mono text-xs space-y-2">
+            <div class="flex items-center justify-between text-slate-400">
+              <span id="attackLabProcStep">1. Generating synthetic transactions...</span>
+              <span class="text-amber-400 animate-spin">⟳</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+              <div id="attackLabProcFill" class="bg-amber-400 h-full w-[20%] transition-all duration-300"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Result Gauges -->
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-center">
+              <div class="text-[10px] text-slate-500 uppercase font-mono">Simulated Fraud Probability</div>
+              <div id="attackLabResProb" class="text-3xl font-extrabold text-rose-600 font-mono">92.4%</div>
+              <div id="attackLabResTier" class="text-xs font-bold text-rose-700 font-mono">CRITICAL RISK &bull; ACTION: BLOCK</div>
+            </div>
+
+            <!-- Top Anomaly Contributors -->
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <div class="text-xs font-bold text-slate-800">Top Contributing Signals</div>
+              <div class="space-y-1.5 text-xs">
+                <div>
+                  <div class="flex justify-between text-slate-600 text-[11px]">
+                    <span>IP / Network Anomaly</span>
+                    <span class="font-mono font-bold text-rose-600">0.89</span>
+                  </div>
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-rose-500 h-full w-[89%]"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-slate-600 text-[11px]">
+                    <span>Velocity Escalation</span>
+                    <span class="font-mono font-bold text-amber-600">0.78</span>
+                  </div>
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-amber-500 h-full w-[78%]"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-slate-600 text-[11px]">
+                    <span>Amount Deviation</span>
+                    <span class="font-mono font-bold text-rose-600">0.84</span>
+                  </div>
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-rose-500 h-full w-[84%]"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reason Codes Triggered -->
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <div class="text-xs font-bold text-slate-800">Triggered Reason Codes</div>
+              <div id="attackLabReasonList" class="space-y-1 text-xs">
+                <span class="inline-block px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-mono text-[10px] font-bold mr-1">HIGH_IP_RISK</span>
+                <span class="inline-block px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-mono text-[10px] font-bold mr-1">HIGH_VELOCITY</span>
+                <span class="inline-block px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-mono text-[10px] font-bold mr-1">UNUSUAL_AMOUNT</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Expandable Plain-English Explainability Box -->
+          <div class="p-4 bg-indigo-50/50 border border-indigo-200 rounded-xl space-y-2 text-xs text-indigo-950">
+            <div class="font-bold flex items-center gap-1.5 text-indigo-900">
+              <i data-lucide="help-circle" class="w-4 h-4 text-indigo-600"></i>
+              <span>Why did the detector make this decision?</span>
+            </div>
+            <p id="attackLabPlainExplanation" class="leading-relaxed">
+              The high IP risk score (0.89) combined with elevated 1-hour transaction velocity (8 tx/hr) and a large amount deviation exceeded the critical threshold (0.85), leading to an autonomous block decision.
+            </p>
+          </div>
+
+          <!-- Contextual Bridge to Defense Lab -->
+          <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+            <span class="text-xs text-slate-500">Want to see how FraudForge AI hardens against this attack?</span>
+            <button onclick="sendAttackLabToDefenseLab()" class="text-xs font-bold px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-sm transition flex items-center gap-1.5">
+              <span>SEND TO DEFENSE LAB</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 3: NEW PAGE — DEFENSE LAB (BEFORE VS AFTER HARDENING) -->
+      <!-- ================================================================= -->
+      <section id="view-defense-lab" class="hidden space-y-6">
+        
+        <!-- Header Banner -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-2">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-200 font-mono">BLUE TEAM ADAPTIVE HARDENING</span>
+              <h1 class="text-xl font-bold text-slate-950">Defense Lab</h1>
+            </div>
+            <div class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-xs font-mono font-bold">
+              BASELINE VS HARDENED BENCHMARK
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Witness how FraudForge AI converts a detector blind spot into an improved, hardened defense &bull; Verified empirical +70.70 pt generalization gain on unseen Gen-2 attacks.
+          </p>
+        </div>
+
+        <!-- Attack Scenario Selector & Action Bar -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="w-full md:w-auto flex-1 max-w-md">
+            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Select Target Attack Scenario</label>
+            <select id="defenseLabScenarioSelect" onchange="loadDefenseLabScenario(this.value)" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="GEN2_UNSEEN">Unseen Gen-2 Attack Suite (Dataset D Benchmark)</option>
+              <option value="ATK-021">ATK-021: Adversarial Perturbation Evasion (Blind Spot Template)</option>
+              <option value="ATK-001">ATK-001: Voice Clone Executive Impersonation</option>
+              <option value="ATTACK_LAB_LATEST">Latest Attack Lab Scenario (Active In-Memory)</option>
+            </select>
+          </div>
+          <button onclick="runDefenseLabHardening()" class="w-full md:w-auto text-xs font-bold px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-card transition flex items-center justify-center gap-2">
+            <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+            <span>▶ RUN ADAPTIVE HARDENING CYCLE</span>
+          </button>
+        </div>
+
+        <!-- Prominent Before vs. After Side-by-Side Comparison -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Card 1: Baseline Detector (Blind Spot) -->
+          <div class="bg-white border-2 border-rose-200 rounded-2xl p-6 shadow-card space-y-4">
+            <div class="flex items-center justify-between border-b border-rose-100 pb-3">
+              <div>
+                <span class="text-[10px] font-mono font-bold text-rose-600">PRE-HARDENING</span>
+                <h3 class="text-base font-bold text-slate-900">Baseline XGBoost Detector</h3>
+              </div>
+              <span class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded font-mono text-xs font-bold">❌ BLIND SPOT</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-center">
+              <div class="p-3 bg-rose-50/60 rounded-xl border border-rose-100">
+                <div class="text-[10px] text-slate-500 font-mono">UNSEEN GEN-2 RECALL</div>
+                <div class="text-3xl font-extrabold text-rose-600 font-mono mt-1">23.10%</div>
+                <div class="text-[10px] text-rose-700 mt-0.5">769 Attacks Missed</div>
+              </div>
+              <div class="p-3 bg-rose-50/60 rounded-xl border border-rose-100">
+                <div class="text-[10px] text-slate-500 font-mono">NORMAL TEST FPR</div>
+                <div class="text-3xl font-extrabold text-slate-800 font-mono mt-1">0.24%</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Trivial Over-Reliance</div>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-slate-600 bg-rose-50/40 p-3 rounded-xl border border-rose-100">
+              <strong class="text-rose-900">Failure Cause:</strong> Model heavily over-weights <code class="bg-rose-100 px-1 py-0.5 rounded font-mono text-[10px]">device_change</code>. When the adversary masks device signals, the baseline detector is completely blind.
+            </div>
+          </div>
+
+          <!-- Card 2: Hardened Detector (Victory) -->
+          <div class="bg-white border-2 border-emerald-200 rounded-2xl p-6 shadow-card space-y-4">
+            <div class="flex items-center justify-between border-b border-emerald-100 pb-3">
+              <div>
+                <span class="text-[10px] font-mono font-bold text-emerald-600">POST-HARDENING</span>
+                <h3 class="text-base font-bold text-slate-900">Hardened XGBoost Detector</h3>
+              </div>
+              <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded font-mono text-xs font-bold">✓ HARDENED DEFENSE</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-center">
+              <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100">
+                <div class="text-[10px] text-slate-500 font-mono">UNSEEN GEN-2 RECALL</div>
+                <div class="text-3xl font-extrabold text-emerald-600 font-mono mt-1">93.80%</div>
+                <div class="text-[10px] text-emerald-700 mt-0.5">Only 62 Misses</div>
+              </div>
+              <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100">
+                <div class="text-[10px] text-slate-500 font-mono">BALANCED FPR</div>
+                <div class="text-3xl font-extrabold text-slate-800 font-mono mt-1">1.06%</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Production Calibrated</div>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-slate-600 bg-emerald-50/40 p-3 rounded-xl border border-emerald-100">
+              <strong class="text-emerald-900">Generalization Victory:</strong> Retraining on synthetic blind spots successfully transferred to completely unseen Gen-2 variants with <strong>91.9% fewer misses</strong>.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 9-Stage Defense Pipeline Animation -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-4">
+          <h2 class="text-sm font-bold text-slate-900 flex items-center justify-between">
+            <span>Adaptive Hardening Stage Execution</span>
+            <span id="defensePipelineStatus" class="text-[10px] font-mono font-bold px-2 py-0.5 bg-slate-100 text-slate-600 rounded">STATUS: IDLE</span>
+          </h2>
+
+          <div class="grid grid-cols-3 md:grid-cols-9 gap-2 text-center text-xs font-mono" id="defenseStagesRow">
+            <div id="defStage1" class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1">
+              <div class="text-slate-400">01</div>
+              <div class="font-bold text-slate-800">Attack Ingest</div>
+            </div>
+            <div id="defStage2" class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1">
+              <div class="text-slate-400">02</div>
+              <div class="font-bold text-slate-800">Detector Test</div>
+            </div>
+            <div id="defStage3" class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1">
+              <div class="text-slate-400">03</div>
+              <div class="font-bold text-rose-600">Blind Spot</div>
+            </div>
+            <div id="defStage4" class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1">
+              <div class="text-slate-400">04</div>
+              <div class="font-bold text-slate-800">FN Mining</div>
+            </div>
+            <div id="defStage5" class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1">
+              <div class="text-slate-400">05</div>
+              <div class="font-bold text-slate-800">Weakness</div>
+            </div>
+            <div id="defStage6" class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1">
+              <div class="text-slate-400">06</div>
+              <div class="font-bold text-indigo-600">Retraining</div>
+            </div>
+            <div id="defStage7" class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1">
+              <div class="text-slate-400">07</div>
+              <div class="font-bold text-slate-800">Hardened</div>
+            </div>
+            <div id="defStage8" class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1">
+              <div class="text-slate-400">08</div>
+              <div class="font-bold text-amber-600">Gen-2 Test</div>
+            </div>
+            <div id="defStage9" class="p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1">
+              <div class="text-slate-400">09</div>
+              <div class="font-bold text-emerald-600">Gain +70.7%</div>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-900 text-slate-100 rounded-xl font-mono text-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-slate-300">
+              &ldquo;FraudForge AI does not only detect known attacks &mdash; it learns from detector blind spots and tests whether the defense generalizes to unseen variants.&rdquo;
+            </div>
+            <button onclick="switchTab('ai-defense')" class="text-xs font-bold px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 rounded-lg whitespace-nowrap transition">
+              TRACE IN RISK ENGINE &rarr;
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 4: REDESIGNED PAGE — ADAPTIVE BATTLE LOOP (MASTER STORY) -->
+      <!-- ================================================================= -->
+      <section id="view-battle-arena" class="hidden space-y-6">
+        
+        <!-- Header Banner -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-2">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="bg-rose-50 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded border border-rose-200 font-mono">MASTER STORYTELLING ENGINE</span>
+              <h1 class="text-xl font-bold text-slate-950">Adaptive Red-Team / Blue-Team Loop</h1>
+            </div>
+            <button onclick="runBattleRoundStory()" class="text-xs font-bold px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-card transition flex items-center gap-2">
+              <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+              <span>▶ RUN BATTLE ROUND</span>
+            </button>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            How FraudForge AI continuously attacks, learns, hardens, and validates payment defense &bull; Closed-loop feedback loop transferring zero-day learning to unseen attacks.
+          </p>
+        </div>
+
+        <!-- Master Closed-Loop Diagram Container -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-6">
+          <h2 class="text-sm font-bold text-slate-900 flex items-center justify-between">
+            <span>Closed-Loop Orchestration Diagram</span>
+            <span id="battleLoopStatusBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 bg-slate-100 text-slate-600 rounded">READY FOR BATTLE ROUND</span>
+          </h2>
+
+          <!-- Connected Horizontal Circular Flow -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+            
+            <!-- Red Team Half (Left) -->
+            <div class="p-5 rounded-2xl bg-rose-50/40 border-2 border-rose-200 space-y-4">
+              <div class="flex items-center gap-2 border-b border-rose-200 pb-2">
+                <span class="w-3 h-3 rounded-full bg-rose-600"></span>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-rose-900">🔴 RED TEAM (ATTACK SYNTHESIS)</h3>
+              </div>
+              <div class="space-y-3 text-xs font-mono">
+                <div id="battleStage1" class="p-3 bg-white rounded-xl border border-rose-200 space-y-1 transition">
+                  <div class="text-[10px] text-slate-400">STAGE 1: GENERATE ATTACK</div>
+                  <div class="font-bold text-slate-900">Synthesizes 10-gene adversarial candidate</div>
+                </div>
+                <div id="battleStage2" class="p-3 bg-white rounded-xl border border-rose-200 space-y-1 transition">
+                  <div class="text-[10px] text-slate-400">STAGE 2: TEST DETECTOR</div>
+                  <div class="font-bold text-slate-900">Simulates 100 transactions against baseline model</div>
+                </div>
+                <div id="battleStage3" class="p-3 bg-white rounded-xl border border-rose-200 space-y-1 transition">
+                  <div class="text-[10px] text-slate-400">STAGE 3: REVEAL BLIND SPOT</div>
+                  <div class="font-bold text-rose-600">23.1% Baseline Recall &bull; 769 Missed Attacks</div>
+                </div>
+                <div id="battleStage4" class="p-3 bg-white rounded-xl border border-rose-200 space-y-1 transition">
+                  <div class="text-[10px] text-slate-400">STAGE 4: EXTRACT WEAKNESS</div>
+                  <div class="font-bold text-slate-900">Mines false-negative feature distributions</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Blue Team Half (Right) -->
+            <div class="p-5 rounded-2xl bg-emerald-50/40 border-2 border-emerald-200 space-y-4">
+              <div class="flex items-center gap-2 border-b border-emerald-200 pb-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-600"></span>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-900">🔵 BLUE TEAM (ADAPTIVE DEFENSE)</h3>
+              </div>
+              <div class="space-y-3 text-xs font-mono">
+                <div id="battleStage5" class="p-3 bg-white rounded-xl border border-emerald-200 space-y-1 transition">
+                  <div class="text-[10px] text-slate-400">STAGE 5: HARDEN DETECTOR</div>
+                  <div class="font-bold text-indigo-700">Retrains XGBoost with adversarial augmentation</div>
+                </div>
+                <div id="battleStage6" class="p-3 bg-white rounded-xl border border-emerald-200 space-y-1 transition">
+                  <div class="text-[10px] text-slate-400">STAGE 6: GENERATE UNSEEN GEN-2</div>
+                  <div class="font-bold text-slate-900">Evolves fresh polymorphic variants</div>
+                </div>
+                <div id="battleStage7" class="p-3 bg-white rounded-xl border border-emerald-200 space-y-1 transition">
+                  <div class="text-[10px] text-slate-400">STAGE 7: RE-ATTACK HARDENED MODEL</div>
+                  <div class="font-bold text-emerald-600">93.8% Hardened Recall &bull; Only 62 Misses</div>
+                </div>
+                <div id="battleStage8" class="p-3 bg-white rounded-xl border border-emerald-200 space-y-1 transition">
+                  <div class="text-[10px] text-slate-400">STAGE 8: CONFIRM GENERALIZATION</div>
+                  <div class="font-bold text-emerald-700">+70.70 pts Gain &bull; 91.9% Miss Reduction</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Loop Callout Summary -->
+          <div class="p-5 bg-slate-900 text-white rounded-xl font-mono text-center space-y-2">
+            <div class="text-xs text-amber-400 font-bold uppercase tracking-widest">BATTLE ROUND OUTCOME</div>
+            <div class="text-2xl font-extrabold text-emerald-400">23.1% &rarr; 93.8% Recall &bull; +70.70 pts Generalization Gain</div>
+            <div class="text-xs text-slate-400">Continuous closed-loop adaptation ensures payment models remain protected against evolving GenAI threats.</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 5: MODEL & METHODOLOGY (DETAILED ML EXPLANATION) -->
       <!-- ================================================================= -->
       <section id="view-model-methodology" class="hidden space-y-6">
         
@@ -841,7 +1357,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- VIEW 3: ATTACK GENOME MATRIX (FEATURE 1) -->
+      <!-- VIEW 6: ATTACK GENOME MATRIX (FEATURE 1) -->
       <!-- ================================================================= -->
       <section id="view-genome-explorer" class="hidden space-y-6">
         
@@ -961,7 +1477,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- VIEW 4: ZERO-DAY DISCOVERY LAB (FEATURE 3) -->
+      <!-- VIEW 7: ZERO-DAY DISCOVERY LAB -->
       <!-- ================================================================= -->
       <section id="view-zero-day-lab" class="hidden space-y-6">
         
@@ -1060,85 +1576,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- VIEW 5: ADAPTIVE BATTLE ARENA (FEATURE 2) -->
-      <!-- ================================================================= -->
-      <section id="view-battle-arena" class="hidden space-y-6">
-        
-        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div>
-            <h1 class="text-xl font-bold text-slate-950">Red-Team &bull; Blue-Team Battle Arena</h1>
-            <p class="text-xs text-slate-500 mt-0.5">Continuous interactive loop: Attack the detector &bull; Learn from the miss &bull; Deploy hardened defense</p>
-          </div>
-          <button onclick="runBattleSimulation()" class="text-xs font-bold px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg shadow-sm transition flex items-center gap-2">
-            <i data-lucide="play" class="w-3.5 h-3.5"></i>
-            <span>Simulate Battle Round</span>
-          </button>
-        </div>
-
-        <!-- Side-by-Side Dual Arena -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          
-          <!-- Red Team Side -->
-          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-card space-y-4 border-t-4 border-t-rose-500">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-xs font-mono">RED</div>
-                <div>
-                  <h2 class="text-sm font-bold text-slate-900">Adversarial Red Team</h2>
-                  <p class="text-[11px] text-slate-500">Autonomous attack mutations &amp; evasions</p>
-                </div>
-              </div>
-              <span class="text-[10px] font-mono bg-rose-50 text-rose-700 px-2 py-0.5 rounded border border-rose-200 font-bold">28 Vectors</span>
-            </div>
-
-            <div class="space-y-3 text-xs">
-              <div class="p-3 bg-slate-50 rounded-xl space-y-1">
-                <div class="text-[10px] text-slate-400 font-mono font-bold">CURRENT ACTIVE SCENARIO</div>
-                <div id="battleRedName" class="font-bold text-slate-900">ATK-021: Adversarial Perturbation Evasion</div>
-                <div class="text-[11px] text-slate-500">Targeting device_change (0) and velocity smoothing (4 tx/hr).</div>
-              </div>
-              <div class="p-3 bg-slate-50 rounded-xl space-y-1">
-                <div class="text-[10px] text-slate-400 font-mono font-bold">MUTATION INTENSITY</div>
-                <div class="flex items-center gap-3">
-                  <input type="range" min="10" max="90" value="65" class="w-full accent-rose-600" />
-                  <span class="font-mono font-bold text-slate-700">0.65</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Blue Team Side -->
-          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-card space-y-4 border-t-4 border-t-indigo-500">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs font-mono">BLUE</div>
-                <div>
-                  <h2 class="text-sm font-bold text-slate-900">AI Defense Lab</h2>
-                  <p class="text-[11px] text-slate-500">Adaptive retraining &amp; multi-tier risk policy</p>
-                </div>
-              </div>
-              <span class="text-[10px] font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-200 font-bold">Hardened Model</span>
-            </div>
-
-            <div class="space-y-3 text-xs">
-              <div class="p-3 bg-slate-50 rounded-xl space-y-1">
-                <div class="text-[10px] text-slate-400 font-mono font-bold">HARDENING STRATEGY</div>
-                <div class="font-bold text-slate-900">Adversarial Augmentation + Risk-Aware Mitigation</div>
-                <div class="text-[11px] text-slate-500">Preserves normal FPR &le; 1.06% while boosting unseen recall.</div>
-              </div>
-              <div class="p-3 bg-slate-50 rounded-xl space-y-1">
-                <div class="text-[10px] text-slate-400 font-mono font-bold">DECISION ENGINE POLICY</div>
-                <div class="font-mono font-bold text-indigo-700">BALANCED (Allow &lt; 0.30, Step-Up &lt; 0.85, Block &ge; 0.85)</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- ================================================================= -->
-      <!-- VIEW 6: RED TEAM ATTACK CATALOG (28 ARCHETYPES) -->
+      <!-- VIEW 8: RED TEAM ATTACK CATALOG (28 ARCHETYPES) -->
       <!-- ================================================================= -->
       <section id="view-attack-catalog" class="hidden space-y-6">
         
@@ -1170,7 +1608,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- VIEW 7: AI DECISION ENGINE DETAIL INSPECTOR -->
+      <!-- VIEW 9: AI DECISION ENGINE DETAIL INSPECTOR -->
       <!-- ================================================================= -->
       <section id="view-ai-defense" class="hidden space-y-6">
         <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
@@ -1210,7 +1648,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- VIEW 8: DEFENSE BENCHMARKS & ANALYTICS -->
+      <!-- VIEW 10: DEFENSE BENCHMARKS & ANALYTICS -->
       <!-- ================================================================= -->
       <section id="view-analytics-view" class="hidden space-y-6">
         
@@ -1250,7 +1688,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- VIEW 9: ALERTS & IMMUTABLE AUDIT TRAIL -->
+      <!-- VIEW 11: ALERTS & IMMUTABLE AUDIT TRAIL -->
       <!-- ================================================================= -->
       <section id="view-audit-trail" class="hidden space-y-6">
         
@@ -2090,6 +2528,8 @@
       stepUpCount: 42,
       moneyProtectedINR: 4284500,
       currentGenome: JSON.parse(JSON.stringify(ATTACK_CATALOG[0].genome)),
+      attackLabGenome: JSON.parse(JSON.stringify(ATTACK_CATALOG[0].genome)),
+      latestAttackLabScenario: null,
       currentArchetypeId: "ATK-001",
       recentTransactions: [],
       auditLogs: [],
@@ -2102,6 +2542,7 @@
     window.addEventListener("DOMContentLoaded", () => {
       lucide.createIcons();
       initGenomeSelect();
+      initAttackLab();
       renderGenomeCards();
       populateInitialTransactions();
       populateInitialAuditLogs();
@@ -2123,8 +2564,8 @@
 
       // Show/Hide section views
       const views = [
-        "command-center", "model-methodology", "genome-explorer", 
-        "zero-day-lab", "battle-arena", "attack-catalog", 
+        "command-center", "model-methodology", "attack-lab", "defense-lab",
+        "genome-explorer", "zero-day-lab", "battle-arena", "attack-catalog", 
         "analytics-view", "audit-trail", "ai-defense"
       ];
       views.forEach(v => {
@@ -2140,7 +2581,7 @@
         }
       });
 
-      // Trigger chart redraws if switching to charts
+      // Trigger chart redraws
       if (tabId === "model-methodology" && appState.charts.featureImportance) {
         setTimeout(() => {
           appState.charts.featureImportance.resize();
@@ -2160,11 +2601,9 @@
     // 6. PIPELINE VISUALIZER (UPDATES THE 5-STAGE HERO PIPELINE)
     // -----------------------------------------------------------------------
     function updatePipelineVisual(tx) {
-      // Stage 1: Ingestion
       document.getElementById("pipeTxAmount").textContent = `₹ ${tx.amount.toLocaleString()}`;
       document.getElementById("pipeTxLocation").textContent = `${tx.city} • ${tx.channel}`;
 
-      // Stage 2: Feature Signals
       const ipEl = document.getElementById("pipeIpRisk");
       const velEl = document.getElementById("pipeVelocity");
       const devEl = document.getElementById("pipeDevice");
@@ -2192,21 +2631,18 @@
         devEl.className = "font-bold text-emerald-600";
       }
 
-      // Stage 3: XGBoost Detector
       const probEl = document.getElementById("pipeFraudProb");
       probEl.textContent = `${(tx.probability * 100).toFixed(1)}%`;
       if (tx.action === "BLOCK") probEl.className = "text-base font-extrabold text-rose-600 font-mono";
       else if (tx.action === "STEP_UP_AUTH") probEl.className = "text-base font-extrabold text-amber-600 font-mono";
       else probEl.className = "text-base font-extrabold text-emerald-600 font-mono";
 
-      // Stage 4: Risk Engine Tier
       const tierEl = document.getElementById("pipeRiskTier");
       tierEl.textContent = `${tx.riskLevel} (${tx.riskScore})`;
       if (tx.riskLevel === "CRITICAL") tierEl.className = "text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 mt-0.5";
       else if (tx.riskLevel === "HIGH") tierEl.className = "text-xs font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 mt-0.5";
       else tierEl.className = "text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 mt-0.5";
 
-      // Stage 5: Autonomous Action Badge
       const actBadge = document.getElementById("pipeActionBadge");
       const stage5 = document.getElementById("pipeStage5");
       actBadge.textContent = tx.action;
@@ -2221,18 +2657,265 @@
         stage5.className = "pipeline-stage p-4 rounded-xl border-2 border-emerald-400 bg-emerald-50/50 space-y-2 shadow-sm";
       }
 
-      // Sequential animation of pipeline stages
       for (let i = 1; i <= 5; i++) {
         const stageEl = document.getElementById(`pipeStage${i}`);
         setTimeout(() => {
           stageEl.style.transform = "scale(1.02)";
-          setTimeout(() => stageEl.style.transform = "scale(1)", 200);
-        }, i * 70);
+          setTimeout(() => stageEl.style.transform = "scale(1)", 180);
+        }, i * 60);
       }
     }
 
     // -----------------------------------------------------------------------
-    // 7. ATTACK GENOME EXPLORER LOGIC (FEATURE 1 ENHANCED)
+    // 7. NEW: ATTACK LAB IMPLEMENTATION
+    // -----------------------------------------------------------------------
+    function initAttackLab() {
+      // 1. Populate Preset Selector
+      const select = document.getElementById("attackLabPresetSelect");
+      select.innerHTML = "";
+      ATTACK_CATALOG.forEach(atk => {
+        const opt = document.createElement("option");
+        opt.value = atk.id;
+        opt.textContent = `${atk.id}: ${atk.name}`;
+        select.appendChild(opt);
+      });
+
+      // 2. Populate 10 Form Selectors
+      const container = document.getElementById("attackLabSelectorsGrid");
+      container.innerHTML = "";
+      Object.keys(GENOME_VOCABULARY).forEach(key => {
+        const div = document.createElement("div");
+        div.className = "space-y-1";
+        div.innerHTML = `
+          <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">${key.replace('_', ' ')}</label>
+          <select id="labSelect_${key}" onchange="updateAttackLabGene('${key}', this.value)" class="w-full text-xs px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-mono">
+            ${GENOME_VOCABULARY[key].map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+          </select>
+        `;
+        container.appendChild(div);
+      });
+
+      loadArchetypeToAttackLab("ATK-001");
+    }
+
+    function loadArchetypeToAttackLab(atkId) {
+      const atk = ATTACK_CATALOG.find(a => a.id === atkId) || ATTACK_CATALOG[0];
+      appState.attackLabGenome = JSON.parse(JSON.stringify(atk.genome));
+      
+      // Update form select elements
+      Object.keys(appState.attackLabGenome).forEach(key => {
+        const el = document.getElementById(`labSelect_${key}`);
+        if (el) el.value = appState.attackLabGenome[key];
+      });
+
+      renderAttackLabCard(atk.name, atk.category, atk.id);
+    }
+
+    function updateAttackLabGene(key, val) {
+      appState.attackLabGenome[key] = val;
+      renderAttackLabCard(`Custom Generated Attack (${key} mutated)`, "Adversarial Red Team Vector", `SYN-ATK-${Math.floor(1000 + Math.random()*9000)}`);
+    }
+
+    function randomizeAttackLabGenome() {
+      Object.keys(GENOME_VOCABULARY).forEach(key => {
+        const opts = GENOME_VOCABULARY[key];
+        const val = opts[Math.floor(Math.random() * opts.length)];
+        appState.attackLabGenome[key] = val;
+        const el = document.getElementById(`labSelect_${key}`);
+        if (el) el.value = val;
+      });
+      renderAttackLabCard("Polymorphic Random Scenario", "Adversarial Red Team Vector", `SYN-RND-${Math.floor(1000 + Math.random()*9000)}`);
+      showToast("Randomized all 10 genome dimensions", "info");
+    }
+
+    function resetAttackLabGenome() {
+      loadArchetypeToAttackLab("ATK-001");
+      showToast("Reset Attack Lab to ATK-001 Template", "info");
+    }
+
+    function generateAttackInLab() {
+      const id = `SYN-ATK-${Math.floor(1000 + Math.random()*9000)}`;
+      renderAttackLabCard("Synthetic Defensive Attack Candidate", "Adversarial Red Team Vector", id);
+      showToast(`Generated synthetic attack ${id}`, "success");
+    }
+
+    function renderAttackLabCard(name, category, id) {
+      document.getElementById("attackLabGenId").textContent = id;
+      document.getElementById("attackLabGenName").textContent = name;
+      document.getElementById("attackLabGenCategory").textContent = `Category: ${category}`;
+
+      const g = appState.attackLabGenome;
+      let novelty = 0.28;
+      if (g.evasion_strategy === "trusted_device_masking") novelty += 0.24;
+      if (g.behavior === "low_and_slow") novelty += 0.16;
+      if (g.amount_strategy === "sub_threshold_structuring") novelty += 0.18;
+      novelty = Math.min(0.92, Math.max(0.14, novelty));
+
+      const realism = 0.85;
+      const evasion = (g.evasion_strategy === "trusted_device_masking" || g.evasion_strategy === "velocity_smoothing") ? 0.82 : 0.48;
+      const priority = (0.4 * novelty + 0.3 * realism + 0.3 * evasion).toFixed(2);
+
+      document.getElementById("attackLabNovelty").textContent = novelty.toFixed(2);
+      document.getElementById("attackLabNoveltyBar").style.width = `${novelty * 100}%`;
+
+      document.getElementById("attackLabRealism").textContent = realism.toFixed(2);
+      document.getElementById("attackLabRealismBar").style.width = `${realism * 100}%`;
+
+      document.getElementById("attackLabEvasion").textContent = evasion.toFixed(2);
+      document.getElementById("attackLabEvasionBar").style.width = `${evasion * 100}%`;
+
+      document.getElementById("attackLabPriority").textContent = priority;
+      document.getElementById("attackLabPriorityBar").style.width = `${priority * 100}%`;
+
+      document.getElementById("attackLabNearest").textContent = `${appState.currentArchetypeId || 'ATK-001'} (${(100 - novelty*100).toFixed(1)}% template match)`;
+      document.getElementById("attackLabLineageText").textContent = `evasion: ${g.evasion_strategy} • behavior: ${g.behavior} • channel: ${g.payment_channel}`;
+
+      // Save latest scenario state for Defense Lab
+      appState.latestAttackLabScenario = {
+        id: id,
+        name: name,
+        category: category,
+        genome: JSON.parse(JSON.stringify(g)),
+        novelty: novelty,
+        evasion: evasion,
+        priority: priority
+      };
+    }
+
+    function testAttackLabScenario() {
+      const procBar = document.getElementById("attackLabProcessingBar");
+      const procStep = document.getElementById("attackLabProcStep");
+      const procFill = document.getElementById("attackLabProcFill");
+      procBar.classList.remove("hidden");
+
+      const steps = [
+        "1. Generating synthetic transactions...",
+        "2. Applying feature pipeline & transformations...",
+        "3. Running XGBoost baseline detector...",
+        "4. Risk Engine policy evaluation...",
+        "5. Finalizing decision verdict..."
+      ];
+
+      steps.forEach((step, idx) => {
+        setTimeout(() => {
+          procStep.textContent = step;
+          procFill.style.width = `${(idx + 1) * 20}%`;
+        }, idx * 250);
+      });
+
+      setTimeout(() => {
+        procBar.classList.add("hidden");
+        const g = appState.attackLabGenome;
+        const isBlindSpot = (g.evasion_strategy === "trusted_device_masking" && g.behavior === "low_and_slow") || g.evasion_strategy === "velocity_smoothing";
+
+        const verdictBadge = document.getElementById("attackLabVerdictBadge");
+        const resProb = document.getElementById("attackLabResProb");
+        const resTier = document.getElementById("attackLabResTier");
+        const reasonList = document.getElementById("attackLabReasonList");
+        const plainExp = document.getElementById("attackLabPlainExplanation");
+
+        if (isBlindSpot) {
+          verdictBadge.textContent = "⚠ UNDETECTED / BLIND SPOT (ACTION: ALLOW/MONITOR)";
+          verdictBadge.className = "px-4 py-1.5 rounded-full text-xs font-bold font-mono bg-rose-100 text-rose-800 border border-rose-300 animate-pulse-glow";
+          resProb.textContent = "23.1%";
+          resProb.className = "text-3xl font-extrabold text-rose-600 font-mono";
+          resTier.textContent = "LOW / MEDIUM RISK (23.1) • BLIND SPOT";
+          resTier.className = "text-xs font-bold text-rose-600 font-mono";
+          reasonList.innerHTML = `
+            <span class="inline-block px-2 py-0.5 bg-slate-200 text-slate-700 rounded font-mono text-[10px] mr-1">VELOCITY_SMOOTHED</span>
+            <span class="inline-block px-2 py-0.5 bg-slate-200 text-slate-700 rounded font-mono text-[10px] mr-1">DEVICE_MASKED</span>
+          `;
+          plainExp.textContent = `The scenario masked the device_change signal and distributed transaction timing. The baseline detector over-relies on device fingerprints and failed to trigger an alert (Blind spot identified: 23.1% detection).`;
+          showToast("Baseline Detector Blind Spot Exposed! (Detection Rate: 23.1%)", "critical");
+        } else {
+          verdictBadge.textContent = "✓ DETECTED (ACTION: BLOCK)";
+          verdictBadge.className = "px-4 py-1.5 rounded-full text-xs font-bold font-mono bg-emerald-100 text-emerald-800 border border-emerald-300";
+          resProb.textContent = "92.4%";
+          resProb.className = "text-3xl font-extrabold text-rose-600 font-mono";
+          resTier.textContent = "CRITICAL RISK (92.4) • ACTION: BLOCK";
+          resTier.className = "text-xs font-bold text-rose-700 font-mono";
+          reasonList.innerHTML = `
+            <span class="inline-block px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-mono text-[10px] font-bold mr-1">HIGH_IP_RISK</span>
+            <span class="inline-block px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-mono text-[10px] font-bold mr-1">HIGH_VELOCITY</span>
+            <span class="inline-block px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-mono text-[10px] font-bold mr-1">UNUSUAL_AMOUNT</span>
+          `;
+          plainExp.textContent = `High IP risk score (0.89) combined with elevated 1-hour transaction velocity and amount deviation exceeded the critical threshold (0.85), leading to an autonomous block decision.`;
+          showToast("Attack Detected by Model! (Probability: 92.4%)", "success");
+        }
+
+        lucide.createIcons();
+      }, 1300);
+    }
+
+    function sendAttackLabToDefenseLab() {
+      switchTab("defense-lab");
+      document.getElementById("defenseLabScenarioSelect").value = "ATTACK_LAB_LATEST";
+      showToast("Attack Lab scenario transferred to Defense Lab. Ready for adaptive hardening.", "info");
+    }
+
+    // -----------------------------------------------------------------------
+    // 8. NEW: DEFENSE LAB IMPLEMENTATION
+    // -----------------------------------------------------------------------
+    function loadDefenseLabScenario(val) {
+      showToast(`Selected scenario: ${val}`, "info");
+    }
+
+    function runDefenseLabHardening() {
+      const statusBadge = document.getElementById("defensePipelineStatus");
+      statusBadge.textContent = "STATUS: ADAPTIVE HARDENING IN PROGRESS";
+      statusBadge.className = "text-[10px] font-mono font-bold px-2 py-0.5 bg-amber-100 text-amber-800 rounded animate-pulse";
+
+      for (let i = 1; i <= 9; i++) {
+        const stage = document.getElementById(`defStage${i}`);
+        stage.className = "p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-[10px] space-y-1 transition";
+      }
+
+      for (let i = 1; i <= 9; i++) {
+        setTimeout(() => {
+          const stage = document.getElementById(`defStage${i}`);
+          stage.className = "p-2.5 rounded-lg border-2 border-emerald-400 bg-emerald-50 text-[10px] space-y-1 shadow-sm";
+          if (i === 9) {
+            statusBadge.textContent = "STATUS: DEFENSE HARDENED & GENERALIZED (+70.70 PTS)";
+            statusBadge.className = "text-[10px] font-mono font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded";
+            showToast("Adaptive Defense Verified: +70.70 pts Generalization Gain (93.8% Recall)", "success");
+          }
+        }, i * 250);
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // 9. REDESIGNED: ADAPTIVE BATTLE LOOP MASTER STORY
+    // -----------------------------------------------------------------------
+    function runBattleRoundStory() {
+      const badge = document.getElementById("battleLoopStatusBadge");
+      badge.textContent = "BATTLE ROUND IN PROGRESS...";
+      badge.className = "text-[10px] font-mono font-bold px-2 py-0.5 bg-rose-100 text-rose-800 rounded animate-pulse";
+
+      // Reset stages
+      for (let i = 1; i <= 8; i++) {
+        document.getElementById(`battleStage${i}`).className = "p-3 bg-white rounded-xl border border-slate-200 space-y-1 transition";
+      }
+
+      for (let i = 1; i <= 8; i++) {
+        setTimeout(() => {
+          const stage = document.getElementById(`battleStage${i}`);
+          if (i <= 4) {
+            stage.className = "p-3 bg-rose-50 rounded-xl border-2 border-rose-400 space-y-1 shadow-sm";
+          } else {
+            stage.className = "p-3 bg-emerald-50 rounded-xl border-2 border-emerald-400 space-y-1 shadow-sm";
+          }
+
+          if (i === 8) {
+            badge.textContent = "CLOSED LOOP COMPLETE &bull; GENERALIZATION PROVEN (+70.7%)";
+            badge.className = "text-[10px] font-mono font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded";
+            showToast("Battle Round Complete: +70.70 pts Generalization Gain!", "success");
+          }
+        }, i * 350);
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // 10. ATTACK GENOME MATRIX LOGIC
     // -----------------------------------------------------------------------
     function initGenomeSelect() {
       const select = document.getElementById("genomeArchetypeSelect");
@@ -2300,7 +2983,6 @@
       appState.currentGenome[geneKey] = nextVal;
       document.getElementById("genomeCandidateName").textContent = `Novel Mutation (${geneKey} &rarr; ${nextVal})`;
       
-      // Update Mutation Log & Rationale Banner
       const logText = document.getElementById("genomeMutationLogText");
       const logBadge = document.getElementById("genomeMutationBadge");
       logText.innerHTML = `Mutated <strong class="text-white">${geneKey}</strong>: <span class="text-rose-400 line-through">${currentVal}</span> &rarr; <span class="text-emerald-400 font-bold">${nextVal}</span>. Threat fitness recalculated.`;
@@ -2346,43 +3028,37 @@
     }
 
     // -----------------------------------------------------------------------
-    // 8. ZERO-DAY DISCOVERY & HARDENING ENGINE (FEATURE 3 ENHANCED)
+    // 11. ZERO-DAY DISCOVERY & HARDENING ENGINE
     // -----------------------------------------------------------------------
     function runZeroDayDiscoveryCycle() {
       const badge = document.getElementById("discoveryStatusBadge");
       badge.textContent = "STATUS: RUNNING DISCOVERY";
       badge.className = "text-[10px] font-mono font-bold px-2 py-0.5 bg-amber-100 text-amber-800 rounded animate-pulse";
 
-      // Reset step cards
       for (let i = 1; i <= 5; i++) {
         document.getElementById(`stepCard${i}`).className = "p-3 border border-slate-200 rounded-xl bg-slate-50 space-y-1.5 transition";
         document.getElementById(`step${i}Status`).textContent = "• Standby";
       }
 
-      // Step 1: Synthesis
       document.getElementById("stepCard1").className = "p-3 border border-indigo-400 rounded-xl bg-indigo-50/50 space-y-1.5 shadow-sm";
       document.getElementById("step1Status").innerHTML = "<span class='text-indigo-600 font-bold'>&check; Candidate Synthesized</span>";
       showToast("Step 1: Synthesized NSA-001 (Trusted-Device Social Engineering)", "info");
 
       setTimeout(() => {
-        // Step 2: Baseline Attack (Blind Spot)
         document.getElementById("stepCard2").className = "p-3 border border-rose-400 rounded-xl bg-rose-50/50 space-y-1.5 shadow-sm";
         document.getElementById("step2Status").innerHTML = "<span class='text-rose-600 font-bold'>&bull; 23.1% Recall (Blind Spot)</span>";
         showToast("Step 2: Baseline Detector Missed 76.9% of Attacks (Blind Spot Identified)", "warning");
 
         setTimeout(() => {
-          // Step 3: Weakness Analysis
           document.getElementById("stepCard3").className = "p-3 border border-amber-400 rounded-xl bg-amber-50/50 space-y-1.5 shadow-sm";
           document.getElementById("step3Status").innerHTML = "<span class='text-amber-600 font-bold'>&check; Weakness Extracted</span>";
 
           setTimeout(() => {
-            // Step 4: Adaptive Retraining
             document.getElementById("stepCard4").className = "p-3 border border-blue-400 rounded-xl bg-blue-50/50 space-y-1.5 shadow-sm";
             document.getElementById("step4Status").innerHTML = "<span class='text-blue-600 font-bold'>&check; Model Hardened</span>";
             showToast("Step 4: Blue Team Hardened XGBoost Detector on Zero-Day Data", "info");
 
             setTimeout(() => {
-              // Step 5: Gen-2 Evolution Re-Attack
               document.getElementById("stepCard5").className = "p-3 border border-emerald-400 rounded-xl bg-emerald-50/50 space-y-1.5 shadow-sm";
               document.getElementById("step5Status").innerHTML = "<span class='text-emerald-600 font-bold'>&check; 93.8% Generalization</span>";
 
@@ -2401,17 +3077,7 @@
     }
 
     // -----------------------------------------------------------------------
-    // 9. BATTLE ARENA SIMULATION (FEATURE 2)
-    // -----------------------------------------------------------------------
-    function runBattleSimulation() {
-      const redAtks = ["ATK-021: Adversarial Perturbation", "ATK-001: Voice Clone CEO Fraud", "ATK-009: AI SIM-Swap Swarm"];
-      const randomAtk = redAtks[Math.floor(Math.random() * redAtks.length)];
-      document.getElementById("battleRedName").textContent = randomAtk;
-      showToast(`Red Team unleashed ${randomAtk}! Blue Team intercepted with Hardened Model (Recall: 94.2%).`, "success");
-    }
-
-    // -----------------------------------------------------------------------
-    // 10. LIVE STREAMING TRANSACTION FEED & DECISION ENGINE
+    // 12. LIVE STREAMING TRANSACTION FEED & DECISION ENGINE
     // -----------------------------------------------------------------------
     const CITIES = [
       { name: "Mumbai", country: "IN", currency: "INR" },
@@ -2530,7 +3196,6 @@
         badge.className = "px-3 py-1 rounded-full text-xs font-bold font-mono bg-emerald-100 text-emerald-800 border border-emerald-300";
       }
 
-      // Update Reason codes list
       const reasonsList = document.getElementById("inspectReasonCodesList");
       reasonsList.innerHTML = "";
       if (tx.reasons && tx.reasons.length > 0) {
@@ -2544,7 +3209,6 @@
         reasonsList.innerHTML = `<div class="text-xs text-slate-400 p-2 bg-slate-50 rounded border border-slate-200">No anomalous risk indicators triggered (Clean transaction).</div>`;
       }
 
-      // Mitigation simulator text
       const mitStatus = document.getElementById("inspectMitigationText");
       const mitDesc = document.getElementById("inspectMitigationDesc");
       if (tx.action === "BLOCK") {
@@ -2561,7 +3225,6 @@
         mitDesc.textContent = "Seamless capture authorized. Transaction processed with zero cardholder friction.";
       }
 
-      // Synchronize with AI Decision Pipeline Flow
       updatePipelineVisual(tx);
     }
 
@@ -2616,7 +3279,7 @@
     }
 
     // -----------------------------------------------------------------------
-    // 11. RED TEAM CATALOG SEARCH & FILTERING (FEATURE 7)
+    // 13. RED TEAM CATALOG SEARCH & FILTERING
     // -----------------------------------------------------------------------
     function renderCatalogCards(list) {
       const grid = document.getElementById("catalogCardsGrid");
@@ -2641,9 +3304,14 @@
             <span>Surface: ${atk.surface}</span>
             <span>Detectability: ${(atk.detectability * 100).toFixed(0)}%</span>
           </div>
-          <button onclick="simulateCatalogAttack('${atk.id}')" class="w-full text-xs font-bold py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-lg transition flex items-center justify-center gap-1.5">
-            <i data-lucide="play" class="w-3.5 h-3.5 text-rose-500"></i> Simulate Vector
-          </button>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="simulateCatalogInAttackLab('${atk.id}')" class="text-xs font-bold py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 rounded-lg transition flex items-center justify-center gap-1">
+              <i data-lucide="flask-conical" class="w-3 h-3 text-rose-600"></i> Attack Lab
+            </button>
+            <button onclick="simulateCatalogAttack('${atk.id}')" class="text-xs font-bold py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-lg transition flex items-center justify-center gap-1">
+              <i data-lucide="dna" class="w-3 h-3 text-indigo-600"></i> Genome
+            </button>
+          </div>
         `;
         grid.appendChild(card);
       });
@@ -2677,11 +3345,17 @@
     function simulateCatalogAttack(atkId) {
       loadArchetypeIntoGenome(atkId);
       switchTab("genome-explorer");
-      showToast(`Loaded ${atkId} into Attack Genome Matrix. Ready for mutation & simulation.`, "info");
+      showToast(`Loaded ${atkId} into Attack Genome Matrix. Ready for mutation.`, "info");
+    }
+
+    function simulateCatalogInAttackLab(atkId) {
+      loadArchetypeToAttackLab(atkId);
+      switchTab("attack-lab");
+      showToast(`Loaded ${atkId} into Attack Lab workspace.`, "info");
     }
 
     // -----------------------------------------------------------------------
-    // 12. AUDIT TRAIL LOGGING
+    // 14. AUDIT TRAIL LOGGING
     // -----------------------------------------------------------------------
     function populateInitialAuditLogs() {
       appState.recentTransactions.filter(t => t.action === "BLOCK" || t.action === "STEP_UP_AUTH").forEach(t => {
@@ -2738,7 +3412,7 @@
     }
 
     // -----------------------------------------------------------------------
-    // 13. CHARTS & BENCHMARKS INITIALIZATION
+    // 15. CHARTS & BENCHMARKS INITIALIZATION
     // -----------------------------------------------------------------------
     function initCharts() {
       // 1. Generalization Benchmark Chart
@@ -2800,7 +3474,7 @@
         });
       }
 
-      // 3. Feature Importance Horizontal Bar (Model & Methodology Page)
+      // 3. Feature Importance Horizontal Bar
       const featCtx = document.getElementById("featureImportanceChart");
       if (featCtx) {
         appState.charts.featureImportance = new Chart(featCtx, {
@@ -2845,7 +3519,7 @@
         });
       }
 
-      // 4. Feature Ablation Study Chart (Model & Methodology Page)
+      // 4. Feature Ablation Study Chart
       const ablCtx = document.getElementById("ablationStudyChart");
       if (ablCtx) {
         appState.charts.ablationStudy = new Chart(ablCtx, {
@@ -2889,12 +3563,12 @@
     }
 
     // -----------------------------------------------------------------------
-    // 14. SIGNATURE JUDGE MODE (90-SECOND GUIDED DEMO - FEATURE 5)
+    // 16. SIGNATURE JUDGE MODE (90-SECOND GUIDED DEMO UPDATED NARRATIVE)
     // -----------------------------------------------------------------------
     const JUDGE_STEPS = [
       {
         label: "DEMO STEP 01 / 07",
-        desc: "Simulating legitimate consumer checkout in Mumbai (Frictionless ALLOW)",
+        desc: "Command Center: Ingesting normal payment &rarr; Autonomous Frictionless ALLOW",
         action: () => {
           switchTab("command-center");
           injectPresetTransaction("benign");
@@ -2902,7 +3576,7 @@
       },
       {
         label: "DEMO STEP 02 / 07",
-        desc: "Anomalous device & velocity spike detected &rarr; Autonomous STEP-UP Challenge (FPR: 1.06%)",
+        desc: "Command Center: Suspicious velocity anomaly detected &rarr; Autonomous STEP-UP Challenge",
         action: () => {
           switchTab("command-center");
           injectPresetTransaction("stepup");
@@ -2910,7 +3584,7 @@
       },
       {
         label: "DEMO STEP 03 / 07",
-        desc: "Critical fraud attack arriving &rarr; Traced live through AI Decision Pipeline &rarr; Autonomous BLOCK",
+        desc: "Command Center: Critical attack arrival &rarr; Tracing AI Decision Pipeline &rarr; Autonomous BLOCK",
         action: () => {
           switchTab("command-center");
           injectPresetTransaction("critical");
@@ -2918,30 +3592,31 @@
       },
       {
         label: "DEMO STEP 04 / 07",
-        desc: "Inspecting ML Architecture, Feature Groups & Ablation Studies",
+        desc: "Attack Lab: Constructing custom genome mutation & testing detector blind spot",
         action: () => {
-          switchTab("model-methodology");
+          switchTab("attack-lab");
+          testAttackLabScenario();
         }
       },
       {
         label: "DEMO STEP 05 / 07",
-        desc: "Inspecting 10-Dimensional Attack Genome Matrix for novel mutation synthesis",
+        desc: "Defense Lab: Executing adaptive retraining & proving +70.70 pt gain on unseen Gen-2 attacks",
         action: () => {
-          switchTab("genome-explorer");
-          mutateCurrentGenome();
+          switchTab("defense-lab");
+          runDefenseLabHardening();
         }
       },
       {
         label: "DEMO STEP 06 / 07",
-        desc: "Executing Automated Zero-Day Discovery & Proving Generalization Gain (+70.70 pts Recall on fresh Gen-2)",
+        desc: "Adaptive Battle Loop: Visualizing continuous closed-loop Red/Blue orchestration",
         action: () => {
-          switchTab("zero-day-lab");
-          runZeroDayDiscoveryCycle();
+          switchTab("battle-arena");
+          runBattleRoundStory();
         }
       },
       {
         label: "DEMO STEP 07 / 07",
-        desc: "Reviewing Immutable Audit Trail & Decision Logs (Zero PII stored)",
+        desc: "Audit Trail: Inspecting immutable, PII-free decision telemetry & governance logs",
         action: () => {
           switchTab("audit-trail");
         }
@@ -2998,7 +3673,7 @@
     }
 
     // -----------------------------------------------------------------------
-    // 15. TOAST NOTIFICATION ENGINE
+    // 17. TOAST NOTIFICATION ENGINE
     // -----------------------------------------------------------------------
     function showToast(msg, type = "info") {
       const container = document.getElementById("toastContainer");
