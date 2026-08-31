@@ -71,7 +71,7 @@ Modern fraud detection systems suffer from an **asymmetric vulnerability**: whil
 | **Gen-1 Adversarial Training Set Recall** | 22.10% | **99.10%** | **+77.00 pts** |
 | **Normal Legitimate Payment Recall** | 96.33% | **98.33%** | **+2.00%** |
 | **Normal False Positive Rate (FPR)** | **0.94%** | 2.88% | +1.94% (Regulated Calibration) |
-| **Probability Calibration (Brier / ECE)** | Brier: 0.0410 | **Brier: 0.0181 \| ECE: 0.0309** | Highly Calibrated |
+| **Probability Calibration (Brier / ECE)** | Brier: 0.0410 | **Brier: 0.0181 &bull; ECE: 0.0309** | Highly Calibrated |
 | **Policy Cost Index (Simulated)** | 38.0 (Binary Threshold) | **23.8 (Balanced Policy)** | **-37.4% Business Loss** |
 
 ---
