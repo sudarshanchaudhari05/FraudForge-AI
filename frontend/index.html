@@ -3632,16 +3632,19 @@
       renderCatalogCards(filtered);
     }
 
-    function selectCatalogCategory(cat) {
+    function selectCatalogCategory(cat, btnEl) {
       document.querySelectorAll(".category-filter-btn").forEach(b => {
         b.className = "category-filter-btn px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg";
       });
-      event.target.className = "category-filter-btn px-3 py-1.5 bg-slate-900 text-white rounded-lg";
+      const targetBtn = btnEl || (window.event && window.event.target ? window.event.target.closest("button") : null);
+      if (targetBtn) {
+        targetBtn.className = "category-filter-btn px-3 py-1.5 bg-slate-900 text-white rounded-lg";
+      }
 
       if (cat === "ALL") {
         renderCatalogCards(ATTACK_CATALOG);
       } else {
-        const filtered = ATTACK_CATALOG.filter(a => a.category === cat);
+        const filtered = ATTACK_CATALOG.filter(a => (a.category || "").toUpperCase() === cat.toUpperCase());
         renderCatalogCards(filtered);
       }
     }
@@ -3702,11 +3705,11 @@
     }
 
     function exportAuditLogs(fmt) {
+      const csvHeader = "timestamp,txId,probability,riskLevel,action,reasons,policy\n";
+      const csvRows = appState.auditLogs.map(l => `${l.timestamp},${l.txId},${l.probability},${l.riskLevel},${l.action},"${l.reasons}",${l.policy}`).join("\n");
       const dataStr = fmt === "json" 
         ? "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState.auditLogs, null, 2))
-        : "data:text/csv;charset=utf-8," + encodeURIComponent("timestamp,txId,probability,riskLevel,action,reasons,policy
-" + appState.auditLogs.map(l => `${l.timestamp},${l.txId},${l.probability},${l.riskLevel},${l.action},"${l.reasons}",${l.policy}`).join("
-"));
+        : "data:text/csv;charset=utf-8," + encodeURIComponent(csvHeader + csvRows);
       
       const downloadAnchor = document.createElement("a");
       downloadAnchor.setAttribute("href", dataStr);
