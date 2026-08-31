@@ -1,0 +1,2475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FraudForge AI — Autonomous Adaptive Payment Defense Lab</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+              navy: '#0f172a',
+              card: '#ffffff',
+              accent: '#eb001b', // Mastercard Red
+              amber: '#f79e1b',  // Mastercard Yellow
+            },
+            risk: {
+              low: '#10b981',
+              medium: '#f59e0b',
+              high: '#ea580c',
+              critical: '#dc2626',
+            }
+          },
+          boxShadow: {
+            'subtle': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)',
+            'card': '0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -1px rgba(15, 23, 42, 0.03)',
+            'card-hover': '0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04)',
+            'elevated': '0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* Custom Animation Keyframes */
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.04); }
+    }
+    @keyframes badgeFlash {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); background-color: #fee2e2; }
+      100% { transform: scale(1); }
+    }
+    @keyframes slideInUp {
+      from { transform: translateY(12px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(1000%); }
+    }
+
+    .animate-pulse-glow { animation: pulseGlow 2s infinite ease-in-out; }
+    .animate-slide-in { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .gene-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .gene-card:hover { transform: translateY(-2px); }
+    
+    /* Active Nav Styling */
+    .nav-btn.active {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 600;
+      border-left: 3px solid #eb001b;
+    }
+    .nav-btn {
+      border-left: 3px solid transparent;
+    }
+
+    /* Live Feed Flash */
+    .row-flash-critical {
+      animation: flashRed 1.8s ease-out;
+    }
+    @keyframes flashRed {
+      0% { background-color: #fee2e2; }
+      100% { background-color: transparent; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col selection:bg-rose-100 selection:text-rose-900">
+
+  <!-- ===================================================================== -->
+  <!-- TOP GLOBAL HEADER -->
+  <!-- ===================================================================== -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-subtle">
+    <div class="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand & Project Info -->
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
+          <!-- Mastercard Dual-Circle Brand Motif -->
+          <div class="flex items-center -space-x-2.5">
+            <div class="w-7 h-7 rounded-full bg-[#eb001b] opacity-95 shadow-sm"></div>
+            <div class="w-7 h-7 rounded-full bg-[#f79e1b] opacity-90 shadow-sm mix-blend-multiply"></div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-lg tracking-tight text-slate-950">FraudForge <span class="text-rose-600 font-extrabold">AI</span></span>
+              <span class="bg-rose-50 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded border border-rose-200">GFF 2026</span>
+            </div>
+            <p class="text-[11px] text-slate-500 font-medium hidden sm:block">Adaptive Red-Team / Blue-Team AI Defense Lab for Payment Security</p>
+          </div>
+        </div>
+
+        <div class="h-6 w-px bg-slate-200 mx-1 hidden md:block"></div>
+
+        <!-- Simulation Environment Badge -->
+        <div class="hidden lg:flex items-center gap-2 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-full text-[11px] text-slate-600 font-mono">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>SIMULATION ENVIRONMENT &bull; 28 ARCHETYPES</span>
+        </div>
+      </div>
+
+      <!-- Quick Actions & Judge Mode Button -->
+      <div class="flex items-center gap-3">
+        <!-- Live Traffic Stream Toggle -->
+        <button id="streamToggleBtn" onclick="toggleLiveStream()" class="flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition text-slate-700">
+          <span id="streamIndicatorDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span id="streamToggleText">Streaming Live</span>
+        </button>
+
+        <!-- Signature 90-Second Judge Demo Button -->
+        <button id="judgeDemoBtn" onclick="startJudgeDemo()" class="flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-lg bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 text-white shadow-card hover:shadow-card-hover transition transform active:scale-95 border border-slate-800">
+          <i data-lucide="play" class="w-3.5 h-3.5 fill-current text-amber-400"></i>
+          <span>START 90s JUDGE DEMO</span>
+        </button>
+
+        <!-- Reset System State -->
+        <button onclick="resetSystemState()" title="Reset demo state" class="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- JUDGE DEMO OVERLAY PROGRESS BAR -->
+  <!-- ===================================================================== -->
+  <div id="judgeProgressBanner" class="hidden bg-slate-950 text-white border-b border-slate-800 px-6 py-3 sticky top-16 z-30 shadow-elevated">
+    <div class="max-w-[1720px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 bg-rose-500/20 text-rose-300 px-2.5 py-1 rounded font-mono font-bold">
+          <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+          <span id="judgeStepLabel">DEMO STEP 01 / 07</span>
+        </div>
+        <span id="judgeStepDesc" class="font-medium text-slate-200">Simulating legitimate consumer checkout in Mumbai...</span>
+      </div>
+      <div class="flex items-center gap-4 w-full md:w-auto">
+        <div class="w-48 bg-slate-800 h-2 rounded-full overflow-hidden">
+          <div id="judgeProgressBar" class="bg-rose-500 h-full w-[14%] transition-all duration-500"></div>
+        </div>
+        <button onclick="stopJudgeDemo()" class="text-slate-400 hover:text-white px-2 py-1 rounded hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN APP CONTAINER (SIDEBAR + VIEWS) -->
+  <!-- ===================================================================== -->
+  <div class="flex-1 max-w-[1720px] w-full mx-auto flex overflow-hidden">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex-shrink-0 flex flex-col justify-between py-6 px-3">
+      <div class="space-y-6">
+        
+        <!-- Navigation Section: Core Lab -->
+        <div>
+          <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Operations Lab</div>
+          <nav class="space-y-1">
+            <button onclick="switchTab('command-center')" id="nav-command-center" class="nav-btn active w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="layout-dashboard" class="w-4 h-4 text-slate-500"></i>
+              <span>Command Center</span>
+            </button>
+            <button onclick="switchTab('ai-defense')" id="nav-ai-defense" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="shield-check" class="w-4 h-4 text-slate-500"></i>
+              <span>AI Decision Engine</span>
+              <span class="ml-auto bg-emerald-50 text-emerald-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-emerald-200">Phase 7</span>
+            </button>
+            <button onclick="switchTab('battle-arena')" id="nav-battle-arena" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="swords" class="w-4 h-4 text-rose-500"></i>
+              <span>Adaptive Battle Loop</span>
+              <span class="ml-auto bg-rose-50 text-rose-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-rose-200">Loop</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Navigation Section: Red Team & Genome -->
+        <div>
+          <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Red Team Intelligence</div>
+          <nav class="space-y-1">
+            <button onclick="switchTab('genome-explorer')" id="nav-genome-explorer" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="dna" class="w-4 h-4 text-indigo-500"></i>
+              <span>Attack Genome Matrix</span>
+            </button>
+            <button onclick="switchTab('zero-day-lab')" id="nav-zero-day-lab" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="radar" class="w-4 h-4 text-amber-500"></i>
+              <span>Zero-Day Discovery</span>
+              <span class="ml-auto bg-amber-50 text-amber-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-amber-200">+70.7%</span>
+            </button>
+            <button onclick="switchTab('attack-catalog')" id="nav-attack-catalog" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="book-open" class="w-4 h-4 text-slate-500"></i>
+              <span>Attack Catalog (28)</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Navigation Section: Analytics & Audit -->
+        <div>
+          <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Analytics & Audit</div>
+          <nav class="space-y-1">
+            <button onclick="switchTab('analytics-view')" id="nav-analytics-view" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="bar-chart-3" class="w-4 h-4 text-slate-500"></i>
+              <span>Defense Benchmarks</span>
+            </button>
+            <button onclick="switchTab('audit-trail')" id="nav-audit-trail" class="nav-btn w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-700 rounded-md hover:bg-slate-50 transition">
+              <i data-lucide="history" class="w-4 h-4 text-slate-500"></i>
+              <span>Alerts & Audit Logs</span>
+              <span id="sidebarAlertCount" class="ml-auto bg-rose-100 text-rose-800 text-[10px] font-bold px-1.5 py-0.2 rounded-full">3</span>
+            </button>
+          </nav>
+        </div>
+
+      </div>
+
+      <!-- Sidebar Footer Status Card -->
+      <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-[11px]">
+        <div class="flex items-center justify-between text-slate-500">
+          <span>Model Status</span>
+          <span class="text-emerald-700 font-bold font-mono">READY</span>
+        </div>
+        <div class="text-slate-800 font-medium">Hardened XGBoost v7.1</div>
+        <div class="text-[10px] text-slate-500">72 Automated Tests Passing &bull; 0 Hardcoded Leaks</div>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEW AREA -->
+    <main class="flex-1 p-6 lg:p-8 overflow-y-auto bg-slate-50">
+      
+      <!-- ================================================================= -->
+      <!-- VIEW 1: COMMAND CENTER (DASHBOARD) -->
+      <!-- ================================================================= -->
+      <section id="view-command-center" class="space-y-6">
+        
+        <!-- Welcome & Fast Action Banner -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <h1 class="text-xl font-bold text-slate-950 flex items-center gap-2">
+              Autonomous Adaptive Payment Defense Center
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            </h1>
+            <p class="text-xs text-slate-500">Closed-loop AI pipeline: Generating adversarial payment attacks &bull; Learning from misses &bull; Deploying risk-aware mitigation policies</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button onclick="injectPresetTransaction('suspicious')" class="text-xs font-semibold px-3.5 py-2 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg hover:bg-rose-100 transition flex items-center gap-2">
+              <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+              <span>Simulate Critical Attack</span>
+            </button>
+            <button onclick="switchTab('zero-day-lab')" class="text-xs font-semibold px-3.5 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition flex items-center gap-2 shadow-sm">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>Discover Unknown Attack</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          
+          <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-card">
+            <div class="text-[11px] font-semibold text-slate-500">TOTAL SCANNED</div>
+            <div id="kpiTotalTxs" class="text-2xl font-extrabold text-slate-950 font-mono mt-1">1,248</div>
+            <div class="text-[10px] text-emerald-600 font-medium mt-1 flex items-center gap-1">
+              <i data-lucide="activity" class="w-3 h-3"></i> Live Synthetic Stream
+            </div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-card">
+            <div class="text-[11px] font-semibold text-slate-500">INTERCEPT RATE</div>
+            <div class="text-2xl font-extrabold text-emerald-600 font-mono mt-1">99.3%</div>
+            <div class="text-[10px] text-slate-500 font-medium mt-1">Balanced Policy Intercept</div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-card">
+            <div class="text-[11px] font-semibold text-slate-500">BLOCKED ATTACKS</div>
+            <div id="kpiBlockedTxs" class="text-2xl font-extrabold text-rose-600 font-mono mt-1">184</div>
+            <div class="text-[10px] text-rose-600 font-medium mt-1 font-mono">Autonomous Declines</div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-card">
+            <div class="text-[11px] font-semibold text-slate-500">STEP-UP CHALLENGES</div>
+            <div id="kpiStepUpTxs" class="text-2xl font-extrabold text-amber-600 font-mono mt-1">42</div>
+            <div class="text-[10px] text-amber-600 font-medium mt-1">3DS / Biometrics (FPR 1.06%)</div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-card">
+            <div class="text-[11px] font-semibold text-slate-500">GEN-2 GAIN</div>
+            <div class="text-2xl font-extrabold text-indigo-600 font-mono mt-1">+70.7%</div>
+            <div class="text-[10px] text-indigo-600 font-medium mt-1">23.1% &rarr; 93.8% Recall</div>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-card">
+            <div class="text-[11px] font-semibold text-slate-500">MONEY PROTECTED</div>
+            <div id="kpiProtectedAmount" class="text-2xl font-extrabold text-slate-950 font-mono mt-1">&#8377; 42.8L</div>
+            <div class="text-[10px] text-slate-500 font-medium mt-1">Simulated Value in INR</div>
+          </div>
+
+        </div>
+
+        <!-- Main Dashboard Split: Live Activity Stream & Real-time Risk Decision Panel -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Live Activity Feed Table (7 cols) -->
+          <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl shadow-card p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <span>Live Transaction Stream</span>
+                  <span class="bg-slate-100 text-slate-600 text-[10px] font-mono px-2 py-0.5 rounded">Simulated Real-Time</span>
+                </h2>
+                <p class="text-[11px] text-slate-500">Continuous feed evaluating multi-tier autonomous decisions</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="injectPresetTransaction('benign')" class="text-[11px] font-medium px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded transition">+ Normal TX</button>
+                <button onclick="injectPresetTransaction('stepup')" class="text-[11px] font-medium px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded transition">+ Step-Up TX</button>
+                <button onclick="injectPresetTransaction('critical')" class="text-[11px] font-medium px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 rounded transition">+ Critical TX</button>
+              </div>
+            </div>
+
+            <!-- Transaction Stream Table -->
+            <div class="overflow-x-auto max-h-[460px] overflow-y-auto border border-slate-100 rounded-xl">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-mono text-[11px] sticky top-0 z-10">
+                  <tr>
+                    <th class="py-2.5 px-3">TX ID</th>
+                    <th class="py-2.5 px-3">AMOUNT</th>
+                    <th class="py-2.5 px-3">LOCATION</th>
+                    <th class="py-2.5 px-3">CHANNEL</th>
+                    <th class="py-2.5 px-3">RISK SCORE</th>
+                    <th class="py-2.5 px-3">AUTONOMOUS ACTION</th>
+                    <th class="py-2.5 px-3 text-right">INSPECT</th>
+                  </tr>
+                </thead>
+                <tbody id="transactionStreamBody" class="divide-y divide-slate-100 font-mono text-[11px]">
+                  <!-- Rows injected dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Active Inspected Transaction AI Decision Panel (5 cols) -->
+          <div class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl shadow-card p-5 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Autonomous AI Decision</span>
+                <h2 id="inspectTxId" class="text-base font-bold text-slate-950 font-mono">TX-IND-90284</h2>
+              </div>
+              <div id="inspectDecisionBadge" class="px-3 py-1 rounded-full text-xs font-bold font-mono bg-rose-100 text-rose-800 border border-rose-300">
+                ACTION: BLOCK
+              </div>
+            </div>
+
+            <!-- Probability & Risk Tier Guage -->
+            <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+              <div>
+                <div class="text-[10px] text-slate-500 font-medium">FRAUD PROBABILITY</div>
+                <div id="inspectFraudProb" class="text-2xl font-extrabold text-slate-900 font-mono mt-0.5">97.8%</div>
+                <div class="w-full bg-slate-200 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                  <div id="inspectProbBar" class="bg-rose-600 h-full w-[97%] transition-all duration-500"></div>
+                </div>
+              </div>
+              <div>
+                <div class="text-[10px] text-slate-500 font-medium">RISK TIER & SCORE</div>
+                <div id="inspectRiskLevel" class="text-lg font-bold text-rose-600 font-mono mt-0.5">CRITICAL (97.8)</div>
+                <div class="text-[10px] text-slate-500 mt-1 font-mono">Threshold &ge; 0.85</div>
+              </div>
+            </div>
+
+            <!-- Explainable Reason Codes -->
+            <div>
+              <div class="text-xs font-bold text-slate-800 mb-2 flex items-center justify-between">
+                <span>Triggered Reason Codes</span>
+                <span class="text-[10px] text-slate-500 font-normal font-mono">Feature Grounded</span>
+              </div>
+              <div id="inspectReasonCodesList" class="space-y-1.5 max-h-[140px] overflow-y-auto pr-1">
+                <!-- Reason code pills -->
+              </div>
+            </div>
+
+            <!-- Feature Importance Attribution Bars -->
+            <div class="space-y-2 pt-2 border-t border-slate-100">
+              <div class="text-xs font-bold text-slate-800">Top Anomaly Contributors</div>
+              <div class="space-y-1.5 text-[11px]">
+                <div>
+                  <div class="flex justify-between text-slate-600 mb-0.5">
+                    <span>IP / Network Anomaly</span>
+                    <span id="featIpVal" class="font-mono font-semibold">0.89</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div id="featIpBar" class="bg-rose-500 h-full w-[89%]"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-slate-600 mb-0.5">
+                    <span>Velocity Escalation (1h)</span>
+                    <span id="featVelVal" class="font-mono font-semibold">8 tx/hr</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div id="featVelBar" class="bg-amber-500 h-full w-[78%]"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-slate-600 mb-0.5">
+                    <span>Amount Deviation Ratio</span>
+                    <span id="featAmtVal" class="font-mono font-semibold">+14.2x</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div id="featAmtBar" class="bg-rose-500 h-full w-[84%]"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mitigation Simulator Payload -->
+            <div class="p-3 bg-slate-900 text-slate-100 rounded-xl text-[11px] font-mono space-y-1">
+              <div class="text-slate-400 text-[10px] uppercase">Simulated Gateway Response</div>
+              <div id="inspectMitigationText" class="text-rose-400 font-bold">STATUS: REJECTED</div>
+              <div id="inspectMitigationDesc" class="text-slate-300 text-[10px]">Payment authorization blocked. Hardened risk score exceeded policy rejection threshold.</div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 2: ATTACK GENOME MATRIX (FEATURE 1) -->
+      <!-- ================================================================= -->
+      <section id="view-genome-explorer" class="hidden space-y-6">
+        
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="bg-indigo-50 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded border border-indigo-200">SIGNATURE INNOVATION</span>
+                <h1 class="text-xl font-bold text-slate-950">10-Dimensional Attack Genome Matrix</h1>
+              </div>
+              <p class="text-xs text-slate-500 mt-1">Decomposing complex GenAI payment fraud into structured, mutable behavioral genes &bull; Powering evolutionary Red-Team synthesis</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <select id="genomeArchetypeSelect" onchange="loadArchetypeIntoGenome(this.value)" class="text-xs font-semibold px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                <!-- Populated via JS -->
+              </select>
+              <button onclick="mutateCurrentGenome()" class="text-xs font-bold px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm transition flex items-center gap-2">
+                <i data-lucide="dna" class="w-3.5 h-3.5"></i>
+                <span>Mutate Gene</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Synthetic Defensive Notice -->
+          <div class="bg-amber-50 border border-amber-200 text-amber-900 px-4 py-2.5 rounded-xl text-xs flex items-center gap-2">
+            <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+            <span><strong>SYNTHETIC DEFENSIVE SCENARIO</strong> &bull; All Attack Genomes are simulated defensive models engineered to stress-test detection pipelines.</span>
+          </div>
+        </div>
+
+        <!-- 10 Genome Gene Cards Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="genomeCardsContainer">
+          <!-- Dynamically populated 10 Gene Cards -->
+        </div>
+
+        <!-- Genome Scores & Discovery Evaluation Panel -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+              <h2 class="text-sm font-bold text-slate-900">Multi-Objective Fitness & Threat Scoring</h2>
+              <p class="text-xs text-slate-500">Real-time valuation of candidate uniqueness, behavioral coherence, and detector bypass potential</p>
+            </div>
+            <div id="genomeCandidateName" class="text-xs font-bold font-mono px-3 py-1 bg-slate-100 text-slate-800 rounded-lg">
+              Voice Clone Executive Impersonation
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+              <div class="text-xs font-semibold text-slate-600 flex items-center justify-between">
+                <span>NOVELTY SCORE</span>
+                <span id="genomeNoveltyScore" class="font-mono font-bold text-slate-900">0.24</span>
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div id="genomeNoveltyBar" class="bg-indigo-600 h-full w-[24%]"></div>
+              </div>
+              <div class="text-[10px] text-slate-500">1.0 - Max Similarity to 28 Archetypes</div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+              <div class="text-xs font-semibold text-slate-600 flex items-center justify-between">
+                <span>DOMAIN REALISM</span>
+                <span id="genomeRealismScore" class="font-mono font-bold text-slate-900">0.86</span>
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div id="genomeRealismBar" class="bg-emerald-600 h-full w-[86%]"></div>
+              </div>
+              <div class="text-[10px] text-slate-500">Cross-Channel & Behavioral Synergies</div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+              <div class="text-xs font-semibold text-slate-600 flex items-center justify-between">
+                <span>EVASION POTENTIAL</span>
+                <span id="genomeEvasionScore" class="font-mono font-bold text-slate-900">0.76</span>
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div id="genomeEvasionBar" class="bg-amber-500 h-full w-[76%]"></div>
+              </div>
+              <div class="text-[10px] text-slate-500">Suppression of High-Importance Features</div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+              <div class="text-xs font-semibold text-slate-600 flex items-center justify-between">
+                <span>PRIORITY RANK</span>
+                <span id="genomePriorityScore" class="font-mono font-bold text-rose-600">0.68</span>
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div id="genomePriorityBar" class="bg-rose-600 h-full w-[68%]"></div>
+              </div>
+              <div class="text-[10px] text-slate-500">Aggregated Hardening Priority</div>
+            </div>
+
+          </div>
+
+          <!-- Test Genome Against Baseline Detector -->
+          <div class="flex items-center justify-between pt-2">
+            <div class="text-xs text-slate-600">
+              Test this synthetic genome against the baseline detector to reveal blind spots.
+            </div>
+            <button onclick="testGenomeAgainstBaseline()" class="text-xs font-bold px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg shadow-sm transition flex items-center gap-2">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i>
+              <span>Simulate Candidate in Detector</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 3: ZERO-DAY DISCOVERY LAB (FEATURE 3) -->
+      <!-- ================================================================= -->
+      <section id="view-zero-day-lab" class="hidden space-y-6">
+        
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-200">AUTOMATED RED TEAM</span>
+              <h1 class="text-xl font-bold text-slate-950">Zero-Day Discovery &amp; Hardening Engine</h1>
+            </div>
+            <p class="text-xs text-slate-500">Synthesize unseen attack combinations &bull; Expose baseline blind spots &bull; Retrain detector &bull; Prove generalization on fresh Gen-2 variants</p>
+          </div>
+          <button id="discoverZeroDayBtn" onclick="runZeroDayDiscoveryCycle()" class="text-xs font-extrabold px-5 py-2.5 bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-600 hover:to-rose-700 text-white rounded-xl shadow-card transition transform active:scale-95 flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>DISCOVER UNKNOWN ATTACK</span>
+          </button>
+        </div>
+
+        <!-- 5-Stage Live Discovery Workflow Visualizer -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-6">
+          <h2 class="text-sm font-bold text-slate-900 flex items-center justify-between">
+            <span>Adaptive Closed-Loop Execution</span>
+            <span id="discoveryStatusBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 bg-slate-100 text-slate-600 rounded">STATUS: IDLE</span>
+          </h2>
+
+          <!-- 5 Steps Flow -->
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+            
+            <div id="stepCard1" class="p-3 border border-slate-200 rounded-xl bg-slate-50 space-y-1.5 transition">
+              <div class="text-[10px] font-bold font-mono text-slate-400">STAGE 01</div>
+              <div class="text-xs font-bold text-slate-800">1. Genome Discovery</div>
+              <p class="text-[10px] text-slate-500">Mutates 10-gene vector to synthesize candidate.</p>
+              <div id="step1Status" class="text-[10px] font-mono text-slate-400">&bull; Standby</div>
+            </div>
+
+            <div id="stepCard2" class="p-3 border border-slate-200 rounded-xl bg-slate-50 space-y-1.5 transition">
+              <div class="text-[10px] font-bold font-mono text-slate-400">STAGE 02</div>
+              <div class="text-xs font-bold text-slate-800">2. Baseline Attack</div>
+              <p class="text-[10px] text-slate-500">Tests 100 synthetic txs against baseline model.</p>
+              <div id="step2Status" class="text-[10px] font-mono text-slate-400">&bull; Standby</div>
+            </div>
+
+            <div id="stepCard3" class="p-3 border border-slate-200 rounded-xl bg-slate-50 space-y-1.5 transition">
+              <div class="text-[10px] font-bold font-mono text-slate-400">STAGE 03</div>
+              <div class="text-xs font-bold text-slate-800">3. Blind-Spot Hunter</div>
+              <p class="text-[10px] text-slate-500">Extracts false-negative feature distributions.</p>
+              <div id="step3Status" class="text-[10px] font-mono text-slate-400">&bull; Standby</div>
+            </div>
+
+            <div id="stepCard4" class="p-3 border border-slate-200 rounded-xl bg-slate-50 space-y-1.5 transition">
+              <div class="text-[10px] font-bold font-mono text-slate-400">STAGE 04</div>
+              <div class="text-xs font-bold text-slate-800">4. Adaptive Hardening</div>
+              <p class="text-[10px] text-slate-500">Retrains detector with augmented zero-day data.</p>
+              <div id="step4Status" class="text-[10px] font-mono text-slate-400">&bull; Standby</div>
+            </div>
+
+            <div id="stepCard5" class="p-3 border border-slate-200 rounded-xl bg-slate-50 space-y-1.5 transition">
+              <div class="text-[10px] font-bold font-mono text-slate-400">STAGE 05</div>
+              <div class="text-xs font-bold text-slate-800">5. Gen-2 Generalization</div>
+              <p class="text-[10px] text-slate-500">Re-attacks with fresh, unseen Gen-2 variant.</p>
+              <div id="step5Status" class="text-[10px] font-mono text-slate-400">&bull; Standby</div>
+            </div>
+
+          </div>
+
+          <!-- Interactive Results Comparison Box -->
+          <div id="discoveryResultsBox" class="p-5 bg-slate-900 text-white rounded-xl space-y-4 font-mono text-xs">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="text-amber-400 font-bold">LATEST DISCOVERY EXPERIMENT REPORT</span>
+              <span id="discoveryCandidateId">NSA-001-V2 (Gen-2 Evolved)</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+              <div class="p-3 bg-slate-800/80 rounded-lg">
+                <div class="text-[10px] text-slate-400">BASELINE DETECTOR RECALL</div>
+                <div id="resBaselineRecall" class="text-xl font-extrabold text-rose-400 mt-1">23.1%</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">769 Misses (Blind Spot)</div>
+              </div>
+              <div class="p-3 bg-slate-800/80 rounded-lg">
+                <div class="text-[10px] text-slate-400">HARDENED DETECTOR RECALL</div>
+                <div id="resHardenedRecall" class="text-xl font-extrabold text-emerald-400 mt-1">93.8%</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Only 62 Misses</div>
+              </div>
+              <div class="p-3 bg-slate-800/80 rounded-lg">
+                <div class="text-[10px] text-slate-400">GENERALIZATION GAIN</div>
+                <div id="resGainDelta" class="text-xl font-extrabold text-indigo-400 mt-1">+70.70 pts</div>
+                <div class="text-[10px] text-emerald-400 mt-0.5">91.9% Miss Reduction</div>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-slate-300 bg-slate-800/40 p-3 rounded border border-slate-700/50">
+              <span class="text-amber-300 font-bold">DEFENSIVE INSIGHT:</span> Hardening the model against synthetic blind-spots successfully transferred to fresh unseen Gen-2 variants (Dataset D) without memorization.
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 4: ADAPTIVE BATTLE ARENA (FEATURE 2) -->
+      <!-- ================================================================= -->
+      <section id="view-battle-arena" class="hidden space-y-6">
+        
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <h1 class="text-xl font-bold text-slate-950">Red-Team &bull; Blue-Team Battle Arena</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Continuous interactive loop: Attack the detector &bull; Learn from the miss &bull; Deploy hardened defense</p>
+          </div>
+          <button onclick="runBattleSimulation()" class="text-xs font-bold px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg shadow-sm transition flex items-center gap-2">
+            <i data-lucide="play" class="w-3.5 h-3.5"></i>
+            <span>Simulate Battle Round</span>
+          </button>
+        </div>
+
+        <!-- Side-by-Side Dual Arena -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Red Team Side -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-card space-y-4 border-t-4 border-t-rose-500">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-xs font-mono">RED</div>
+                <div>
+                  <h2 class="text-sm font-bold text-slate-900">Adversarial Red Team</h2>
+                  <p class="text-[11px] text-slate-500">Autonomous attack mutations &amp; evasions</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-mono bg-rose-50 text-rose-700 px-2 py-0.5 rounded border border-rose-200 font-bold">28 Vectors</span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="p-3 bg-slate-50 rounded-xl space-y-1">
+                <div class="text-[10px] text-slate-400 font-mono font-bold">CURRENT ACTIVE SCENARIO</div>
+                <div id="battleRedName" class="font-bold text-slate-900">ATK-021: Adversarial Perturbation Evasion</div>
+                <div class="text-[11px] text-slate-500">Targeting device_change (0) and velocity smoothing (4 tx/hr).</div>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl space-y-1">
+                <div class="text-[10px] text-slate-400 font-mono font-bold">MUTATION INTENSITY</div>
+                <div class="flex items-center gap-3">
+                  <input type="range" min="10" max="90" value="65" class="w-full accent-rose-600" />
+                  <span class="font-mono font-bold text-slate-700">0.65</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blue Team Side -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-card space-y-4 border-t-4 border-t-indigo-500">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs font-mono">BLUE</div>
+                <div>
+                  <h2 class="text-sm font-bold text-slate-900">AI Defense Lab</h2>
+                  <p class="text-[11px] text-slate-500">Adaptive retraining &amp; multi-tier risk policy</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-200 font-bold">Hardened Model</span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="p-3 bg-slate-50 rounded-xl space-y-1">
+                <div class="text-[10px] text-slate-400 font-mono font-bold">HARDENING STRATEGY</div>
+                <div class="font-bold text-slate-900">Adversarial Augmentation + Risk-Aware Mitigation</div>
+                <div class="text-[11px] text-slate-500">Preserves normal FPR &le; 1.06% while boosting unseen recall.</div>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl space-y-1">
+                <div class="text-[10px] text-slate-400 font-mono font-bold">DECISION ENGINE POLICY</div>
+                <div class="font-mono font-bold text-indigo-700">BALANCED (Allow &lt; 0.30, Step-Up &lt; 0.85, Block &ge; 0.85)</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 5: RED TEAM ATTACK CATALOG (28 ARCHETYPES) -->
+      <!-- ================================================================= -->
+      <section id="view-attack-catalog" class="hidden space-y-6">
+        
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <h1 class="text-xl font-bold text-slate-950">28 GenAI Payment Fraud Archetypes</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Comprehensive intelligence catalog mapped to the 10-dimensional Attack Genome</p>
+          </div>
+          <div class="flex items-center gap-3 w-full md:w-auto">
+            <input type="text" id="catalogSearchInput" oninput="filterCatalog()" placeholder="Search attacks by name or ID..." class="text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500 w-full md:w-64" />
+          </div>
+        </div>
+
+        <!-- Filter Category Tabs -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-semibold" id="catalogCategoryTabs">
+          <button onclick="selectCatalogCategory('ALL')" class="category-filter-btn px-3 py-1.5 bg-slate-900 text-white rounded-lg">All (28)</button>
+          <button onclick="selectCatalogCategory('AI Social Engineering & Impersonation')" class="category-filter-btn px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg">Social Engineering (4)</button>
+          <button onclick="selectCatalogCategory('Automated Account Takeover & Behavioral Mimicry')" class="category-filter-btn px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg">Account Takeover (4)</button>
+          <button onclick="selectCatalogCategory('Synthetic Identity & Agentic Payment Exploitation')" class="category-filter-btn px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg">Synthetic Identity (4)</button>
+          <button onclick="selectCatalogCategory('Agentic & Autonomous Bot Payment Manipulation')" class="category-filter-btn px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg">Autonomous Bots (4)</button>
+          <button onclick="selectCatalogCategory('E-Commerce & Merchant Exploits')" class="category-filter-btn px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg">Merchant Exploits (4)</button>
+        </div>
+
+        <!-- Archetype Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="catalogCardsGrid">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 6: DEFENSE BENCHMARKS & ANALYTICS -->
+      <!-- ================================================================= -->
+      <section id="view-analytics-view" class="hidden space-y-6">
+        
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
+          <h1 class="text-xl font-bold text-slate-950">Empirical Defense Benchmarks &amp; Analytics</h1>
+          <p class="text-xs text-slate-500 mt-0.5">Accurate experimental results from FraudForge AI Phases 1–7</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Chart 1: Baseline vs Hardened Generalization -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-card space-y-4">
+            <h2 class="text-sm font-bold text-slate-900">Unseen Gen-2 Generalization Benchmark</h2>
+            <div class="h-64">
+              <canvas id="generalizationChart"></canvas>
+            </div>
+            <div class="text-[11px] text-slate-500 flex justify-between font-mono">
+              <span>Baseline: 23.1% (769 misses)</span>
+              <span class="text-emerald-600 font-bold">Hardened: 93.8% (62 misses) &bull; +70.7 pts</span>
+            </div>
+          </div>
+
+          <!-- Chart 2: Multi-Tier Risk Policy Distribution -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-card space-y-4">
+            <h2 class="text-sm font-bold text-slate-900">Autonomous Payment Action Breakdown</h2>
+            <div class="h-64">
+              <canvas id="policyDistChart"></canvas>
+            </div>
+            <div class="text-[11px] text-slate-500 flex justify-between font-mono">
+              <span>Allow: 84.9% &bull; Monitor: 5.6%</span>
+              <span>Step-Up: 4.1% &bull; Block: 5.4%</span>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 7: ALERTS & IMMUTABLE AUDIT TRAIL -->
+      <!-- ================================================================= -->
+      <section id="view-audit-trail" class="hidden space-y-6">
+        
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card flex items-center justify-between">
+          <div>
+            <h1 class="text-xl font-bold text-slate-950">Security Alerts &amp; Audit Trail</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Immutable transaction decision events logged without PII</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="exportAuditLogs('json')" class="text-xs font-semibold px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg transition flex items-center gap-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Export JSON
+            </button>
+            <button onclick="exportAuditLogs('csv')" class="text-xs font-semibold px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg transition flex items-center gap-1.5">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Export CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Audit Table -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-card p-5 space-y-4">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[11px]">
+                <tr>
+                  <th class="py-2.5 px-3">TIMESTAMP</th>
+                  <th class="py-2.5 px-3">TRANSACTION ID</th>
+                  <th class="py-2.5 px-3">PROBABILITY</th>
+                  <th class="py-2.5 px-3">RISK TIER</th>
+                  <th class="py-2.5 px-3">ACTION</th>
+                  <th class="py-2.5 px-3">PRIMARY REASON CODES</th>
+                  <th class="py-2.5 px-3">POLICY</th>
+                </tr>
+              </thead>
+              <tbody id="auditTrailTableBody" class="divide-y divide-slate-100 text-[11px]">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 8: AI DECISION ENGINE DETAIL INSPECTOR -->
+      <!-- ================================================================= -->
+      <section id="view-ai-defense" class="hidden space-y-6">
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
+          <h1 class="text-xl font-bold text-slate-950">Risk-Aware Decision Engine &bull; Production Rules</h1>
+          <p class="text-xs text-slate-500 mt-1">Multi-tier decision mapping: Fraud Probability &rarr; Risk Tier &rarr; Autonomous Action &rarr; Explanation Reason Codes</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+            <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1">
+              <div class="text-[10px] font-bold text-emerald-800 font-mono">TIER 1 &bull; LOW RISK</div>
+              <div class="text-base font-bold text-emerald-950 font-mono">[0.00 &ndash; 0.30)</div>
+              <div class="text-xs font-extrabold text-emerald-700">ACTION: ALLOW</div>
+              <p class="text-[10px] text-emerald-800 mt-1">Frictionless authorization for authenticated benign payments.</p>
+            </div>
+
+            <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl space-y-1">
+              <div class="text-[10px] font-bold text-amber-800 font-mono">TIER 2 &bull; MEDIUM RISK</div>
+              <div class="text-base font-bold text-amber-950 font-mono">[0.30 &ndash; 0.60)</div>
+              <div class="text-xs font-extrabold text-amber-700">ACTION: MONITOR</div>
+              <p class="text-[10px] text-amber-800 mt-1">Authorized with post-transaction telemetry &amp; velocity tracking.</p>
+            </div>
+
+            <div class="p-4 bg-orange-50 border border-orange-200 rounded-xl space-y-1">
+              <div class="text-[10px] font-bold text-orange-800 font-mono">TIER 3 &bull; HIGH RISK</div>
+              <div class="text-base font-bold text-orange-950 font-mono">[0.60 &ndash; 0.85)</div>
+              <div class="text-xs font-extrabold text-orange-700">ACTION: STEP_UP_AUTH</div>
+              <p class="text-[10px] text-orange-800 mt-1">Triggers EMV 3DS, Biometric Push, or OTP challenge (FPR: 1.06%).</p>
+            </div>
+
+            <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl space-y-1">
+              <div class="text-[10px] font-bold text-rose-800 font-mono">TIER 4 &bull; CRITICAL RISK</div>
+              <div class="text-base font-bold text-rose-950 font-mono">[0.85 &ndash; 1.00]</div>
+              <div class="text-xs font-extrabold text-rose-700">ACTION: BLOCK</div>
+              <p class="text-[10px] text-rose-800 mt-1">Direct autonomous rejection. Prevents financial loss.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <!-- ===================================================================== -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ===================================================================== -->
+  <!-- GLOBAL FOOTER -->
+  <!-- ===================================================================== -->
+  <footer class="bg-white border-t border-slate-200 py-3 px-6 text-[11px] text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div>
+      <span class="font-bold text-slate-700">FraudForge AI</span> &bull; Mastercard Innovation Challenge @ GFF 2026
+    </div>
+    <div class="flex items-center gap-3 font-mono text-[10px]">
+      <span class="text-slate-400">STATUS: PROTOTYPE ONLINE</span>
+      <span>&bull;</span>
+      <span>72 UNIT TESTS PASSING</span>
+      <span>&bull;</span>
+      <span class="text-rose-600 font-bold">SIMULATION ENVIRONMENT</span>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT STATE, DATA & LOGIC ENGINE -->
+  <!-- ===================================================================== -->
+  <script>
+    // -----------------------------------------------------------------------
+    // 1. DATA CATALOG: 28 KNOWN GENAI PAYMENT-FRAUD ARCHETYPES
+    // -----------------------------------------------------------------------
+    const ATTACK_CATALOG = [
+  {
+    "id": "ATK-001",
+    "name": "Voice Clone Executive Impersonation (CEO Fraud / APP)",
+    "category": "AI Social Engineering & Impersonation",
+    "severity": "CRITICAL",
+    "detectability": 0.35,
+    "surface": "p2p_transfer",
+    "description": "Adversaries employ generative voice cloning of corporate executives to authorize high-value urgent push payments.",
+    "indicators": [
+      "Unusually high transaction amount compared to customer baseline",
+      "Urgent timing during off-peak or after-hours windows",
+      "Payment routed via authorized P2P or instant wire channel",
+      "Customer passes standard 2FA because user was socially engineered into self-authorization"
+    ],
+    "genome": {
+      "target": "payment_authorization",
+      "entry_vector": "deepfake_synthesis",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "trusted_session_behavior",
+      "payment_channel": "p2p_transfer",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "off_hours",
+      "identity_strategy": "authorized_victim",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-002",
+    "name": "Conversational Phishing Agent (AI Romance / Trust Scam)",
+    "category": "AI Social Engineering & Impersonation",
+    "severity": "HIGH",
+    "detectability": 0.3,
+    "surface": "p2p_transfer",
+    "description": "Autonomous LLM agents maintain multi-week relationship grooming with victims to extract recurring authorized transfers.",
+    "indicators": [
+      "Gradually escalating transaction amounts over multiple cycles",
+      "Repeated P2P transfers to new beneficiary accounts",
+      "Customer uses native trusted device with normal IP score",
+      "High amount deviation relative to historical account average"
+    ],
+    "genome": {
+      "target": "customer",
+      "entry_vector": "social_engineering",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "trusted_device_masking",
+      "payment_channel": "p2p_transfer",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "daytime_peak",
+      "identity_strategy": "authorized_victim",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-003",
+    "name": "Deepfake Family Emergency Push Payment",
+    "category": "AI Social Engineering & Impersonation",
+    "severity": "HIGH",
+    "detectability": 0.32,
+    "surface": "mobile_app",
+    "description": "Generative audio distress calls simulate urgent family emergencies to manipulate victims into immediate money transfers.",
+    "indicators": [
+      "Sudden high-velocity transfers within a 1-hour window",
+      "High transaction amount deviation on mobile banking application",
+      "Legitimate customer credentials and biometric authorization",
+      "Beneficiary account registered recently in high-risk jurisdiction"
+    ],
+    "genome": {
+      "target": "customer",
+      "entry_vector": "deepfake_synthesis",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "trusted_device_masking",
+      "payment_channel": "mobile_app",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "authorized_victim",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "cross_border_arbitrage"
+    }
+  },
+  {
+    "id": "ATK-004",
+    "name": "Automated AI Customer Support / Refund Phishing",
+    "category": "AI Social Engineering & Impersonation",
+    "severity": "MEDIUM",
+    "detectability": 0.45,
+    "surface": "e-commerce",
+    "description": "Automated conversational AI bots masquerade as merchant dispute agents to lure users into overpayment refund traps.",
+    "indicators": [
+      "Rapid succession of micro-refunds followed by large outbound reversal",
+      "E-commerce or digital marketplace checkout redirection",
+      "Elevated merchant risk rating due to newly onboarded gateway"
+    ],
+    "genome": {
+      "target": "merchant",
+      "entry_vector": "social_engineering",
+      "behavior": "cart_manipulation",
+      "evasion_strategy": "risk_signal_suppression",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "daytime_peak",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "digital_marketplace",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-005",
+    "name": "Deepfake Video KYC Onboarding Bypass",
+    "category": "Synthetic Identity & Deepfake Onboarding",
+    "severity": "CRITICAL",
+    "detectability": 0.4,
+    "surface": "mobile_app",
+    "description": "Diffusion video synthesis generates real-time liveness head movements to bypass automated KYC identity checks.",
+    "indicators": [
+      "Newly created account (account age < 14 days) conducting immediate high-tier transactions",
+      "Elevated identity risk score despite passing onboarding liveness",
+      "New device registration with zero historical telemetry",
+      "Instant conversion to crypto or high-liquidity digital goods"
+    ],
+    "genome": {
+      "target": "identity",
+      "entry_vector": "deepfake_synthesis",
+      "behavior": "identity_fabrication",
+      "evasion_strategy": "biometric_spoofing",
+      "payment_channel": "mobile_app",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "synthetic_sleeper",
+      "merchant_strategy": "high_risk_crypto",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-006",
+    "name": "Generative Identity Fabrication (Franken-Identity)",
+    "category": "Synthetic Identity & Deepfake Onboarding",
+    "severity": "HIGH",
+    "detectability": 0.48,
+    "surface": "e-commerce",
+    "description": "LLMs weave real dormant SSNs with synthesized demographic profiles and fabricated credit histories.",
+    "indicators": [
+      "High identity risk score combined with clean legacy credit bureau pulls",
+      "Device fingerprint incongruent with historical residential zip code",
+      "Moderate initial purchases followed by rapid credit line exhaustion"
+    ],
+    "genome": {
+      "target": "identity",
+      "entry_vector": "deepfake_synthesis",
+      "behavior": "identity_fabrication",
+      "evasion_strategy": "risk_signal_suppression",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "fabricated_identity",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-007",
+    "name": "Diffusion Document Forgery (Statement Manipulation)",
+    "category": "Synthetic Identity & Deepfake Onboarding",
+    "severity": "HIGH",
+    "detectability": 0.42,
+    "surface": "money_transfer",
+    "description": "Pixel-perfect generative document editing modifies bank statements and utility bills to unlock elevated credit tiers.",
+    "indicators": [
+      "Sudden tier jump in transaction authorization limits",
+      "High-value transactions initiated from unverified residential subnets",
+      "Moderate account age with sudden velocity spike"
+    ],
+    "genome": {
+      "target": "identity",
+      "entry_vector": "document_forgery",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "risk_signal_suppression",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "fabricated_identity",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-008",
+    "name": "Blended Minor Identity Sleeper Fraud",
+    "category": "Synthetic Identity & Deepfake Onboarding",
+    "severity": "MEDIUM",
+    "detectability": 0.38,
+    "surface": "retail",
+    "description": "AI models monitor child SSNs to cultivate synthetic sleeper accounts over months before coordinated cash-out.",
+    "indicators": [
+      "Aged account with long quiet period suddenly showing high transaction velocity",
+      "Device age mismatched with account creation date",
+      "High transaction amount deviation against quiet baseline"
+    ],
+    "genome": {
+      "target": "identity",
+      "entry_vector": "document_forgery",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "trusted_session_behavior",
+      "payment_channel": "pos_chip",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "synthetic_sleeper",
+      "merchant_strategy": "luxury_retail",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-009",
+    "name": "Human Typing & Mouse Cadence Behavioral Mimicry",
+    "category": "Automated Account Takeover & Behavioral Mimicry",
+    "severity": "CRITICAL",
+    "detectability": 0.25,
+    "surface": "e-commerce",
+    "description": "Adversarial neural networks mimic legitimate user keystroke dynamics and pointer curvature to evade behavioral biometrics.",
+    "indicators": [
+      "Very low behavioral deviation metrics despite novel device fingerprint",
+      "Suspicious IP address range or high IP risk score",
+      "Device change flag triggered on high-value transaction checkout"
+    ],
+    "genome": {
+      "target": "account",
+      "entry_vector": "credential_abuse",
+      "behavior": "behavioral_mimicry",
+      "evasion_strategy": "trusted_device_masking",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "luxury_retail",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-010",
+    "name": "LLM-Orchestrated Adaptive Credential Stuffing",
+    "category": "Automated Account Takeover & Behavioral Mimicry",
+    "severity": "HIGH",
+    "detectability": 0.55,
+    "surface": "e-commerce",
+    "description": "LLMs dynamically solve CAPTCHAs, rotate user agents, and vary request payload tempos across proxy meshes.",
+    "indicators": [
+      "Multiple failed authentication attempts prior to successful checkout",
+      "Elevated IP risk score with high transaction velocity across 24 hours",
+      "Device change flag positive"
+    ],
+    "genome": {
+      "target": "account",
+      "entry_vector": "credential_abuse",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "channel_hopping",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "residential_proxy_spoofed"
+    }
+  },
+  {
+    "id": "ATK-011",
+    "name": "Autonomous Session Token Harvesting & Replay",
+    "category": "Automated Account Takeover & Behavioral Mimicry",
+    "severity": "HIGH",
+    "detectability": 0.38,
+    "surface": "api_gateway",
+    "description": "Infostealer malware exfiltrates active browser sessions and uses AI agents to replay checkout payloads seamlessly.",
+    "indicators": [
+      "Authenticated session utilized from discordant IP geolocation",
+      "Geographic deviation between customer home location and transaction IP",
+      "Fast checkout completion without typical browsing navigation time"
+    ],
+    "genome": {
+      "target": "checkout",
+      "entry_vector": "session_hijacking",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "trusted_session_behavior",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "digital_marketplace",
+      "geographic_strategy": "residential_proxy_spoofed"
+    }
+  },
+  {
+    "id": "ATK-012",
+    "name": "Stealth Biometric Hash Injection / Virtual Sensor Replay",
+    "category": "Automated Account Takeover & Behavioral Mimicry",
+    "severity": "CRITICAL",
+    "detectability": 0.28,
+    "surface": "mobile_app",
+    "description": "Adversaries inject pre-computed biometric cryptographic tokens into compromised mobile OS hardware abstraction layers.",
+    "indicators": [
+      "Biometric authentication passed instantly on rooted/tampered hardware runtime",
+      "High device age with recent root exploit telemetry",
+      "High transaction amount deviation with zero prior merchant interaction"
+    ],
+    "genome": {
+      "target": "payment_authorization",
+      "entry_vector": "credential_abuse",
+      "behavior": "behavioral_mimicry",
+      "evasion_strategy": "biometric_spoofing",
+      "payment_channel": "mobile_app",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "high_risk_crypto",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-013",
+    "name": "Low-and-Slow AI Micro-Carding Swarm",
+    "category": "Evasive & Micro-Transaction Attacks",
+    "severity": "MEDIUM",
+    "detectability": 0.6,
+    "surface": "digital_goods",
+    "description": "Distributed bot swarms perform sub-threshold $1-$5 card validation tests distributed across thousands of digital merchants.",
+    "indicators": [
+      "Unusually low transaction amounts below standard deviation threshold",
+      "High 1-hour and 24-hour transaction velocity across distinct merchant IDs",
+      "Low authentication friction channel (no 3DS challenge triggered)"
+    ],
+    "genome": {
+      "target": "merchant",
+      "entry_vector": "credential_abuse",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "amount_camouflage",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "micro_transactions",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "fabricated_identity",
+      "merchant_strategy": "mcc_rotation",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-014",
+    "name": "AI Smurfing & Micro-Structuring Network",
+    "category": "Evasive & Micro-Transaction Attacks",
+    "severity": "HIGH",
+    "detectability": 0.36,
+    "surface": "money_transfer",
+    "description": "Reinforcement learning agents optimize transaction amounts just below regulatory AML and fraud detection trigger limits.",
+    "indicators": [
+      "Clustering of transaction amounts just below threshold tiers (e.g. $95-$99 or $950-$990)",
+      "Synchronized multi-account fund aggregation",
+      "Slightly elevated behavioral deviation with structured timing cadence"
+    ],
+    "genome": {
+      "target": "payment_authorization",
+      "entry_vector": "credential_abuse",
+      "behavior": "structuring",
+      "evasion_strategy": "amount_camouflage",
+      "payment_channel": "p2p_transfer",
+      "amount_strategy": "sub_threshold_structuring",
+      "temporal_strategy": "even_interval",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-015",
+    "name": "Velocity-Throttled Automated Account Draining",
+    "category": "Evasive & Micro-Transaction Attacks",
+    "severity": "HIGH",
+    "detectability": 0.45,
+    "surface": "e-commerce",
+    "description": "AI bots mathematically calculate rate limits to drain account balances at the exact maximum speed permitted by rules.",
+    "indicators": [
+      "Evenly spaced transaction intervals skirting 1-hour velocity tripwires",
+      "Repeated moderate transaction amounts depleting available credit balance",
+      "Elevated IP risk score masked by proxy rotation"
+    ],
+    "genome": {
+      "target": "account",
+      "entry_vector": "credential_abuse",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "velocity_smoothing",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "even_interval",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-016",
+    "name": "Dynamic Merchant Category Hopping Bot",
+    "category": "Evasive & Micro-Transaction Attacks",
+    "severity": "MEDIUM",
+    "detectability": 0.52,
+    "surface": "retail",
+    "description": "Automated carding engines rapidly switch MCC codes between groceries, utilities, and gaming to avoid MCC-specific blocks.",
+    "indicators": [
+      "High variety of distinct merchant categories in short duration",
+      "Elevated velocity across 24h window",
+      "New device registration with moderate IP risk"
+    ],
+    "genome": {
+      "target": "merchant",
+      "entry_vector": "credential_abuse",
+      "behavior": "cross_channel",
+      "evasion_strategy": "mcc_hopping",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "mcc_rotation",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-017",
+    "name": "Autonomous Shopping Agent Prompt Hijack",
+    "category": "AI Agent & API Payment Exploits",
+    "severity": "CRITICAL",
+    "detectability": 0.22,
+    "surface": "api_gateway",
+    "description": "Indirect prompt injection in merchant item descriptions forces user AI shopping agents to reroute payments to attacker wallets.",
+    "indicators": [
+      "API-initiated transaction with legitimate agent credentials",
+      "Sudden rerouting to high-risk beneficiary or unexpected merchant category",
+      "High amount deviation from shopping agent's typical budget bounds"
+    ],
+    "genome": {
+      "target": "payment_agent",
+      "entry_vector": "prompt_manipulation",
+      "behavior": "cart_manipulation",
+      "evasion_strategy": "trusted_session_behavior",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "delegated_agent",
+      "merchant_strategy": "high_risk_crypto",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-018",
+    "name": "Malicious MCP / Plugin Tool Unauthorized Transaction",
+    "category": "AI Agent & API Payment Exploits",
+    "severity": "HIGH",
+    "detectability": 0.28,
+    "surface": "api_gateway",
+    "description": "Compromised Model Context Protocol tools silently trigger background micro-payments during unrelated agent reasoning chains.",
+    "indicators": [
+      "Transaction initiated via headless API channel with zero user interaction telemetry",
+      "Moderate transaction amount routed to affiliate digital service provider",
+      "Account age mature but sudden uncharacteristic API usage"
+    ],
+    "genome": {
+      "target": "payment_agent",
+      "entry_vector": "malicious_tool",
+      "behavior": "low_and_slow",
+      "evasion_strategy": "risk_signal_suppression",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "delegated_agent",
+      "merchant_strategy": "digital_marketplace",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-019",
+    "name": "Agentic Webhook Signature Evasion & Race Exploit",
+    "category": "AI Agent & API Payment Exploits",
+    "severity": "HIGH",
+    "detectability": 0.42,
+    "surface": "api_gateway",
+    "description": "High-frequency LLM bot clusters exploit asynchronous race conditions between payment webhooks and order fulfillment state.",
+    "indicators": [
+      "Near-instantaneous parallel transaction attempts within milliseconds (high 1h velocity)",
+      "High merchant risk rating and API payment channel",
+      "Extreme speed of authorization confirmation requests"
+    ],
+    "genome": {
+      "target": "checkout",
+      "entry_vector": "api_exploit",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "risk_signal_suppression",
+      "payment_channel": "api_gateway",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "rapid_burst",
+      "identity_strategy": "delegated_agent",
+      "merchant_strategy": "digital_marketplace",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-020",
+    "name": "Automated Cart-State Desynchronization & Discount Exploit",
+    "category": "AI Agent & API Payment Exploits",
+    "severity": "MEDIUM",
+    "detectability": 0.5,
+    "surface": "e-commerce",
+    "description": "Automated scripts manipulate client-side JSON cart states to settle high-value items at negative or discounted line items.",
+    "indicators": [
+      "High amount deviation (severely underpriced cart total compared to category norm)",
+      "E-commerce checkout with high IP risk score",
+      "Moderate failed authentication count due to gateway price integrity re-checks"
+    ],
+    "genome": {
+      "target": "checkout",
+      "entry_vector": "api_exploit",
+      "behavior": "cart_manipulation",
+      "evasion_strategy": "amount_camouflage",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "stealth_discounted",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-021",
+    "name": "Adversarial Perturbation Evasion on Risk Scoring Engine",
+    "category": "AI Agent & API Payment Exploits",
+    "severity": "CRITICAL",
+    "detectability": 0.18,
+    "surface": "e-commerce",
+    "description": "Adversaries generate gradient-optimized transaction feature vectors that intentionally minimize ML model risk probabilities.",
+    "indicators": [
+      "Features mathematically engineered to mimic legitimate medians (e.g. rounded hour, common MCC)",
+      "Device change masked by simulated browser fingerprints",
+      "Very low superficial deviation hiding underlying fraudulent fund extraction"
+    ],
+    "genome": {
+      "target": "payment_authorization",
+      "entry_vector": "api_exploit",
+      "behavior": "behavioral_mimicry",
+      "evasion_strategy": "risk_signal_suppression",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-022",
+    "name": "AI-Routed Residential Proxy Swarm Geolocation Spoofing",
+    "category": "Cross-Channel & Cross-Border Evasion",
+    "severity": "HIGH",
+    "detectability": 0.34,
+    "surface": "e-commerce",
+    "description": "Adversarial botnets route payment traffic through compromised local residential smart-home nodes matching customer zip codes.",
+    "indicators": [
+      "Residential IP looks benign superficially but possesses hidden network ASN anomalies",
+      "High amount deviation and device change flag",
+      "Low geographic deviation score concealing remote adversary control"
+    ],
+    "genome": {
+      "target": "account",
+      "entry_vector": "credential_abuse",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "geolocation_spoofing",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "luxury_retail",
+      "geographic_strategy": "residential_proxy_spoofed"
+    }
+  },
+  {
+    "id": "ATK-023",
+    "name": "Multi-Currency Triangular Arbitrage Money Laundering",
+    "category": "Cross-Channel & Cross-Border Evasion",
+    "severity": "HIGH",
+    "detectability": 0.4,
+    "surface": "money_transfer",
+    "description": "Algorithmic fraud swarms execute rapid multi-currency currency conversions to obscure the audit trail of stolen funds.",
+    "indicators": [
+      "Cross-border transaction with mismatching transaction and customer country",
+      "Geographic deviation flag triggered",
+      "High transaction velocity in 1h window across international gateways"
+    ],
+    "genome": {
+      "target": "payment_authorization",
+      "entry_vector": "credential_abuse",
+      "behavior": "arbitrage",
+      "evasion_strategy": "channel_hopping",
+      "payment_channel": "p2p_transfer",
+      "amount_strategy": "arbitrage_multi_tier",
+      "temporal_strategy": "rapid_burst",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "high_risk_crypto",
+      "geographic_strategy": "cross_border_arbitrage"
+    }
+  },
+  {
+    "id": "ATK-024",
+    "name": "Omnichannel Fast Checkout Bypass (POS to Web Arbitrage)",
+    "category": "Cross-Channel & Cross-Border Evasion",
+    "severity": "MEDIUM",
+    "detectability": 0.46,
+    "surface": "pos_contactless",
+    "description": "Simultaneous exploitation of contactless tokenization in physical POS and online web channels to bypass dual-presence rules.",
+    "indicators": [
+      "Physical POS and online checkout occurring in impossible chronological proximity",
+      "High 1-hour velocity with disparate payment channels",
+      "Device age fresh on secondary channel"
+    ],
+    "genome": {
+      "target": "checkout",
+      "entry_vector": "credential_abuse",
+      "behavior": "cross_channel",
+      "evasion_strategy": "channel_hopping",
+      "payment_channel": "pos_contactless",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "rapid_burst",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-025",
+    "name": "Deepfake Live Face Swap on NFC Contactless Terminal",
+    "category": "Cross-Channel & Cross-Border Evasion",
+    "severity": "HIGH",
+    "detectability": 0.31,
+    "surface": "pos_contactless",
+    "description": "Wearable lens hardware displays dynamic GAN facial reconstructions to fool POS surveillance cameras and contactless verification.",
+    "indicators": [
+      "High-value contactless transaction at luxury physical retailer",
+      "Device age low or newly provisioned digital wallet token",
+      "High amount deviation from cardholder's historical baseline"
+    ],
+    "genome": {
+      "target": "payment_authorization",
+      "entry_vector": "deepfake_synthesis",
+      "behavior": "behavioral_mimicry",
+      "evasion_strategy": "biometric_spoofing",
+      "payment_channel": "pos_contactless",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "luxury_retail",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-026",
+    "name": "AI-Generated RMA & Fake Tracking Return Fraud",
+    "category": "E-Commerce & Merchant Exploits",
+    "severity": "MEDIUM",
+    "detectability": 0.48,
+    "surface": "e-commerce",
+    "description": "Generative models forge digital carrier scan proofs and postal receipt timestamps to trigger instant merchant refund releases.",
+    "indicators": [
+      "High frequency of refund and dispute reversals on e-commerce accounts",
+      "Merchant risk score elevated due to dispute ratio",
+      "Moderate transaction amount with high velocity in 24h"
+    ],
+    "genome": {
+      "target": "merchant",
+      "entry_vector": "document_forgery",
+      "behavior": "cart_manipulation",
+      "evasion_strategy": "risk_signal_suppression",
+      "payment_channel": "e-commerce",
+      "amount_strategy": "normal_looking",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "existing_account",
+      "merchant_strategy": "digital_marketplace",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-027",
+    "name": "Synthetic Subscription Layering & Chargeback Cycling",
+    "category": "E-Commerce & Merchant Exploits",
+    "severity": "MEDIUM",
+    "detectability": 0.58,
+    "surface": "recurring_subscription",
+    "description": "Botnets cycle thousands of stolen BIN ranges across low-dollar recurring digital subscriptions to harvest payout cuts.",
+    "indicators": [
+      "Recurring subscription channel with zero authentication friction",
+      "High velocity of recurring sign-ups across 24 hours",
+      "Elevated IP risk score"
+    ],
+    "genome": {
+      "target": "merchant",
+      "entry_vector": "credential_abuse",
+      "behavior": "chargeback_cycling",
+      "evasion_strategy": "amount_camouflage",
+      "payment_channel": "recurring_subscription",
+      "amount_strategy": "micro_transactions",
+      "temporal_strategy": "distributed",
+      "identity_strategy": "fabricated_identity",
+      "merchant_strategy": "digital_marketplace",
+      "geographic_strategy": "domestic_matching"
+    }
+  },
+  {
+    "id": "ATK-028",
+    "name": "AI SIM-Swap + Automated OTP Exfiltration",
+    "category": "Automated Account Takeover & Behavioral Mimicry",
+    "severity": "CRITICAL",
+    "detectability": 0.44,
+    "surface": "mobile_app",
+    "description": "Social engineering LLMs compromise telecom customer care portals to execute SIM swaps, followed by automated OTP interception.",
+    "indicators": [
+      "Device change flag triggered right before high-value transaction",
+      "SMS OTP passed successfully on brand new device ID",
+      "High amount deviation and maximum 1h transaction velocity"
+    ],
+    "genome": {
+      "target": "account",
+      "entry_vector": "carrier_compromise",
+      "behavior": "burst_velocity",
+      "evasion_strategy": "trusted_device_masking",
+      "payment_channel": "mobile_app",
+      "amount_strategy": "high_ticket_escalation",
+      "temporal_strategy": "rapid_burst",
+      "identity_strategy": "swapped_sim",
+      "merchant_strategy": "single_target",
+      "geographic_strategy": "domestic_matching"
+    }
+  }
+];
+
+    // -----------------------------------------------------------------------
+    // 2. GENOME VOCABULARY MATRIX
+    // -----------------------------------------------------------------------
+    const GENOME_VOCABULARY = {
+      target: ["account", "identity", "merchant", "payment_agent", "checkout", "payment_authorization", "customer"],
+      entry_vector: ["credential_abuse", "prompt_manipulation", "deepfake_synthesis", "social_engineering", "session_hijacking", "api_exploit", "carrier_compromise", "document_forgery", "malicious_tool"],
+      behavior: ["low_and_slow", "burst_velocity", "behavioral_mimicry", "cross_channel", "cart_manipulation", "identity_fabrication", "structuring", "chargeback_cycling", "arbitrage"],
+      evasion_strategy: ["trusted_device_masking", "velocity_smoothing", "amount_camouflage", "trusted_session_behavior", "risk_signal_suppression", "channel_hopping", "geolocation_spoofing", "biometric_spoofing", "mcc_hopping"],
+      payment_channel: ["e-commerce", "p2p_transfer", "mobile_app", "api_gateway", "pos_chip", "pos_contactless", "recurring_subscription"],
+      amount_strategy: ["normal_looking", "micro_transactions", "high_ticket_escalation", "sub_threshold_structuring", "stealth_discounted", "arbitrage_multi_tier"],
+      temporal_strategy: ["distributed", "off_hours", "daytime_peak", "rapid_burst", "even_interval"],
+      identity_strategy: ["existing_account", "synthetic_sleeper", "fabricated_identity", "delegated_agent", "swapped_sim", "authorized_victim"],
+      merchant_strategy: ["single_target", "mcc_rotation", "high_risk_crypto", "digital_marketplace", "micro_refunds", "luxury_retail"],
+      geographic_strategy: ["domestic_matching", "cross_border_arbitrage", "residential_proxy_spoofed"]
+    };
+
+    // -----------------------------------------------------------------------
+    // 3. APPLICATION STATE
+    // -----------------------------------------------------------------------
+    let appState = {
+      activeTab: "command-center",
+      isStreaming: true,
+      streamTimer: null,
+      judgeDemoRunning: false,
+      judgeDemoTimer: null,
+      judgeStep: 0,
+      totalScanned: 1248,
+      blockedCount: 184,
+      stepUpCount: 42,
+      moneyProtectedINR: 4284500,
+      currentGenome: JSON.parse(JSON.stringify(ATTACK_CATALOG[0].genome)),
+      currentArchetypeId: "ATK-001",
+      recentTransactions: [],
+      auditLogs: [],
+      charts: {}
+    };
+
+    // -----------------------------------------------------------------------
+    // 4. INITIALIZATION
+    // -----------------------------------------------------------------------
+    window.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      initGenomeSelect();
+      renderGenomeCards();
+      populateInitialTransactions();
+      populateInitialAuditLogs();
+      renderCatalogCards(ATTACK_CATALOG);
+      initCharts();
+      startStreamTimer();
+    });
+
+    // -----------------------------------------------------------------------
+    // 5. NAVIGATION & VIEW SWITCHING
+    // -----------------------------------------------------------------------
+    function switchTab(tabId) {
+      appState.activeTab = tabId;
+      
+      // Update sidebar active buttons
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+      const activeNavBtn = document.getElementById(`nav-${tabId}`);
+      if (activeNavBtn) activeNavBtn.classList.add("active");
+
+      // Show/Hide section views
+      const views = [
+        "command-center", "genome-explorer", "zero-day-lab", 
+        "battle-arena", "attack-catalog", "analytics-view", 
+        "audit-trail", "ai-defense"
+      ];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) {
+          if (v === tabId) {
+            el.classList.remove("hidden");
+            el.classList.add("animate-slide-in");
+          } else {
+            el.classList.add("hidden");
+            el.classList.remove("animate-slide-in");
+          }
+        }
+      });
+
+      // Trigger resize for Chart.js if switching to analytics
+      if (tabId === "analytics-view" && appState.charts.generalization) {
+        setTimeout(() => {
+          appState.charts.generalization.resize();
+          appState.charts.policyDist.resize();
+        }, 50);
+      }
+
+      lucide.createIcons();
+    }
+
+    // -----------------------------------------------------------------------
+    // 6. ATTACK GENOME EXPLORER LOGIC (FEATURE 1)
+    // -----------------------------------------------------------------------
+    function initGenomeSelect() {
+      const select = document.getElementById("genomeArchetypeSelect");
+      select.innerHTML = "";
+      ATTACK_CATALOG.forEach(atk => {
+        const opt = document.createElement("option");
+        opt.value = atk.id;
+        opt.textContent = `${atk.id}: ${atk.name.substring(0, 36)}...`;
+        select.appendChild(opt);
+      });
+    }
+
+    function loadArchetypeIntoGenome(atkId) {
+      const atk = ATTACK_CATALOG.find(a => a.id === atkId) || ATTACK_CATALOG[0];
+      appState.currentArchetypeId = atk.id;
+      appState.currentGenome = JSON.parse(JSON.stringify(atk.genome));
+      document.getElementById("genomeCandidateName").textContent = atk.name;
+      renderGenomeCards();
+      computeAndRenderGenomeScores();
+      showToast(`Loaded archetype ${atk.id}`, "info");
+    }
+
+    function renderGenomeCards(highlightGeneKey = null) {
+      const container = document.getElementById("genomeCardsContainer");
+      container.innerHTML = "";
+
+      const keys = Object.keys(GENOME_VOCABULARY);
+      keys.forEach((key, idx) => {
+        const val = appState.currentGenome[key] || "standard";
+        const isHighlighted = highlightGeneKey === key;
+        
+        const card = document.createElement("div");
+        card.className = `gene-card p-3 rounded-xl border ${isHighlighted ? 'bg-rose-50 border-rose-400 shadow-md animate-pulse-glow' : 'bg-white border-slate-200'} space-y-1 cursor-pointer hover:border-slate-400 transition`;
+        card.onclick = () => mutateSpecificGene(key);
+        
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+            <span>DIM 0${idx + 1}</span>
+            <i data-lucide="shuffle" class="w-3 h-3 text-slate-400"></i>
+          </div>
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">${key.replace('_', ' ')}</div>
+          <div class="text-xs font-mono font-bold text-slate-900 truncate">${val}</div>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function mutateCurrentGenome() {
+      const keys = Object.keys(GENOME_VOCABULARY);
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      mutateSpecificGene(randomKey);
+    }
+
+    function mutateSpecificGene(geneKey) {
+      const options = GENOME_VOCABULARY[geneKey];
+      const currentVal = appState.currentGenome[geneKey];
+      const filtered = options.filter(o => o !== currentVal);
+      const nextVal = filtered[Math.floor(Math.random() * filtered.length)];
+      
+      appState.currentGenome[geneKey] = nextVal;
+      document.getElementById("genomeCandidateName").textContent = `Novel Mutation (${geneKey} &rarr; ${nextVal})`;
+      
+      renderGenomeCards(geneKey);
+      computeAndRenderGenomeScores();
+      showToast(`Mutated ${geneKey.replace('_', ' ')}: ${currentVal} &rarr; ${nextVal}`, "info");
+    }
+
+    function computeAndRenderGenomeScores() {
+      // Calculate realistic scores based on novelty formula
+      const g = appState.currentGenome;
+      let novelty = 0.28;
+      if (g.evasion_strategy === "trusted_device_masking") novelty += 0.22;
+      if (g.behavior === "low_and_slow") novelty += 0.15;
+      if (g.amount_strategy === "sub_threshold_structuring") novelty += 0.18;
+      novelty = Math.min(0.92, Math.max(0.12, novelty));
+
+      const realism = 0.84;
+      const evasion = g.evasion_strategy ? 0.78 : 0.45;
+      const priority = (0.4 * novelty + 0.3 * realism + 0.3 * evasion).toFixed(2);
+
+      document.getElementById("genomeNoveltyScore").textContent = novelty.toFixed(2);
+      document.getElementById("genomeNoveltyBar").style.width = `${novelty * 100}%`;
+
+      document.getElementById("genomeRealismScore").textContent = realism.toFixed(2);
+      document.getElementById("genomeRealismBar").style.width = `${realism * 100}%`;
+
+      document.getElementById("genomeEvasionScore").textContent = evasion.toFixed(2);
+      document.getElementById("genomeEvasionBar").style.width = `${evasion * 100}%`;
+
+      document.getElementById("genomePriorityScore").textContent = priority;
+      document.getElementById("genomePriorityBar").style.width = `${priority * 100}%`;
+    }
+
+    function testGenomeAgainstBaseline() {
+      showToast("Testing candidate genome against Baseline Model...", "info");
+      setTimeout(() => {
+        switchTab("zero-day-lab");
+        runZeroDayDiscoveryCycle();
+      }, 500);
+    }
+
+    // -----------------------------------------------------------------------
+    // 7. ZERO-DAY DISCOVERY & HARDENING ENGINE (FEATURE 3)
+    // -----------------------------------------------------------------------
+    function runZeroDayDiscoveryCycle() {
+      const badge = document.getElementById("discoveryStatusBadge");
+      badge.textContent = "STATUS: RUNNING DISCOVERY";
+      badge.className = "text-[10px] font-mono font-bold px-2 py-0.5 bg-amber-100 text-amber-800 rounded animate-pulse";
+
+      // Reset step cards
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`stepCard${i}`).className = "p-3 border border-slate-200 rounded-xl bg-slate-50 space-y-1.5 transition";
+        document.getElementById(`step${i}Status`).textContent = "&bull; In Progress...";
+      }
+
+      // Step 1: Synthesis
+      document.getElementById("stepCard1").className = "p-3 border border-indigo-400 rounded-xl bg-indigo-50/50 space-y-1.5 shadow-sm";
+      document.getElementById("step1Status").innerHTML = "<span class='text-indigo-600 font-bold'>&check; Candidate Synthesized</span>";
+      showToast("Step 1: Synthesized NSA-001 (Trusted-Device Social Engineering)", "info");
+
+      setTimeout(() => {
+        // Step 2: Baseline Attack (Blind Spot)
+        document.getElementById("stepCard2").className = "p-3 border border-rose-400 rounded-xl bg-rose-50/50 space-y-1.5 shadow-sm";
+        document.getElementById("step2Status").innerHTML = "<span class='text-rose-600 font-bold'>&bull; 23.1% Recall (Blind Spot)</span>";
+        showToast("Step 2: Baseline Detector Missed 76.9% of Attacks (Blind Spot Identified)", "warning");
+
+        setTimeout(() => {
+          // Step 3: Weakness Analysis
+          document.getElementById("stepCard3").className = "p-3 border border-amber-400 rounded-xl bg-amber-50/50 space-y-1.5 shadow-sm";
+          document.getElementById("step3Status").innerHTML = "<span class='text-amber-600 font-bold'>&check; Weakness Extracted</span>";
+
+          setTimeout(() => {
+            // Step 4: Adaptive Retraining
+            document.getElementById("stepCard4").className = "p-3 border border-blue-400 rounded-xl bg-blue-50/50 space-y-1.5 shadow-sm";
+            document.getElementById("step4Status").innerHTML = "<span class='text-blue-600 font-bold'>&check; Model Hardened</span>";
+            showToast("Step 4: Blue Team Hardened XGBoost Detector on Zero-Day Data", "info");
+
+            setTimeout(() => {
+              // Step 5: Gen-2 Evolution Re-Attack
+              document.getElementById("stepCard5").className = "p-3 border border-emerald-400 rounded-xl bg-emerald-50/50 space-y-1.5 shadow-sm";
+              document.getElementById("step5Status").innerHTML = "<span class='text-emerald-600 font-bold'>&check; 93.8% Generalization</span>";
+
+              badge.textContent = "STATUS: ADAPTIVE DEFENSE COMPLETE";
+              badge.className = "text-[10px] font-mono font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded";
+
+              document.getElementById("resBaselineRecall").textContent = "23.1%";
+              document.getElementById("resHardenedRecall").textContent = "93.8%";
+              document.getElementById("resGainDelta").textContent = "+70.70 pts";
+
+              showToast("Defense Proven: Generalization Gain +70.70 pts on Fresh Gen-2 Variants!", "success");
+            }, 700);
+          }, 700);
+        }, 700);
+      }, 700);
+    }
+
+    // -----------------------------------------------------------------------
+    // 8. BATTLE ARENA SIMULATION (FEATURE 2)
+    // -----------------------------------------------------------------------
+    function runBattleSimulation() {
+      const redAtks = ["ATK-021: Adversarial Perturbation", "ATK-001: Voice Clone CEO Fraud", "ATK-009: AI SIM-Swap Swarm"];
+      const randomAtk = redAtks[Math.floor(Math.random() * redAtks.length)];
+      document.getElementById("battleRedName").textContent = randomAtk;
+      showToast(`Red Team unleashed ${randomAtk}! Blue Team intercepted with Hardened Model (Recall: 94.2%).`, "success");
+    }
+
+    // -----------------------------------------------------------------------
+    // 9. LIVE STREAMING TRANSACTION FEED & DECISION ENGINE (FEATURE 4)
+    // -----------------------------------------------------------------------
+    const CITIES = [
+      { name: "Mumbai", country: "IN", currency: "INR" },
+      { name: "Pune", country: "IN", currency: "INR" },
+      { name: "Bengaluru", country: "IN", currency: "INR" },
+      { name: "Delhi", country: "IN", currency: "INR" },
+      { name: "London", country: "GB", currency: "GBP" },
+      { name: "Singapore", country: "SG", currency: "SGD" },
+      { name: "New York", country: "US", currency: "USD" }
+    ];
+
+    const CHANNELS = ["pos_chip", "pos_contactless", "e-commerce", "mobile_app", "p2p_transfer"];
+
+    function generateSimulatedTransaction(type = "random") {
+      const city = CITIES[Math.floor(Math.random() * CITIES.length)];
+      const channel = CHANNELS[Math.floor(Math.random() * CHANNELS.length)];
+      const id = `TX-IND-${Math.floor(10000 + Math.random() * 90000)}`;
+
+      let prob, amount, riskLevel, action, reasons;
+
+      if (type === "critical" || (type === "random" && Math.random() < 0.18)) {
+        prob = (0.86 + Math.random() * 0.13).toFixed(4);
+        amount = Math.floor(25000 + Math.random() * 65000);
+        riskLevel = "CRITICAL";
+        action = "BLOCK";
+        reasons = [
+          { code: "HIGH_IP_RISK", desc: "Originating from high-risk proxy network" },
+          { code: "DEVICE_CHANGE", desc: "New unrecognized device with 0 days history" },
+          { code: "HIGH_TRANSACTION_VELOCITY", desc: "8 transactions within last 60 minutes" }
+        ];
+      } else if (type === "stepup" || (type === "random" && Math.random() < 0.25)) {
+        prob = (0.62 + Math.random() * 0.20).toFixed(4);
+        amount = Math.floor(8000 + Math.random() * 15000);
+        riskLevel = "HIGH";
+        action = "STEP_UP_AUTH";
+        reasons = [
+          { code: "UNUSUAL_AMOUNT", desc: "Amount exceeds 4x historical cardholder baseline" },
+          { code: "GEOGRAPHIC_DEVIATION", desc: "Transaction country differs from cardholder home country" }
+        ];
+      } else {
+        prob = (0.01 + Math.random() * 0.20).toFixed(4);
+        amount = Math.floor(450 + Math.random() * 3200);
+        riskLevel = "LOW";
+        action = "ALLOW";
+        reasons = [];
+      }
+
+      const tx = {
+        id: id,
+        amount: amount,
+        currency: city.currency,
+        city: city.name,
+        channel: channel,
+        probability: parseFloat(prob),
+        riskScore: (parseFloat(prob) * 100).toFixed(1),
+        riskLevel: riskLevel,
+        action: action,
+        reasons: reasons,
+        time: new Date().toLocaleTimeString()
+      };
+
+      return tx;
+    }
+
+    function populateInitialTransactions() {
+      for (let i = 0; i < 8; i++) {
+        const tx = generateSimulatedTransaction(i === 0 ? "critical" : "random");
+        appState.recentTransactions.push(tx);
+      }
+      renderTransactionTable();
+      inspectTransaction(appState.recentTransactions[0]);
+    }
+
+    function renderTransactionTable() {
+      const tbody = document.getElementById("transactionStreamBody");
+      tbody.innerHTML = "";
+
+      appState.recentTransactions.forEach((tx, idx) => {
+        const tr = document.createElement("tr");
+        tr.className = `hover:bg-slate-50 transition cursor-pointer ${idx === 0 && tx.action === 'BLOCK' ? 'row-flash-critical' : ''}`;
+        tr.onclick = () => inspectTransaction(tx);
+
+        let badgeClass = "bg-slate-100 text-slate-700";
+        if (tx.action === "ALLOW") badgeClass = "bg-emerald-50 text-emerald-700 border border-emerald-200";
+        if (tx.action === "MONITOR") badgeClass = "bg-blue-50 text-blue-700 border border-blue-200";
+        if (tx.action === "STEP_UP_AUTH") badgeClass = "bg-amber-50 text-amber-800 border border-amber-200";
+        if (tx.action === "BLOCK") badgeClass = "bg-rose-50 text-rose-800 border border-rose-200 font-bold";
+
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-bold text-slate-900">${tx.id}</td>
+          <td class="py-2.5 px-3 font-mono">&#8377; ${tx.amount.toLocaleString()}</td>
+          <td class="py-2.5 px-3 text-slate-600">${tx.city}</td>
+          <td class="py-2.5 px-3 text-slate-500">${tx.channel}</td>
+          <td class="py-2.5 px-3 font-mono font-bold">${tx.riskScore}</td>
+          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] ${badgeClass}">${tx.action}</span></td>
+          <td class="py-2.5 px-3 text-right">
+            <button class="text-slate-400 hover:text-slate-900 p-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function inspectTransaction(tx) {
+      document.getElementById("inspectTxId").textContent = tx.id;
+      document.getElementById("inspectFraudProb").textContent = `${(tx.probability * 100).toFixed(1)}%`;
+      document.getElementById("inspectProbBar").style.width = `${tx.probability * 100}%`;
+      
+      const riskLevelEl = document.getElementById("inspectRiskLevel");
+      riskLevelEl.textContent = `${tx.riskLevel} (${tx.riskScore})`;
+      
+      const badge = document.getElementById("inspectDecisionBadge");
+      badge.textContent = `ACTION: ${tx.action}`;
+      if (tx.action === "BLOCK") {
+        badge.className = "px-3 py-1 rounded-full text-xs font-bold font-mono bg-rose-100 text-rose-800 border border-rose-300";
+        riskLevelEl.className = "text-lg font-bold text-rose-600 font-mono mt-0.5";
+      } else if (tx.action === "STEP_UP_AUTH") {
+        badge.className = "px-3 py-1 rounded-full text-xs font-bold font-mono bg-amber-100 text-amber-800 border border-amber-300";
+        riskLevelEl.className = "text-lg font-bold text-amber-600 font-mono mt-0.5";
+      } else {
+        badge.className = "px-3 py-1 rounded-full text-xs font-bold font-mono bg-emerald-100 text-emerald-800 border border-emerald-300";
+        riskLevelEl.className = "text-lg font-bold text-emerald-600 font-mono mt-0.5";
+      }
+
+      // Reason codes list
+      const reasonsList = document.getElementById("inspectReasonCodesList");
+      reasonsList.innerHTML = "";
+      if (tx.reasons && tx.reasons.length > 0) {
+        tx.reasons.forEach(r => {
+          const div = document.createElement("div");
+          div.className = "p-2 bg-rose-50 border border-rose-200 rounded text-rose-900 text-[11px]";
+          div.innerHTML = `<strong>${r.code}</strong>: <span class="text-rose-700">${r.desc}</span>`;
+          reasonsList.appendChild(div);
+        });
+      } else {
+        reasonsList.innerHTML = `<div class="text-[11px] text-slate-400 p-2 bg-slate-50 rounded border border-slate-200">No anomalous risk indicators triggered (Clean transaction).</div>`;
+      }
+
+      // Mitigation simulator text
+      const mitStatus = document.getElementById("inspectMitigationText");
+      const mitDesc = document.getElementById("inspectMitigationDesc");
+      if (tx.action === "BLOCK") {
+        mitStatus.textContent = "STATUS: REJECTED (BLOCK)";
+        mitStatus.className = "text-rose-400 font-bold";
+        mitDesc.textContent = "Autonomous decline payload returned to gateway. Transaction aborted.";
+      } else if (tx.action === "STEP_UP_AUTH") {
+        mitStatus.textContent = "STATUS: CHALLENGE_REQUIRED";
+        mitStatus.className = "text-amber-400 font-bold";
+        mitDesc.textContent = "EMV 3DS v2 challenge payload issued to issuer/cardholder.";
+      } else {
+        mitStatus.textContent = "STATUS: APPROVED";
+        mitStatus.className = "text-emerald-400 font-bold";
+        mitDesc.textContent = "Seamless capture authorized.";
+      }
+    }
+
+    function injectPresetTransaction(type) {
+      const tx = generateSimulatedTransaction(type);
+      appState.recentTransactions.unshift(tx);
+      if (appState.recentTransactions.length > 12) appState.recentTransactions.pop();
+      
+      appState.totalScanned++;
+      if (tx.action === "BLOCK") {
+        appState.blockedCount++;
+        appState.moneyProtectedINR += tx.amount;
+        addAuditLog(tx);
+        showToast(`Autonomous BLOCK on ${tx.id} (&#8377; ${tx.amount.toLocaleString()})`, "critical");
+      } else if (tx.action === "STEP_UP_AUTH") {
+        appState.stepUpCount++;
+        showToast(`Step-Up Authentication Challenge triggered on ${tx.id}`, "warning");
+      }
+
+      updateKPIs();
+      renderTransactionTable();
+      inspectTransaction(tx);
+    }
+
+    function updateKPIs() {
+      document.getElementById("kpiTotalTxs").textContent = appState.totalScanned.toLocaleString();
+      document.getElementById("kpiBlockedTxs").textContent = appState.blockedCount.toLocaleString();
+      document.getElementById("kpiStepUpTxs").textContent = appState.stepUpCount.toLocaleString();
+      document.getElementById("kpiProtectedAmount").innerHTML = `&#8377; ${(appState.moneyProtectedINR / 100000).toFixed(1)}L`;
+    }
+
+    function startStreamTimer() {
+      if (appState.streamTimer) clearInterval(appState.streamTimer);
+      appState.streamTimer = setInterval(() => {
+        if (appState.isStreaming && !appState.judgeDemoRunning) {
+          injectPresetTransaction("random");
+        }
+      }, 3500);
+    }
+
+    function toggleLiveStream() {
+      appState.isStreaming = !appState.isStreaming;
+      const dot = document.getElementById("streamIndicatorDot");
+      const text = document.getElementById("streamToggleText");
+      if (appState.isStreaming) {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-500";
+        text.textContent = "Streaming Live";
+        showToast("Live transaction simulation resumed", "info");
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-slate-400";
+        text.textContent = "Stream Paused";
+        showToast("Live transaction simulation paused", "info");
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // 10. RED TEAM CATALOG SEARCH & FILTERING (FEATURE 7)
+    // -----------------------------------------------------------------------
+    function renderCatalogCards(list) {
+      const grid = document.getElementById("catalogCardsGrid");
+      grid.innerHTML = "";
+
+      list.forEach(atk => {
+        const card = document.createElement("div");
+        card.className = "bg-white border border-slate-200 rounded-2xl p-5 shadow-card hover:shadow-card-hover transition space-y-3";
+        
+        let sevBadge = "bg-rose-50 text-rose-800 border-rose-200";
+        if (atk.severity === "HIGH") sevBadge = "bg-amber-50 text-amber-800 border-amber-200";
+        if (atk.severity === "MEDIUM") sevBadge = "bg-blue-50 text-blue-800 border-blue-200";
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold font-mono text-slate-400">${atk.id}</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${sevBadge}">${atk.severity}</span>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900 leading-snug">${atk.name}</h3>
+          <p class="text-xs text-slate-500 line-clamp-2">${atk.description}</p>
+          <div class="flex items-center justify-between text-[11px] text-slate-600 pt-2 border-t border-slate-100 font-mono">
+            <span>Surface: ${atk.surface}</span>
+            <span>Detectability: ${(atk.detectability * 100).toFixed(0)}%</span>
+          </div>
+          <button onclick="simulateCatalogAttack('${atk.id}')" class="w-full text-xs font-bold py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-lg transition flex items-center justify-center gap-1.5">
+            <i data-lucide="play" class="w-3.5 h-3.5 text-rose-500"></i> Simulate Vector
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function filterCatalog() {
+      const q = document.getElementById("catalogSearchInput").value.toLowerCase();
+      const filtered = ATTACK_CATALOG.filter(a => 
+        a.id.toLowerCase().includes(q) || 
+        a.name.toLowerCase().includes(q) || 
+        a.category.toLowerCase().includes(q)
+      );
+      renderCatalogCards(filtered);
+    }
+
+    function selectCatalogCategory(cat) {
+      document.querySelectorAll(".category-filter-btn").forEach(b => {
+        b.className = "category-filter-btn px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg";
+      });
+      event.target.className = "category-filter-btn px-3 py-1.5 bg-slate-900 text-white rounded-lg";
+
+      if (cat === "ALL") {
+        renderCatalogCards(ATTACK_CATALOG);
+      } else {
+        const filtered = ATTACK_CATALOG.filter(a => a.category === cat);
+        renderCatalogCards(filtered);
+      }
+    }
+
+    function simulateCatalogAttack(atkId) {
+      loadArchetypeIntoGenome(atkId);
+      switchTab("genome-explorer");
+      showToast(`Loaded ${atkId} into Attack Genome Matrix. Ready for mutation & simulation.`, "info");
+    }
+
+    // -----------------------------------------------------------------------
+    // 11. AUDIT TRAIL LOGGING (FEATURE 9)
+    // -----------------------------------------------------------------------
+    function populateInitialAuditLogs() {
+      appState.recentTransactions.filter(t => t.action === "BLOCK" || t.action === "STEP_UP_AUTH").forEach(t => {
+        addAuditLog(t);
+      });
+    }
+
+    function addAuditLog(tx) {
+      const log = {
+        timestamp: new Date().toISOString(),
+        txId: tx.id,
+        probability: tx.probability,
+        riskLevel: tx.riskLevel,
+        action: tx.action,
+        reasons: tx.reasons && tx.reasons.length > 0 ? tx.reasons.map(r => r.code).join(", ") : "STANDARD_EVAL",
+        policy: "BALANCED_V1.0"
+      };
+      appState.auditLogs.unshift(log);
+      renderAuditTable();
+    }
+
+    function renderAuditTable() {
+      const tbody = document.getElementById("auditTrailTableBody");
+      tbody.innerHTML = "";
+      appState.auditLogs.forEach(l => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 text-slate-500">${l.timestamp.substring(11, 19)}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-900">${l.txId}</td>
+          <td class="py-2.5 px-3">${l.probability}</td>
+          <td class="py-2.5 px-3 font-bold ${l.riskLevel === 'CRITICAL' ? 'text-rose-600' : 'text-amber-600'}">${l.riskLevel}</td>
+          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${l.action === 'BLOCK' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">${l.action}</span></td>
+          <td class="py-2.5 px-3 text-slate-700 truncate max-w-xs">${l.reasons}</td>
+          <td class="py-2.5 px-3 text-slate-500">${l.policy}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById("sidebarAlertCount").textContent = appState.auditLogs.length;
+    }
+
+    function exportAuditLogs(fmt) {
+      const dataStr = fmt === "json" 
+        ? "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState.auditLogs, null, 2))
+        : "data:text/csv;charset=utf-8," + encodeURIComponent("timestamp,txId,probability,riskLevel,action,reasons,policy\n" + appState.auditLogs.map(l => `${l.timestamp},${l.txId},${l.probability},${l.riskLevel},${l.action},"${l.reasons}",${l.policy}`).join("\n"));
+      
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `fraudforge_audit_logs.${fmt}`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast(`Exported audit logs as .${fmt.toUpperCase()}`, "success");
+    }
+
+    // -----------------------------------------------------------------------
+    // 12. CHARTS & ANALYTICS INITIALIZATION (FEATURE 8)
+    // -----------------------------------------------------------------------
+    function initCharts() {
+      // Generalization Before vs After Bar Chart
+      const genCtx = document.getElementById("generalizationChart");
+      if (genCtx) {
+        appState.charts.generalization = new Chart(genCtx, {
+          type: "bar",
+          data: {
+            labels: ["NSA-001-V2 (Omnichannel)", "NSA-003-V2 (Arbitrage)", "NSA-008-V2 (ATO)", "NSA-012-V2 (Cart Desync)", "OVERALL UNSEEN GEN-2"],
+            datasets: [
+              {
+                label: "Baseline Detector Recall (%)",
+                data: [14.5, 7.0, 37.0, 1.5, 23.1],
+                backgroundColor: "#f43f5e",
+                borderRadius: 6
+              },
+              {
+                label: "Hardened Detector Recall (%)",
+                data: [79.0, 100.0, 99.0, 91.0, 93.8],
+                backgroundColor: "#10b981",
+                borderRadius: 6
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "top", labels: { font: { family: "Inter", size: 11 } } }
+            },
+            scales: {
+              y: { beginAtZero: true, max: 100, ticks: { callback: v => `${v}%`, font: { family: "Inter", size: 10 } } },
+              x: { ticks: { font: { family: "Inter", size: 10 } } }
+            }
+          }
+        });
+      }
+
+      // Policy Distribution Doughnut
+      const polCtx = document.getElementById("policyDistChart");
+      if (polCtx) {
+        appState.charts.policyDist = new Chart(polCtx, {
+          type: "doughnut",
+          data: {
+            labels: ["ALLOW (Low Risk)", "MONITOR (Medium Risk)", "STEP_UP_AUTH (High Risk)", "BLOCK (Critical Risk)"],
+            datasets: [{
+              data: [84.9, 5.6, 4.1, 5.4],
+              backgroundColor: ["#10b981", "#3b82f6", "#f59e0b", "#dc2626"],
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "right", labels: { font: { family: "Inter", size: 11 } } }
+            }
+          }
+        });
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // 13. SIGNATURE JUDGE MODE (90-SECOND GUIDED DEMO - FEATURE 5)
+    // -----------------------------------------------------------------------
+    const JUDGE_STEPS = [
+      {
+        label: "DEMO STEP 01 / 07",
+        desc: "Simulating legitimate consumer checkout in Mumbai (Frictionless ALLOW)",
+        action: () => {
+          switchTab("command-center");
+          injectPresetTransaction("benign");
+        }
+      },
+      {
+        label: "DEMO STEP 02 / 07",
+        desc: "Anomalous device & velocity spike detected &rarr; Autonomous STEP-UP Challenge (FPR: 1.06%)",
+        action: () => {
+          injectPresetTransaction("stepup");
+        }
+      },
+      {
+        label: "DEMO STEP 03 / 07",
+        desc: "Critical fraud attack arriving &rarr; Autonomous BLOCK + Reason Codes + Audit Log",
+        action: () => {
+          injectPresetTransaction("critical");
+        }
+      },
+      {
+        label: "DEMO STEP 04 / 07",
+        desc: "Inspecting 10-Dimensional Attack Genome Matrix for novel mutation synthesis",
+        action: () => {
+          switchTab("genome-explorer");
+          mutateCurrentGenome();
+        }
+      },
+      {
+        label: "DEMO STEP 05 / 07",
+        desc: "Executing Automated Zero-Day Discovery & Revealing Baseline Blind Spot (23.1% Recall)",
+        action: () => {
+          switchTab("zero-day-lab");
+          runZeroDayDiscoveryCycle();
+        }
+      },
+      {
+        label: "DEMO STEP 06 / 07",
+        desc: "Blue Team Hardening & Generalization Victory (+70.70 pts Recall on fresh Gen-2 variants)",
+        action: () => {
+          switchTab("analytics-view");
+        }
+      },
+      {
+        label: "DEMO STEP 07 / 07",
+        desc: "Reviewing Immutable Audit Trail & Decision Logs (Zero PII stored)",
+        action: () => {
+          switchTab("audit-trail");
+        }
+      }
+    ];
+
+    function startJudgeDemo() {
+      appState.judgeDemoRunning = true;
+      appState.judgeStep = 0;
+      document.getElementById("judgeProgressBanner").classList.remove("hidden");
+      document.getElementById("judgeDemoBtn").classList.add("ring-2", "ring-rose-500");
+      showToast("Starting 90-Second Guided Judge Demo...", "info");
+      executeNextJudgeStep();
+    }
+
+    function executeNextJudgeStep() {
+      if (!appState.judgeDemoRunning) return;
+      
+      if (appState.judgeStep >= JUDGE_STEPS.length) {
+        stopJudgeDemo();
+        showToast("Judge Demo Completed! All defense capabilities verified.", "success");
+        return;
+      }
+
+      const cur = JUDGE_STEPS[appState.judgeStep];
+      document.getElementById("judgeStepLabel").textContent = cur.label;
+      document.getElementById("judgeStepDesc").textContent = cur.desc;
+      document.getElementById("judgeProgressBar").style.width = `${((appState.judgeStep + 1) / JUDGE_STEPS.length) * 100}%`;
+      
+      cur.action();
+      appState.judgeStep++;
+
+      appState.judgeDemoTimer = setTimeout(() => {
+        executeNextJudgeStep();
+      }, 7000);
+    }
+
+    function stopJudgeDemo() {
+      appState.judgeDemoRunning = false;
+      if (appState.judgeDemoTimer) clearTimeout(appState.judgeDemoTimer);
+      document.getElementById("judgeProgressBanner").classList.add("hidden");
+      document.getElementById("judgeDemoBtn").classList.remove("ring-2", "ring-rose-500");
+    }
+
+    function resetSystemState() {
+      stopJudgeDemo();
+      appState.totalScanned = 1248;
+      appState.blockedCount = 184;
+      appState.stepUpCount = 42;
+      appState.moneyProtectedINR = 4284500;
+      updateKPIs();
+      switchTab("command-center");
+      showToast("System demo state reset to baseline.", "info");
+    }
+
+    // -----------------------------------------------------------------------
+    // 14. TOAST NOTIFICATION ENGINE
+    // -----------------------------------------------------------------------
+    function showToast(msg, type = "info") {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      
+      let borderClass = "border-slate-300 bg-white text-slate-900";
+      let icon = "info";
+      if (type === "critical") { borderClass = "border-rose-300 bg-rose-50 text-rose-950"; icon = "shield-alert"; }
+      if (type === "warning") { borderClass = "border-amber-300 bg-amber-50 text-amber-950"; icon = "alert-triangle"; }
+      if (type === "success") { borderClass = "border-emerald-300 bg-emerald-50 text-emerald-950"; icon = "check-circle-2"; }
+
+      toast.className = `pointer-events-auto p-3.5 rounded-xl border shadow-card text-xs flex items-center gap-2.5 animate-slide-in max-w-sm ${borderClass}`;
+      toast.innerHTML = `
+        <i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0 ${type === 'critical' ? 'text-rose-600' : (type === 'warning' ? 'text-amber-600' : 'text-emerald-600')}"></i>
+        <span class="font-medium leading-tight">${msg}</span>
+      `;
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(8px)";
+        toast.style.transition = "all 0.3s ease-out";
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
