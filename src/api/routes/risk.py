@@ -21,13 +21,26 @@ router = APIRouter(prefix="/risk", tags=["Risk Decision Engine"])
 
 @router.post("/evaluate-transaction", response_model=EvaluateTransactionResponse)
 def evaluate_transaction(req: EvaluateTransactionRequest, request: Request) -> EvaluateTransactionResponse:
-    """Score a payment transaction, determine risk tier, action, explainable reason codes and mitigation payload."""
     detector_hardened = getattr(request.app.state, "detector_hardened", None)
     if detector_hardened is None:
-        raise HTTPException(
-            status_code=503,
-            detail="Hardened detector model is not loaded in application state.",
-        )
+        from src.utils.config import MODELS_DIR
+        from src.detection.predict import FraudDetector
+        hardened_path = MODELS_DIR / "hardened_zero_day_detector.joblib"
+        if not hardened_path.exists():
+            hardened_path = MODELS_DIR / "hardened_detector.joblib"
+        if not hardened_path.exists():
+            hardened_path = MODELS_DIR / "baseline_detector.joblib"
+        if hardened_path.exists():
+            try:
+                detector_hardened = FraudDetector(artifact_path=hardened_path)
+                request.app.state.detector_hardened = detector_hardened
+            except Exception:
+                pass
+        if detector_hardened is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Hardened detector model is not loaded in application state.",
+            )
 
     # Resolve policy mode
     mode_str = req.policy_mode.upper()

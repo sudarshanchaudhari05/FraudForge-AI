@@ -2513,10 +2513,10 @@
       geographic_strategy: ["domestic_matching", "cross_border_arbitrage", "residential_proxy_spoofed"]
     };
 
-        // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     // 3. BACKEND API CLIENT & APPLICATION STATE
     // -----------------------------------------------------------------------
-    const API_BASE = "http://localhost:8000/api/v1";
+    const API_BASE = "http://127.0.0.1:8000";
 
     let appState = {
       activeTab: "command-center",
@@ -2546,14 +2546,20 @@
     async function checkBackendHealth() {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000);
-        const res = await fetch(`${API_BASE}/health`, { signal: controller.signal });
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
+        const res = await fetch(`${API_BASE}/api/v1/health`, {
+          method: "GET",
+          headers: { "Accept": "application/json" },
+          signal: controller.signal
+        });
         clearTimeout(timeoutId);
         
         if (res.ok) {
           const data = await res.json();
-          setBackendStatus(true, data);
-          return true;
+          if (data && (data.status === "ok" || data.status === "healthy")) {
+            setBackendStatus(true, data);
+            return true;
+          }
         }
       } catch (err) {
         // Backend offline or unreachable
@@ -2570,15 +2576,19 @@
       const badge = document.getElementById("backendStatusBadge");
 
       if (isConnected) {
-        dot.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
-        text.textContent = "● LIVE PYTHON ML BACKEND (PORT 8000)";
-        text.className = "font-bold text-emerald-700 font-mono text-[10px]";
-        badge.className = "hidden sm:flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full text-slate-700 font-mono transition";
+        if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
+        if (text) {
+          text.textContent = "LIVE PYTHON ML BACKEND";
+          text.className = "font-bold text-emerald-700 font-mono text-[10px]";
+        }
+        if (badge) badge.className = "hidden sm:flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full text-slate-700 font-mono transition";
       } else {
-        dot.className = "w-2 h-2 rounded-full bg-amber-500";
-        text.textContent = "● DEMO SIMULATION MODE (OFFLINE)";
-        text.className = "font-bold text-slate-600 font-mono text-[10px]";
-        badge.className = "hidden sm:flex items-center gap-2 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full text-slate-700 font-mono transition";
+        if (dot) dot.className = "w-2 h-2 rounded-full bg-amber-500";
+        if (text) {
+          text.textContent = "DEMO SIMULATION MODE";
+          text.className = "font-bold text-slate-600 font-mono text-[10px]";
+        }
+        if (badge) badge.className = "hidden sm:flex items-center gap-2 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full text-slate-700 font-mono transition";
       }
     }
 
@@ -2586,7 +2596,13 @@
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3500);
-        const res = await fetch(`${API_BASE}${endpoint}`, { signal: controller.signal });
+        const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+        const fullUrl = path.startsWith("/api/v1") ? `${API_BASE}${path}` : `${API_BASE}/api/v1${path}`;
+        const res = await fetch(fullUrl, {
+          method: "GET",
+          headers: { "Accept": "application/json" },
+          signal: controller.signal
+        });
         clearTimeout(timeoutId);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return await res.json();
@@ -2600,9 +2616,11 @@
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
-        const res = await fetch(`${API_BASE}${endpoint}`, {
+        const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+        const fullUrl = path.startsWith("/api/v1") ? `${API_BASE}${path}` : `${API_BASE}/api/v1${path}`;
+        const res = await fetch(fullUrl, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify(payload),
           signal: controller.signal
         });
@@ -2632,7 +2650,7 @@
       // Check backend health immediately and bootstrap catalog if connected
       const connected = await checkBackendHealth();
       if (connected) {
-        showToast("Connected to live Python ML backend (FastAPI :8000)", "success");
+        showToast("Connected to live Python ML backend (127.0.0.1:8000)", "success");
         loadCatalogFromBackend();
       }
 
@@ -2641,7 +2659,7 @@
     });
 
     async function loadCatalogFromBackend() {
-      const attacks = await apiGet("/catalog/known-attacks");
+      const attacks = await apiGet("/api/v1/catalog/known-attacks");
       if (attacks && Array.isArray(attacks) && attacks.length > 0) {
         renderCatalogCards(attacks);
       }
@@ -2818,7 +2836,7 @@
 
       if (appState.backendConnected) {
         const intensity = parseFloat(document.getElementById("attackLabIntensitySlider").value) / 100.0;
-        const resp = await apiPost("/discovery/generate-candidate", {
+        const resp = await apiPost("/api/v1/discovery/generate-candidate", {
           generation_method: "custom",
           custom_genome: appState.attackLabGenome,
           n_mutations: Math.max(1, Math.round(intensity * 3)),
@@ -2933,7 +2951,7 @@
 
       let backendEvaluation = null;
       if (appState.backendConnected) {
-        backendEvaluation = await apiPost("/discovery/evaluate-candidate", {
+        backendEvaluation = await apiPost("/api/v1/discovery/evaluate-candidate", {
           candidate_genome: appState.attackLabGenome,
           candidate_name: (appState.latestAttackLabScenario && appState.latestAttackLabScenario.name) || "Synthetic Attack Candidate",
           sample_count: 100,
@@ -3042,7 +3060,7 @@
 
       let comparisonResp = null;
       if (appState.backendConnected) {
-        comparisonResp = await apiPost("/hardening/compare-defense", {
+        comparisonResp = await apiPost("/api/v1/hardening/compare-defense", {
           attack_genome: appState.attackLabGenome,
           attack_name: "Gen-2 Unseen Adaptive Benchmark",
           sample_count: 100,
@@ -3342,10 +3360,14 @@
 
     async function evaluateTransactionObject(feat) {
       if (appState.backendConnected) {
-        const res = await apiPost("/risk/evaluate-transaction", feat);
+        const res = await apiPost("/api/v1/risk/evaluate-transaction", feat);
         if (res) {
+          const reasonsList = (res.detailed_reasons && Array.isArray(res.detailed_reasons) && res.detailed_reasons.length > 0)
+            ? res.detailed_reasons.map(r => ({ code: r.code, desc: r.description }))
+            : ((res.reason_codes || []).map(c => ({ code: c, desc: c })));
+
           return {
-            id: res.transaction_id,
+            id: res.transaction_id || feat.transaction_id,
             amount: feat.transaction_amount,
             currency: feat.currency,
             city: feat.city,
@@ -3354,7 +3376,7 @@
             riskScore: res.risk_score,
             riskLevel: res.risk_level,
             action: res.action,
-            reasons: res.detailed_reasons.map(r => ({ code: r.code, desc: r.description })),
+            reasons: reasonsList,
             mitigation: res.mitigation,
             rawFeatures: feat,
             time: new Date().toLocaleTimeString()

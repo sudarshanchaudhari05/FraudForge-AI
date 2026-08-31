@@ -79,6 +79,31 @@ def compare_defense(req: CompareDefenseRequest, request: Request) -> CompareDefe
     detector_hardened = getattr(request.app.state, "detector_hardened", None)
 
     if detector_baseline is None or detector_hardened is None:
+        from src.utils.config import MODELS_DIR
+        from src.detection.predict import FraudDetector
+        baseline_path = MODELS_DIR / "baseline_detector.joblib"
+        hardened_path = MODELS_DIR / "hardened_zero_day_detector.joblib"
+        if not hardened_path.exists():
+            hardened_path = MODELS_DIR / "hardened_detector.joblib"
+
+        if detector_baseline is None and baseline_path.exists():
+            try:
+                detector_baseline = FraudDetector(artifact_path=baseline_path)
+                request.app.state.detector_baseline = detector_baseline
+            except Exception:
+                pass
+
+        if detector_hardened is None and hardened_path.exists():
+            try:
+                detector_hardened = FraudDetector(artifact_path=hardened_path)
+                request.app.state.detector_hardened = detector_hardened
+            except Exception:
+                pass
+        elif detector_hardened is None:
+            detector_hardened = detector_baseline
+            request.app.state.detector_hardened = detector_hardened
+
+    if detector_baseline is None or detector_hardened is None:
         raise HTTPException(
             status_code=503,
             detail="Required detector models (baseline & hardened) are not loaded in application state.",

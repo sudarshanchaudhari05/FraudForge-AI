@@ -123,10 +123,19 @@ def generate_candidate(req: GenerateCandidateRequest) -> GenerateCandidateRespon
 @router.post("/evaluate-candidate", response_model=EvaluateCandidateResponse)
 def evaluate_candidate(req: EvaluateCandidateRequest, request: Request) -> EvaluateCandidateResponse:
     """Simulate transactions for the candidate genome and test against the baseline detector."""
-    # Obtain preloaded detector from app state
     detector_baseline = getattr(request.app.state, "detector_baseline", None)
     if detector_baseline is None:
-        raise HTTPException(status_code=503, detail="Baseline detector is not loaded in application state.")
+        from src.utils.config import MODELS_DIR
+        from src.detection.predict import FraudDetector
+        baseline_path = MODELS_DIR / "baseline_detector.joblib"
+        if baseline_path.exists():
+            try:
+                detector_baseline = FraudDetector(artifact_path=baseline_path)
+                request.app.state.detector_baseline = detector_baseline
+            except Exception:
+                pass
+        if detector_baseline is None:
+            raise HTTPException(status_code=503, detail="Baseline detector is not loaded in application state.")
 
     # Validate and build genome object
     try:
