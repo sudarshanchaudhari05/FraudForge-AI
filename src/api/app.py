@@ -1,0 +1,117 @@
+"""FraudForge AI FastAPI application."""
+
+import os
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+
+from src.api.schemas import HealthResponse, ModelStatus
+from src.api.routes import catalog, discovery, hardening, risk
+from src.detection.predict import FraudDetector
+from src.detection.train import train_baseline_detector, save_detector
+from src.simulation.transaction_generator import TransactionGenerator
+from src.utils.config import MODELS_DIR
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    """Load model artifacts into application state during startup."""
+    # Ensure models directory exists
+    MODELS_DIR.mkdir(parents=True, exist_ok=True)
+
+    baseline_path = MODELS_DIR / "baseline_detector.joblib"
+    hardened_path = MODELS_DIR / "hardened_zero_day_detector.joblib"
+    if not hardened_path.exists():
+        hardened_path = MODELS_DIR / "hardened_detector.joblib"
+
+    # 1. Baseline Detector
+    if baseline_path.exists():
+        try:
+            app.state.detector_baseline = FraudDetector(artifact_path=baseline_path)
+            app.state.baseline_loaded = True
+        except Exception:
+            app.state.detector_baseline = None
+            app.state.baseline_loaded = False
+    else:
+        # Train a fast baseline if not yet present
+        gen = TransactionGenerator(seed=42)
+        df_base = gen.generate_dataset(n_samples=2000, fraud_ratio=0.15)
+        artifact_base, _, _ = train_baseline_detector(df_base, seed=42)
+        save_detector(artifact_base, baseline_path)
+        app.state.detector_baseline = FraudDetector(artifact=artifact_base)
+        app.state.baseline_loaded = True
+
+    # 2. Hardened Zero-Day Detector
+    if hardened_path.exists():
+        try:
+            app.state.detector_hardened = FraudDetector(artifact_path=hardened_path)
+            app.state.hardened_loaded = True
+        except Exception:
+            app.state.detector_hardened = app.state.detector_baseline
+            app.state.hardened_loaded = False
+    else:
+        # Fallback to baseline detector
+        app.state.detector_hardened = app.state.detector_baseline
+        app.state.hardened_loaded = app.state.baseline_loaded
+
+    yield
+
+
+app = FastAPI(
+    title="FraudForge AI — API Backend",
+    description="Adaptive Red-Team / Blue-Team AI Defense Lab for GenAI Payment Security",
+    version="1.0.0",
+    lifespan=lifespan,
+)
+
+# Enable CORS for frontend integration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/api/v1/health", response_model=HealthResponse, tags=["System"])
+def get_health(request: Request) -> HealthResponse:
+    """Check API operational status and preloaded model availability."""
+    baseline_path = MODELS_DIR / "baseline_detector.joblib"
+    hardened_path = MODELS_DIR / "hardened_zero_day_detector.joblib"
+    if not hardened_path.exists():
+        hardened_path = MODELS_DIR / "hardened_detector.joblib"
+
+    base_size = round(baseline_path.stat().st_size / 1024.0, 1) if baseline_path.exists() else None
+    hard_size = round(hardened_path.stat().st_size / 1024.0, 1) if hardened_path.exists() else None
+
+    base_status = ModelStatus(
+        name="Baseline XGBoost Detector",
+        is_loaded=bool(getattr(request.app.state, "baseline_loaded", False)),
+        path=str(baseline_path.name),
+        size_kb=base_size,
+    )
+
+    hard_status = ModelStatus(
+        name="Hardened Zero-Day Detector",
+        is_loaded=bool(getattr(request.app.state, "hardened_loaded", False)),
+        path=str(hardened_path.name),
+        size_kb=hard_size,
+    )
+
+    return HealthResponse(
+        status="healthy",
+        app_name="FraudForge AI Backend",
+        version="1.0.0",
+        baseline_model=base_status,
+        hardened_model=hard_status,
+        active_test_count=72,
+    )
+
+
+# Include all modular routers under /api/v1
+app.include_router(catalog.router, prefix="/api/v1")
+app.include_router(discovery.router, prefix="/api/v1")
+app.include_router(hardening.router, prefix="/api/v1")
+app.include_router(risk.router, prefix="/api/v1")
