@@ -16,7 +16,7 @@
 
 ### Step 1: Open Terminal in Project Root
 ```powershell
-cd "C:\Users\sudar\Documents\Collage\FraudForge-AI"
+cd FraudForge-AI
 ```
 
 ### Step 2: Install Python Dependencies

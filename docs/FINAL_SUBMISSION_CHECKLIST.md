@@ -74,7 +74,7 @@ Execute this exact 5-step sequence 30 minutes before presenting to judges:
 
 ### Step 1: Run Full Pytest Suite (Terminal 1)
 ```powershell
-cd "C:\Users\sudar\Documents\Collage\FraudForge-AI"
+cd FraudForge-AI
 pytest -v
 ```
 *Pass Criteria*: `72 passed in ~16s`.
@@ -87,7 +87,7 @@ python -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 ### Step 3: Start Frontend Server (Terminal 2)
 ```powershell
-cd "C:\Users\sudar\Documents\Collage\FraudForge-AI"
+cd FraudForge-AI
 python -m http.server 3000 --directory frontend
 ```
 *Pass Criteria*: `Serving HTTP on :: port 3000`.
