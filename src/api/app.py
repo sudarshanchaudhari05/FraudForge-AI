@@ -101,7 +101,10 @@ def get_health(request: Request) -> HealthResponse:
     )
 
     return HealthResponse(
-        status="healthy",
+        status="ok",
+        service="FraudForge AI API",
+        mode="simulation",
+        model="hardened",
         app_name="FraudForge AI Backend",
         version="1.0.0",
         baseline_model=base_status,

@@ -45,7 +45,19 @@ def generate_candidate(req: GenerateCandidateRequest) -> GenerateCandidateRespon
     known_genomes_list = get_all_known_genomes()
     engine = AttackDiscoveryEngine(seed=seed)
 
-    if req.generation_method == "crossover":
+    if req.custom_genome is not None or req.generation_method == "custom":
+        if req.custom_genome:
+            candidate_genome = AttackGenome.from_dict(req.custom_genome)
+        else:
+            p_id = req.parent_attack_id or "ATK-001"
+            candidate_genome = known_genomes_dict.get(p_id, list(known_genomes_dict.values())[0])
+        
+        lineage = LineageInfo(
+            mutation_type="custom_configuration",
+            parents=[req.parent_attack_id or "Custom_Config"],
+            mutations=["10-dimensional custom genome profile synthesized"],
+        )
+    elif req.generation_method == "crossover":
         p1_id = req.parent_1_id or "ATK-001"
         p2_id = req.parent_2_id or "ATK-021"
 

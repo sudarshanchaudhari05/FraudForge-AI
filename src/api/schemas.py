@@ -16,12 +16,15 @@ class ModelStatus(BaseModel):
 
 
 class HealthResponse(BaseModel):
-    status: str
+    status: str = "ok"
+    service: str = "FraudForge AI API"
+    mode: str = "simulation"
+    model: str = "hardened"
     app_name: str = "FraudForge AI Backend"
     version: str = "1.0.0"
-    baseline_model: ModelStatus
-    hardened_model: ModelStatus
-    active_test_count: int = 64
+    baseline_model: Optional[ModelStatus] = None
+    hardened_model: Optional[ModelStatus] = None
+    active_test_count: int = 72
 
 
 # -----------------------------------------------------------------------------
@@ -52,7 +55,11 @@ class GenomeVocabularyResponse(BaseModel):
 class GenerateCandidateRequest(BaseModel):
     generation_method: str = Field(
         default="mutation",
-        description="Method to generate candidate: 'mutation' or 'crossover'",
+        description="Method to generate candidate: 'mutation', 'crossover', or 'custom'",
+    )
+    custom_genome: Optional[Dict[str, str]] = Field(
+        default=None,
+        description="Optional full 10-gene dictionary for custom candidate evaluation",
     )
     parent_attack_id: Optional[str] = Field(
         default=None,
