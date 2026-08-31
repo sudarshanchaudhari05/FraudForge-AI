@@ -164,7 +164,7 @@ python -m http.server 3000 --directory frontend
 ## Judge Demo
 
 For competition judges with limited time, please refer to:
-👉 **[90-Second Judge Demo Script](docs/90_Second_Judge_Demo_Script.md)**
+👉 **[90-Second Judge Demo Script](docs/90_Second_Judge_Demo_Script.docx)**
 
 ### Exact Demo Flow
 ```
@@ -189,10 +189,10 @@ Risk Decision Engine (Autonomous Actions & Reason Codes)
 
 ## Documentation
 
-- 📄 **[Solution Walkthrough](docs/FraudForge_AI_Solution_Walkthrough.md)**: Deep technical architecture, mathematical formulations, and detailed benchmark results.
-- ⏱️ **[90-Second Judge Demo Script](docs/90_Second_Judge_Demo_Script.md)**: Step-by-step timeline, exact clicks, exact values to point at, and spoken script.
-- 🛠️ **[Run & Demo Guide](docs/RUN_AND_DEMO_GUIDE.md)**: Local execution, port conflict resolution, and CLI experiment execution.
-- ✅ **[Final Submission Checklist](docs/FINAL_SUBMISSION_CHECKLIST.md)**: Complete pre-submission verification and audit checklist.
+- 📄 **[Solution Walkthrough](docs/FraudForge_AI_Solution_Walkthrough.docx)**: Deep technical architecture, mathematical formulations, and detailed benchmark results.
+- ⏱️ **[90-Second Judge Demo Script](docs/90_Second_Judge_Demo_Script.docx)**: Step-by-step timeline, exact clicks, exact values to point at, and spoken script.
+- 🛠️ **[Run & Demo Guide](docs/RUN_AND_DEMO_GUIDE.docx)**: Local execution, port conflict resolution, and CLI experiment execution.
+- ✅ **[Final Submission Checklist](docs/FINAL_SUBMISSION_CHECKLIST.docx)**: Complete pre-submission verification and audit checklist.
 
 ---
 
